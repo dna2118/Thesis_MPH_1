@@ -1,0 +1,934 @@
+---
+title: "Data Cleaning and Preliminary Analysis"
+author: "Dionna Attinson"
+date: "2/7/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(epitools)
+library(viridis)
+library(patchwork)
+library(modelr)
+library(mgcv)
+library(magrittr)
+library(corrplot)
+library(gmodels)
+library(patchwork)
+library(gridExtra)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+```{r}
+SurveyData = 
+  readxl::read_xls('./SFH_Survey_CODED_CLEANED.xls') %>% 
+  janitor::clean_names()
+```
+
+### Data Cleaning and Recoding
+```{r}
+SurveyData =
+ SurveyData %>% 
+ rename(Gender = x1_to_which_gender_identity_do_you_most_identify_selected_choice,
+        Education = x3_what_is_the_highest_level_of_education_you_have_completed_selected_choice,
+        Race = x4_which_best_describes_your_race_ethnicity_check_all_that_apply_selected_choice,
+        Income = x7_hand_participant_income_card_which_of_these_groups_on_this_card_is_closest_to_your_total_personal_income_before_taxes_during_the_last_year_please_include_income_from_all_sources_your_salaries_wages_and_any_benefits_including_social_security_welfare_gifts_or_any_other_income_please_do_not_include_food_stamps_or_rental_subsidies_tell_me_the_code_for_the_amount_you_got_last_year_or_the_code_for_the_amount_you_usually_get_per_month_if_necessary_work_with_resident_to_construct_a_monthly_personal_and_household_income)
+```
+
+##### In the code chunk below, a number of variables were recoded as binary. 
+* `Smoke` was the variable that identified the smoking status of an individual. Those who responded that they smoke ANY products including marijuana, THC, hash, hookah, E-cigarettes, Cigarettes or Cigarillos were coded as `1` = Smoker. Those who responded that they did not smoke any products were coded as `0`, Non-smoker.
+* Evidence of mice/rats, cockroaches, and having a mildew odor present in the home were all coded as `1` = Yes, `0` = No.
+```{r}
+VariablesofInterest = 
+  SurveyData %>% 
+  select(age, Gender, Race, pss_5, pss_6, pss_8_108, pss_8_109, pss_10, sf36_1, sf36_4, 
+        sf36_6, sf36_14, sf36_15, sf36_18, sf36_19, sf36_22, sf36_26, sf36_27, sf36_28,
+        sf36_32, Education, Income, repairs_needed, asthma, anxiety, lungd, depression,
+        heartdisease, cancer, diabetes,hypertension, products_used, neg_health_building, 
+        micerats, cockroaches, mildew, homesat,buildsat, neighborhoodsat, propmansat) %>% 
+  
+  rename(Smoke = products_used) %>% 
+  rename(Age = age) %>% 
+  mutate(Smoke = recode(Smoke, 
+                    "Dont smoke" = "0",
+                    "Cigarettes and/or Cigarillos (common brands are Marlboro, Black & Mild)" = "1",
+                    "Hookah" = "1",
+                    "Cigarettes and/or Cigarillos (common brands are Marlboro, Black & Mild) ,Marijuana, hash, THC, grass, pot, or weed" = "1",
+                    "Cigarettes and/or Cigarillos (common brands are Marlboro, Black & Mild) ,E-cigarettes (look like regular cigarettes, but are battery-powered),Marijuana, hash, THC, grass, pot, or weed,Hookah" = "1",
+                    "E-cigarettes (look like regular cigarettes, but are battery-powered)" = "1",
+                   "Marijuana, hash, THC, grass, pot, or weed" = "1"),
+        micerats = recode(micerats, 
+                          "Yes" = "1", 
+                          "No" = "0"),
+        cockroaches = recode(cockroaches, 
+                             "Yes" = "1", 
+                             "No" = "0"),
+        mildew = recode(mildew, 
+                            "Yes" = "1",
+                            "No" = "0"),
+        neg_health_building = recode(neg_health_building, 
+                                      "Yes" = "1",
+                                      "No" = "0"),
+        Race = recode(Race,
+                      "Hispanic or Latino" = "Hispanic or Latinx",
+                      "Other, specify:" = "Other",
+                      "Hispanic or Latino,Native American/ Alaskan Native" = "Bi/Multiracial",
+                      "Non- Hispanic Black or African American,Asian or Pacific Islander" = "Bi/Multiracial",
+                      "Non- Hispanic Black or African American,Hispanic or Latino" = "Bi/Multiracial",
+                      "Non-Hispanic White,Non- Hispanic Black or African American,Hispanic or Latino,Native American/ Alaskan Native,Asian or Pacific Islander" = "Bi/Multiracial"))
+```
+##### The two scales that will be used as the outcome variables include the Shortened Perceived Stress Scale and an adapted SF-36 scale. All of the qualitative responses in the dataset were recoded to correspond with their quantitative equivalent as identified by the authors of each scale. 
+* The PSS coding instructions were as follows: 
+code 0 - never, 1 - almost never, 2 - sometimes, 3 - fairly often, 4 - very often & reverse your scores for questions 4, 5, 7, and 8. On these 4 questions, change the scores like this: 0 = 4, 1 = 3, 2 = 2, 3 = 1, 4 = 0.
+* The SF-36 coding instructions include a two step process. The code chunk below represents the first step.
+```{r}
+##PSS Scale
+CodedData_VariablesofInterest =
+  VariablesofInterest %>% 
+  mutate(
+    pss_5_coded = pss_5,
+    pss_6_coded = pss_6,
+    pss_8_coded = pss_8_108,
+    pss_9_coded = pss_8_109,
+    pss_10_coded = pss_10, 
+    sf36_1_coded = sf36_1,
+    sf36_4_coded = sf36_4,  
+    sf36_6_coded = sf36_6,
+    sf36_14_coded = sf36_14,  
+    sf36_15_coded = sf36_15,  
+    sf36_18_coded = sf36_18,
+    sf36_19_coded = sf36_19,
+    sf36_22_coded = sf36_22,
+    sf36_26_coded = sf36_26,
+    sf36_27_coded = sf36_27,
+    sf36_28_coded = sf36_28,
+    sf36_32_coded = sf36_32) %>% 
+    
+  mutate(pss_5_coded = recode(pss_5_coded, 
+                        "Never" = "4",
+                        "Almost never" = "3",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "1",
+                        "Very often" = "0"), 
+         pss_6_coded = recode(pss_6_coded, 
+                        "Never" = "0",
+                        "Almost never" = "1",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "3",
+                        "Very often" = "4"),
+         pss_8_coded = recode(pss_8_coded, 
+                        "Never" = "4",
+                        "Almost never" = "3",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "1",
+                        "Very often" = "0"),
+         pss_9_coded = recode(pss_9_coded, 
+                        "Never" = "0",
+                        "Almost never" = "1",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "3",
+                        "Very often" = "4"),
+         pss_10_coded = recode(pss_10_coded, 
+                        "Never" = "0",
+                        "Almost never" = "1",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "3",
+                        "Very often" = "4"),
+         sf36_1_coded = recode(sf36_1_coded,
+                         "Excellent" = "1",
+                         "Very Good" = "2",
+                         "Good" = "3",
+                         "Fair" = "4",
+                         "Poor" = "5"),
+         sf36_4_coded = recode(sf36_4_coded, 
+                         "Yes, limited a lot" = "1",
+                         "Yes, limited a little" = "2",
+                         "No, not limited at all" = "3"),
+         sf36_6_coded = recode(sf36_6_coded, 
+                         "Yes, limited a lot" = "1",
+                         "Yes, limited a little" = "2",
+                         "No, not limited at all" = "3"),
+         sf36_14_coded = recode(sf36_14_coded, 
+                         "Yes" = "1",
+                         "No" = "2"),
+         sf36_15_coded = recode(sf36_15_coded, 
+                         "Yes" = "1",
+                         "No" = "2"), 
+         sf36_18_coded = recode(sf36_18_coded, 
+                         "Yes" = "1",
+                         "No" = "2"), 
+         sf36_19_coded = recode(sf36_19_coded, 
+                         "Yes" = "1",
+                         "No" = "2"),
+         sf36_22_coded = recode(sf36_22_coded,
+                         "Not at all" = "1",
+                         "A little bit" = "2",
+                         "Moderately" = "3",
+                         "Quite a bit" = "4",
+                         "Extremely" = "5"),
+         sf36_26_coded =  recode(sf36_26_coded,
+                          "All of the time" = "1",
+                          "Most of the time" = "2",
+                          "A good bit of the time" = "3",
+                          "Some of the time" = "4",
+                          "A little of the time" = "5",
+                          "None of the time" = "6"),
+         sf36_27_coded = recode(sf36_27_coded,
+                          "All of the time" = "1",
+                          "Most of the time" = "2",
+                          "A good bit of the time" = "3",
+                          "Some of the time" = "4",
+                          "A little of the time" = "5",
+                          "None of the time" = "6"),
+         sf36_28_coded = recode(sf36_28_coded,
+                          "All of the time" = "1",
+                          "Most of the time" = "2",
+                          "A good bit of the time" = "3",
+                          "Some of the time" = "4",
+                          "A little of the time" = "5",
+                          "None of the time" = "6"),
+         sf36_32_coded = recode(sf36_32_coded,
+                         "All of the time" = "1",
+                         "Most of the time" = "2",
+                         "Some of the time" = "3",
+                         "A little of the time" = "4",
+                         "None of the time" = "5")) 
+```
+
+##### The code chunk below now represents the second step of scoring the SF-36. This requires transforming the original scale.
+```{r}
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+     sf36_1_coded = recode(sf36_1_coded,
+                         "1" = "100",
+                         "2" = "75",
+                         "3" = "50",
+                         "4" = "25",
+                         "5" = "0"),
+        sf36_4_coded = recode(sf36_4_coded, 
+                          "1" = "0",
+                          "2" = "50",
+                          "3" = "100"),
+        sf36_6_coded = recode(sf36_6_coded, 
+                          "1" = "0",
+                          "2" = "50",
+                          "3" = "100"),
+         sf36_14_coded = recode(sf36_14_coded, 
+                         "1" = "0",
+                         "2" = "100"),
+         sf36_15_coded = recode(sf36_15_coded, 
+                         "1" = "0",
+                         "2" = "100"),
+         sf36_18_coded = recode(sf36_18_coded, 
+                         "1" = "0",
+                         "2" = "100"), 
+         sf36_19_coded = recode(sf36_19_coded, 
+                         "1" = "0",
+                         "2" = "100"),
+         sf36_22_coded = recode(sf36_22_coded,
+                         "1" = "100",
+                         "2" = "75",
+                         "3" = "50",
+                         "4" = "25",
+                         "5" = "0"),
+        sf36_26_coded =  recode(sf36_26_coded,
+                          "1" = "100",
+                          "2" = "80",
+                          "3" = "60",
+                          "4" = "40",
+                          "5" = "20",
+                          "6" = "0"),
+         sf36_27_coded = recode(sf36_27_coded,
+                          "1" = "100",
+                          "2" = "80",
+                          "3" = "60",
+                          "4" = "40",
+                          "5" = "20",
+                          "6" = "0"),
+         sf36_28_coded = recode(sf36_28_coded,
+                          "1" = "0",
+                          "2"= "20",
+                          "3" = "40",
+                          "4" = "60",
+                          "5"= "80",
+                          "6" = "100"),
+         sf36_32_coded = recode(sf36_32_coded,
+                         "1" = "0",
+                         "2" = "25",
+                         "3" = "50",
+                         "4" = "75",
+                         "5" = "100"))
+```
+
+##### Next, I transformed the PSS scale and SF-36 scale to numeric variables so that composite scores could be calculated for each individual. 
+
+```{r}
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+    sf36_1_coded = as.numeric(sf36_1_coded),
+    sf36_4_coded = as.numeric(sf36_4_coded), 
+    sf36_6_coded = as.numeric(sf36_6_coded),
+    sf36_14_coded = as.numeric(sf36_14_coded),
+    sf36_15_coded = as.numeric(sf36_15_coded),
+    sf36_18_coded = as.numeric(sf36_18_coded),
+    sf36_19_coded = as.numeric(sf36_19_coded),
+    sf36_22_coded = as.numeric(sf36_22_coded),
+    sf36_26_coded = as.numeric(sf36_26_coded),
+    sf36_27_coded = as.numeric(sf36_27_coded),
+    sf36_28_coded = as.numeric(sf36_28_coded),
+    sf36_32_coded = as.numeric(sf36_32_coded), 
+    pss_5_coded =  as.numeric(pss_5_coded),
+    pss_6_coded =  as.numeric(pss_6_coded),
+    pss_8_coded = as.numeric(pss_8_coded),
+    pss_9_coded = as.numeric(pss_9_coded),
+    pss_10_coded = as.numeric(pss_10_coded))
+```
+##### For the SF-36 scale, a total SF-36 score was created from the totals of each participant. This was then divided by 12 to get the composite SF-36 score (mean). This resulted in the variable `composite_sf36_score`. The higher the composite SF-36 score, the better their overall health status.
+
+##### For the PSS scale, a total score was created from the questions which became the variable `total_PSS_score`. I then created stress categories for future categorical analysis: 
+* Scores ranging from 0-6 would be considered low stress.
+* Scores ranging from 7-13 ould be considered moderate stress.
+* Scores ranging from 14-20 would be considered high perceived stress.
+
+##### Further, several other variables were transformed. Age was transformed to a categorical variable, creating the age groups of 18-24, 25-44, 45-64, and 65+. Gender was transformed into a binary variable (0 = male, 1 = female), and a Housing Satisfaction Score was created. A higher score indicates higher overall housing satisfaction. This score was created based off of the totals of four questions: 
+* The participant's satisfaction with their apartment
+* The participant's satisfcation with their building 
+* The participant's satisfcation with their neighbhorhood
+* The participant's satisfaction with their property management 
+
+##### Lastly, a binary chronic disease outcome was created. If a participant responded that they or someone in their home have the following conditions, they were coded as `1`: 
+* Cancer
+* Heart Disease
+* Diabetes
+* Hypertension
+* Asthma
+* Lung Disease 
+* Anxiety
+* Depression 
+
+```{r}
+CodedData_VariablesofInterest = 
+CodedData_VariablesofInterest %>% 
+  mutate(
+    total_sf36_score = sf36_1_coded + sf36_4_coded + sf36_6_coded + sf36_14_coded +
+    sf36_15_coded + sf36_18_coded + sf36_19_coded + sf36_22_coded + 
+    sf36_26_coded + sf36_27_coded + sf36_28_coded + sf36_32_coded) %>% 
+  mutate(composite_sf36_score = total_sf36_score/12) %>% 
+  mutate(
+    total_PSS_score = pss_5_coded + pss_6_coded + pss_8_coded + pss_9_coded + pss_10_coded,
+    PSS_Category = total_PSS_score, 
+    PSS_Category = 
+          case_when(PSS_Category >= 14 ~ 'High Perceived Stress',
+                    PSS_Category >= 7 ~ 'Moderate Stress',
+                    PSS_Category >= 0  ~ 'Low Stress'),
+    Age_Category = Age,
+    Age_Category = 
+          case_when(Age_Category >= 65  ~ '65+',
+                    Age_Category >= 45  ~ '45-64',
+                    Age_Category >= 25 ~ '25-44',
+                    Age_Category >= 18 ~ '18-24'),
+    Gender_Coded = Gender, 
+    Gender_Coded = recode(Gender_Coded, 
+                          "Male" = "0",
+                          "Female" = "1",
+                          `Other, please specify:` = "Null"),
+    AptSat_Coded = homesat, 
+    AptSat_Coded = recode(AptSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"), 
+    BuildingSat_Coded = buildsat, 
+    BuildingSat_Coded = recode(BuildingSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+    NeighborhoodSat_Coded = neighborhoodsat, 
+    NeighborhoodSat_Coded = recode(NeighborhoodSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+   PropertyManSat_Coded = propmansat,
+   PropertyManSat_Coded = recode(PropertyManSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+   AptSat_Coded = as.numeric(AptSat_Coded), 
+   BuildingSat_Coded = as.numeric(BuildingSat_Coded),
+   NeighborhoodSat_Coded = as.numeric(NeighborhoodSat_Coded),
+   PropertyManSat_Coded = as.numeric(PropertyManSat_Coded),
+   asthma = as.numeric(asthma),
+   heartdisease = as.numeric(heartdisease),
+   lungd = as.numeric(lungd),
+   anxiety = as.numeric(anxiety),
+   depression = as.numeric(depression),
+   cancer = as.numeric(cancer),
+   hypertension = as.numeric(hypertension),
+   diabetes = as.numeric(diabetes),
+   Chronic_Disease = asthma + heartdisease + lungd + anxiety + depression + cancer + hypertension + diabetes,
+   Chronic_Disease = 
+          case_when(Chronic_Disease >= 1 ~ '1',
+                    Chronic_Disease == 0 ~ '0'))
+```
+
+```{r}
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+  PropertyManSat_Coded = replace_na(PropertyManSat_Coded, 0),
+  HousingSatisfactionScore = AptSat_Coded + BuildingSat_Coded + NeighborhoodSat_Coded +
+  PropertyManSat_Coded,
+  Satisfaction_Category = HousingSatisfactionScore,
+  Satisfaction_Category = 
+          case_when(Satisfaction_Category >= 13 ~ 'High Satisfaction',
+                    Satisfaction_Category >= 7 ~ 'Moderate Satisfaction',
+                    Satisfaction_Category >= 4  ~ 'Low Satisfaction'))
+```
+
+##### Below, I changed variables into factors and numeric values.
+
+```{r}
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+    Education = as.factor(Education),
+    Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
+    Race = as.factor(Race),
+    Age = as.numeric(Age),
+    Income = as.numeric(Income),
+    Smoke = factor(Smoke, levels = c("0", "1")),
+    asthma = factor(asthma, levels = c("0","1")),
+    lungd = factor(lungd, levels = c("0","1")),
+    heartdisease = factor(heartdisease, levels = c("0","1")),
+    anxiety = factor(anxiety, levels = c("0","1")),
+    depression = factor(depression, levels = c("0","1")),
+    cancer = factor(cancer,levels = c("0","1")),
+    diabetes = factor(diabetes,levels = c("0","1")),
+    micerats = factor(micerats,levels = c("0","1")),
+    mildew = factor(mildew,levels = c("0","1")),
+    cockroaches = factor(cockroaches,levels = c("0","1")),
+    Chronic_Disease = factor(Chronic_Disease,levels = c("0","1"))
+  )
+```
+### Univariable/Descriptive Analyses
+##### The tables below provide descriptive analyses of the independent and dependent variables. 
+
+#### Outcome Variables 
+##### Perceived Stress Score
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(PSS_Category) %>% 
+  summarize(n=n()) %>%
+   mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Perceived Stress Score", "n", "Percent(%)"), digits = 2)
+
+```
+
+##### Overall Health Status 
+```{r}
+CodedData_VariablesofInterest %>% 
+  select(composite_sf36_score) %>% 
+  summary() %>% 
+  knitr::kable(col.names = c("Summary of Overall Health Score"))
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  drop_na() %>% 
+  group_by(composite_sf36_score) %>% 
+  summarize(n = n()) %>% 
+    ggplot(aes(x= composite_sf36_score)) +   geom_density() + 
+  geom_vline(aes(xintercept = mean(composite_sf36_score)), 
+             linetype = "dashed", size = 0.6,
+             color = "#FC4E07")
+```
+
+#### Independent Variables
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Smoke) %>% 
+  summarize(n=n()) %>% 
+  mutate(
+    percent = n/124*100) %>% 
+  mutate(
+    Smoke = recode(Smoke,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")) %>% 
+  knitr::kable(col.names=c("Smoking Status", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Race) %>% 
+  summarize(n=n()) %>%
+   mutate(
+  percent = n/124*100) %>% 
+  mutate(
+    Race = recode(Race,
+                  "Other, specify:" = "Other")
+  ) %>% 
+  knitr::kable(col.names=c("Race/Ethnicity", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Age_Category) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Age Group", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  drop_na() %>% 
+  group_by(Age, Gender) %>% 
+  ggplot(aes(x=Gender, y=Age)) + geom_violin() +
+  labs(x = "Gender",
+      y = "Age",
+      title = "Figure 1. Distribution of Age by Gender")
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Gender) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Gender", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  drop_na() %>% 
+  select(Gender, Age) %>% 
+  group_by(Gender) %>% 
+  summarize(Mean = mean(Age)) %>% 
+  knitr::kable(col.names=c("Age Group", "Mean Age"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Income) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Income Category", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Education) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Education Completed", "n", "Percent(%)"), digits = 2)
+```
+
+### 2x2 Tables and Visualizations
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Age_Category, Gender) %>% 
+  summarize(n=n()) %>%
+  pivot_wider(
+    names_from = Gender,
+    values_from = n) %>% 
+  knitr::kable(col.names = c("Age Group","Female (n)", "Male (n)", "Other (n)"))
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  drop_na() %>% 
+  select(Income, Age_Category) %>% 
+  group_by(Age_Category) %>% 
+  summarize(Mean = mean(Income)) %>% 
+  knitr::kable(col.names=c("Age Group", "Mean Income"),digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  ggplot(aes(x=Age_Category, fill = Gender)) + geom_bar() +
+  labs(x = "Age Group",
+      y = "Count",
+      color = "Gender",
+      title = "Figure 2. Age Group by Gender")
+```
+
+```{r}
+CodedData_VariablesofInterest %>%
+  drop_na() %>% 
+  group_by(Age_Category, Race) %>% 
+  summarize(n=n()) %>%
+  pivot_wider(
+    names_from = Race,
+    values_from = n
+  ) %>% 
+  knitr::kable(col.names = c("Age Group", "Hispanic or Latinx (n)", "Non-Hispanic Black or African American (n)", "Bi/Multiracial (n)", "Other (n)"))
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Age_Category, Race) %>% 
+  ggplot(aes(x= Age_Category, fill = Race)) + geom_bar() +
+  labs(x = "Age Group",
+      y = "Count",
+      color = "Race/Ethnicity",
+      title = "Figure 3. Age by Race/Ethnicity")
+```
+
+```{r}
+CodedData_VariablesofInterest %>%
+  group_by(Race, Smoke) %>% 
+  summarize(n=n()) %>%
+  mutate(
+    Smoke = recode(Smoke,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")) %>% 
+  pivot_wider(
+    names_from = Race,
+    values_from = n) %>% 
+  knitr::kable(col.names = c("Smoking Status", "Bi/Multiracial (n)", "Hispanic or Latinx (n)", "Black or African American (n)", "Other (n)"))
+```
+
+```{r}
+CodedData_VariablesofInterest %>%
+  group_by(Age_Category, Smoke) %>% 
+  drop_na() %>% 
+  summarize(n=n()) %>%
+  mutate(
+    Smoke = recode(Smoke,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")) %>% 
+  pivot_wider(
+    names_from = Age_Category,
+    values_from = n) %>% 
+  knitr::kable(col.names = c("Smoking Status", "18-24 (n)", "25-44 (n)", "45-64 (n)", "65+ (n)"))
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  mutate(
+    Smoke = recode(Smoke,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")
+  ) %>% 
+ggplot(aes(x=Smoke, y=Age)) + 
+  geom_boxplot(outlier.shape=NA) + #avoid plotting outliers twice
+  geom_jitter(position=position_jitter(width=.1, height=0)) + 
+  labs(x = "Smoking Status",
+      y = "Age",
+      title = "Figure 4. Distribution of Age by Smoking Status")
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(Age_Category, Education) %>% 
+  drop_na() %>% 
+  ggplot(aes(x= Age_Category, fill = Education)) + geom_bar() + coord_flip() +
+  labs(x = "Age Group",
+      y = "Count",
+      color = "Education",
+      title = "Figure 5. Education by Age Group") +
+theme(legend.position = "bottom")
+```
+
+### Exploratory Analyses of Relationships between Variables
+```{r}
+#Part 1
+CodedData_VariablesofInterest %>%  
+  group_by(total_PSS_score, composite_sf36_score, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = total_PSS_score, y = composite_sf36_score,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Perceived Stress Score",
+      y = "Overall Health Score",
+      color = "Age",
+      title = "Figure 6. Relationship between Perceived Stress and Health Status") +
+      theme(legend.position = "right") 
+```
+
+```{r}
+#Part 2
+CodedData_VariablesofInterest %>%  
+  group_by(HousingSatisfactionScore, composite_sf36_score, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = composite_sf36_score,  color = Age_Category)) +
+  geom_point(size = 1, alpha = 0.5) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Overall Health Score",
+      color = "Age",
+      title = "Figure 7. Relationship between Housing Satisfaction and Health Status") +
+      theme(legend.position = "right")
+```
+
+```{r}
+#Part 3
+CodedData_VariablesofInterest %>%  
+  group_by(HousingSatisfactionScore, total_PSS_score, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = total_PSS_score,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Perceived Stress Score",
+      color = "Age",
+      title = "Figure 8. Relationship between Housing Satisfaction and Perceived Stress") +
+      theme(legend.position = "right")
+```
+
+### Initial bivariate analyses 
+
+##### Bivariate model 1 : composite_sf36_score ~ b_0 + b_1 total_PSS_score_i 
+```{r}
+bivariate1 = lm(composite_sf36_score ~ total_PSS_score, data = CodedData_VariablesofInterest)
+summary(bivariate1) 
+
+bivariate1 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 2 : composite_sf36_score ~ b_0 + b_1 Age_i 
+```{r}
+bivariate2 = lm(composite_sf36_score ~ Age, data = CodedData_VariablesofInterest)
+summary(bivariate2)
+
+bivariate2 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 3 : composite_sf36_score ~ b_0 + b_1 Race_i 
+```{r}
+bivariate3 = lm(composite_sf36_score ~ Race, data = CodedData_VariablesofInterest)
+summary(bivariate3)
+
+bivariate3 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 4 : composite_sf36_score ~ b_0 + b_1 Income_i 
+```{r}
+bivariate4 = lm(composite_sf36_score ~ Income, data = CodedData_VariablesofInterest)
+summary(bivariate4)
+
+bivariate4 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 5 : composite_sf36_score ~ b_0 + b_1 Smoke_i 
+```{r}
+bivariate5 = lm(composite_sf36_score ~ Smoke, data = CodedData_VariablesofInterest)
+summary(bivariate5)
+
+bivariate5 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 6 : composite_sf36_score ~ b_0 + b_1 ChronicDisease_i 
+```{r}
+bivariate6 = lm(composite_sf36_score ~ Chronic_Disease, data = CodedData_VariablesofInterest)
+summary(bivariate6)
+
+bivariate6 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 7 : composite_sf36_score ~ b_0 + b_1 TotalSatisfactionScore_i 
+```{r}
+bivariate7 = lm(composite_sf36_score ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
+summary(bivariate7)
+
+bivariate7 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 8 : total_PSS_score ~ b_0 + b_1 TotalSatisfactionScore_i 
+```{r}
+bivariate8 = lm(total_PSS_score ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
+summary(bivariate8)
+
+bivariate8 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 9 : total_PSS_score ~ b_0 + b_1 Smoke_i 
+```{r}
+bivariate9 = lm(total_PSS_score ~ Smoke, data = CodedData_VariablesofInterest)
+summary(bivariate9)
+
+bivariate9 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 10 : total_PSS_score ~ b_0 + b_1 ChronicDisease_i 
+```{r}
+bivariate10 = lm(total_PSS_score ~ Chronic_Disease, data = CodedData_VariablesofInterest)
+summary(bivariate10)
+
+bivariate10 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 11 : total_PSS_score ~ b_0 + b_1 Income_i 
+```{r}
+bivariate11 = lm(total_PSS_score ~ Income, data = CodedData_VariablesofInterest)
+summary(bivariate11)
+
+bivariate11 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 12 : total_PSS_score ~ b_0 + b_1 Race_i 
+```{r}
+bivariate12 = lm(total_PSS_score ~ Race, data = CodedData_VariablesofInterest)
+summary(bivariate12) 
+
+bivariate12 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 13 : total_PSS_score ~ b_0 + b_1 Age_i
+```{r}
+bivariate13 = lm(total_PSS_score ~ Age, data = CodedData_VariablesofInterest)
+summary(bivariate13)
+
+bivariate13 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 14 : total_PSS_score ~ b_0 + b_1 Gender_i 
+```{r}
+bivariate14 = lm(total_PSS_score ~ Gender_Coded, data = CodedData_VariablesofInterest)
+summary(bivariate14)
+
+bivariate14 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 15 : composite_sf36_score ~ b_0 + b_1 Gender_i 
+```{r}
+bivariate15 = lm(composite_sf36_score ~ Gender_Coded, data = CodedData_VariablesofInterest)
+summary(bivariate15)
+
+bivariate15 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = exp(estimate + 1.96*std.error),
+         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+### Checking for multicollinearity
+```{r}
+Correlation_Matrix = 
+CodedData_VariablesofInterest %>% 
+  select(HousingSatisfactionScore, total_PSS_score, Age, composite_sf36_score, Income) 
+```
+
+```{r}
+CM1 = cor(Correlation_Matrix, use = "complete.obs")
+round(CM1,2)
+corrplot(CM1, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+
