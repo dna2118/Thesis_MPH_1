@@ -2,9 +2,7 @@
 title: "Data Cleaning and Preliminary Analysis"
 author: "Dionna Attinson"
 date: "2/7/2020"
-output:
-  pdf_document: default
-  html_document: default
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
