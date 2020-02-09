@@ -1,0 +1,76 @@
+Analysis Plan
+================
+Dionna Attinson
+2/7/2020
+
+### Research Questions
+
+Housing is a pathway in which health disparities are created and are
+sustained over time (Swope, C. B., & Hernández, D., 2019). Due to the
+historical disenfranchisement of communities through housing policies,
+poor housing quality continues to disproportionately affect low-income
+communities of color. Inadequate housing conditions are associated with
+a myriad of negative health outcomes, including chronic disease,
+respiratory infections, injury and poor mental health (Krieger, J., &
+Higgins, D. L., 2002).
+
+As such, my research question is as follows:
+
+  - Is housing quality reflected in housing satisfaction among residents
+    in the South Bronx associated with self-rated psychosocial health
+    and overall health status?
+
+### The dataset
+
+Baseline data collection for this study took place between 2019. Data
+collection methods included: surveys with residents, focus groups, and
+environmental assessments. The surveys distributed to study participants
+assessed perceptions of housing quality, smoking behaviors, perceptions
+of the smoke-free housing policy, exposure to secondhand smoke, social
+connectedness, psychosocial outcomes and chronic disease outcomes. As a
+result of the data collection process, 124 resident surveys were
+collected at the Betances site. The data used in this analysis is the
+survey data collected. \* The data was initially sorted and cleaned in
+Excel. Then, the data was cleaned in R using R studio. A total of 124
+respondents are included in the survey data.
+
+### Inclusion/Exclusion Criteria
+
+  - Participants were included in the research study if they were 1)
+    over the age of 18 2) the primary leaseholder of a residence within
+    Betances Housing in the South Bronx
+  - Surveys were conducted in both Spanish and English
+
+### Variables chosen for Primary Analysis
+
+The variables chosen for the main analysis include:
+
+  - Age (18+)
+  - Gender
+  - Race/Ethnicity
+  - Income (on a 1-10 scale, each number representing a range of income)
+  - A total housing satisfaction score
+  - A perceived stress scale score (PSS-5)
+  - An overall health status score (SF-36)
+  - A Chronic Disease variable (if the participant identified that they
+    had a chronic condition they were coded as Yes = 1 if they did not
+    have a chronic condition, they were coded as 0), and
+  - A Smoke variable (if the participant identified that they currently
+    smoked, they were coded as Yes = 1, if they stated that they did not
+    smoke, they were coded as a 0)
+
+### Methods
+
+The study was a cross-sectional design to learn the impact of housing
+quality on health outcomes. This study enrolled 124 participants.
+Multiple linear regression analysis was conducted to estimate the
+associations between the housing satisfaction and each health outcome.
+
+Descriptive statistics of the study population were calculated to
+estimate mean and standard deviation (SD) for continuous variables, or
+percentages for categorical variables. This study will use multiple
+ordinary least squares (OLS) regression models to analyze the
+associations between housing satisfaction and health outcomes. Smoking
+status, gender, age, and race will be included in the model as
+confounders. All statistical analyses will be performed by using R,
+version 3.6.1. A p-value \< 0.05 will be considered significant.
