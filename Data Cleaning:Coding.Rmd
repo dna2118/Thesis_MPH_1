@@ -40,7 +40,7 @@ SurveyData =
   janitor::clean_names()
 ```
 
-### Data Cleaning and Recoding
+### Data Cleaning and Recoding (Betances Data)
 ```{r}
 SurveyData =
  SurveyData %>% 

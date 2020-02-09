@@ -13,7 +13,7 @@ SurveyData =
     ## * PSS_8 -> PSS_8...108
     ## * PSS_8 -> PSS_8...109
 
-### Data Cleaning and Recoding
+### Data Cleaning and Recoding (Betances Data)
 
 ``` r
 SurveyData =

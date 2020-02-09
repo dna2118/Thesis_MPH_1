@@ -22,16 +22,17 @@ As such, my research question is as follows:
 
 ### The dataset
 
-Baseline data collection for this study took place between 2019. Data
-collection methods included: surveys with residents, focus groups, and
-environmental assessments. The surveys distributed to study participants
-assessed perceptions of housing quality, smoking behaviors, perceptions
-of the smoke-free housing policy, exposure to secondhand smoke, social
-connectedness, psychosocial outcomes and chronic disease outcomes. As a
-result of the data collection process, 124 resident surveys were
-collected at the Betances site. The data used in this analysis is the
+Baseline data collection for this study took place between 2018 and
+2019. Data collection methods included: surveys with residents, focus
+groups, and environmental assessments. The surveys distributed to study
+participants assessed perceptions of housing quality, smoking behaviors,
+perceptions of the smoke-free housing policy, exposure to secondhand
+smoke, social connectedness, psychosocial outcomes and chronic disease
+outcomes. As a result of the data collection process, 124 resident
+surveys were collected at the Betances site and 213 resident surveys
+were collected at SoBRO housing. The data used in this analysis is the
 survey data collected. \* The data was initially sorted and cleaned in
-Excel. Then, the data was cleaned in R using R studio. A total of 124
+Excel. Then, the data was cleaned in R using R studio. A total of 337
 respondents are included in the survey data.
 
 ### Inclusion/Exclusion Criteria
