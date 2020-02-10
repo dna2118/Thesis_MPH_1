@@ -415,7 +415,7 @@ CodedData_VariablesofInterest =
     Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
     Race = as.factor(Race),
     Age = as.numeric(Age),
-    Income = as.numeric(Income),
+    Income = factor(Income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
     Smoke = factor(Smoke, levels = c("0", "1")),
     asthma = factor(asthma, levels = c("0","1")),
     lungd = factor(lungd, levels = c("0","1")),
@@ -430,6 +430,26 @@ CodedData_VariablesofInterest =
     Chronic_Disease = factor(Chronic_Disease,levels = c("0","1"))
   )
 ```
+
+```{r}
+CodedData_VariablesofInterest = 
+CodedData_VariablesofInterest %>% 
+  mutate(Education = as.character(Education))
+```
+
+```{r}
+CodedData_VariablesofInterest[99, "Education"] = "Never Attended School"
+CodedData_VariablesofInterest[33, "Education"] = "Some College"
+CodedData_VariablesofInterest[20, "Education"] = "Some College"
+CodedData_VariablesofInterest[53, "Education"] = NA
+```
+
+```{r}
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(Education = as.factor(Education))
+```
+
 ### Univariable/Descriptive Analyses
 ##### The tables below provide descriptive analyses of the independent and dependent variables. 
 
@@ -920,7 +940,7 @@ bivariate15 %>%
 ```{r}
 Correlation_Matrix = 
 CodedData_VariablesofInterest %>% 
-  select(HousingSatisfactionScore, total_PSS_score, Age, composite_sf36_score, Income) 
+  select(HousingSatisfactionScore, total_PSS_score, Age, composite_sf36_score) 
 ```
 
 ```{r}

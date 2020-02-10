@@ -416,7 +416,7 @@ CodedData_VariablesofInterest =
     Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
     Race = as.factor(Race),
     Age = as.numeric(Age),
-    Income = as.numeric(Income),
+    Income = factor(Income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
     Smoke = factor(Smoke, levels = c("0", "1")),
     asthma = factor(asthma, levels = c("0","1")),
     lungd = factor(lungd, levels = c("0","1")),
@@ -430,6 +430,25 @@ CodedData_VariablesofInterest =
     cockroaches = factor(cockroaches,levels = c("0","1")),
     Chronic_Disease = factor(Chronic_Disease,levels = c("0","1"))
   )
+```
+
+``` r
+CodedData_VariablesofInterest = 
+CodedData_VariablesofInterest %>% 
+  mutate(Education = as.character(Education))
+```
+
+``` r
+CodedData_VariablesofInterest[99, "Education"] = "Never Attended School"
+CodedData_VariablesofInterest[33, "Education"] = "Some College"
+CodedData_VariablesofInterest[20, "Education"] = "Some College"
+CodedData_VariablesofInterest[53, "Education"] = NA
+```
+
+``` r
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(Education = as.factor(Education))
 ```
 
 ### Univariable/Descriptive Analyses
@@ -486,7 +505,7 @@ CodedData_VariablesofInterest %>%
              color = "#FC4E07")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-12-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-15-1.png" width="90%" />
 
 #### Independent Variables
 
@@ -555,7 +574,7 @@ CodedData_VariablesofInterest %>%
       title = "Figure 1. Distribution of Age by Gender")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-16-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-19-1.png" width="90%" />
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -596,18 +615,18 @@ CodedData_VariablesofInterest %>%
 ```
 
 | Income Category |  n | Percent(%) |
-| --------------: | -: | ---------: |
-|               1 | 16 |      12.90 |
-|               2 |  9 |       7.26 |
-|               3 | 28 |      22.58 |
-|               4 | 24 |      19.35 |
-|               5 | 29 |      23.39 |
-|               6 |  3 |       2.42 |
-|               7 |  5 |       4.03 |
-|               8 |  3 |       2.42 |
-|               9 |  2 |       1.61 |
-|              10 |  2 |       1.61 |
-|              NA |  3 |       2.42 |
+| :-------------- | -: | ---------: |
+| 1               | 16 |      12.90 |
+| 2               |  9 |       7.26 |
+| 3               | 28 |      22.58 |
+| 4               | 24 |      19.35 |
+| 5               | 29 |      23.39 |
+| 6               |  3 |       2.42 |
+| 7               |  5 |       4.03 |
+| 8               |  3 |       2.42 |
+| 9               |  2 |       1.61 |
+| 10              |  2 |       1.61 |
+| NA              |  3 |       2.42 |
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -625,10 +644,11 @@ CodedData_VariablesofInterest %>%
 | G.E.D.                               |  5 |       4.03 |
 | High School/Secondary School Diploma | 41 |      33.06 |
 | Less than High School                | 53 |      42.74 |
-| Other, please specify:               |  4 |       3.23 |
+| Never Attended School                |  1 |       0.81 |
 | Post-Graduate Degree                 |  3 |       2.42 |
-| Some College                         |  2 |       1.61 |
+| Some College                         |  4 |       3.23 |
 | Vocational School                    |  3 |       2.42 |
+| NA                                   |  1 |       0.81 |
 
 ### 2x2 Tables and Visualizations
 
@@ -661,10 +681,10 @@ CodedData_VariablesofInterest %>%
 
 | Age Group | Mean Income |
 | :-------- | ----------: |
-| 18-24     |        5.00 |
-| 25-44     |        3.96 |
-| 45-64     |        3.91 |
-| 65+       |        3.87 |
+| 18-24     |          NA |
+| 25-44     |          NA |
+| 45-64     |          NA |
+| 65+       |          NA |
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -675,7 +695,7 @@ CodedData_VariablesofInterest %>%
       title = "Figure 2. Age Group by Gender")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-23-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-26-1.png" width="90%" />
 
 ``` r
 CodedData_VariablesofInterest %>%
@@ -706,7 +726,7 @@ CodedData_VariablesofInterest %>%
       title = "Figure 3. Age by Race/Ethnicity")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-25-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-28-1.png" width="90%" />
 
 ``` r
 CodedData_VariablesofInterest %>%
@@ -762,7 +782,7 @@ ggplot(aes(x=Smoke, y=Age)) +
       title = "Figure 4. Distribution of Age by Smoking Status")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-28-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-31-1.png" width="90%" />
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -776,7 +796,7 @@ CodedData_VariablesofInterest %>%
 theme(legend.position = "bottom")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-29-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-32-1.png" width="90%" />
 
 ### Exploratory Analyses of Relationships between Variables
 
@@ -796,7 +816,7 @@ CodedData_VariablesofInterest %>%
       theme(legend.position = "right") 
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-30-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-33-1.png" width="90%" />
 
 ``` r
 #Part 2
@@ -814,7 +834,7 @@ CodedData_VariablesofInterest %>%
       theme(legend.position = "right")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-31-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-34-1.png" width="90%" />
 
 ``` r
 #Part 3
@@ -832,7 +852,7 @@ CodedData_VariablesofInterest %>%
       theme(legend.position = "right")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-32-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-35-1.png" width="90%" />
 
 ### Initial bivariate analyses
 
@@ -984,19 +1004,27 @@ summary(bivariate4)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -60.881 -18.872   2.036  23.379  41.378 
+    ## -64.368 -16.736   1.529  17.631  50.417 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   53.030      5.295   10.02   <2e-16 ***
-    ## Income         2.796      1.205    2.32   0.0221 *  
+    ## (Intercept)   63.880      6.296  10.146   <2e-16 ***
+    ## Income2      -14.297     10.905  -1.311    0.193    
+    ## Income3       -7.556      7.893  -0.957    0.341    
+    ## Income4       -7.543      8.128  -0.928    0.355    
+    ## Income5       12.988      7.843   1.656    0.101    
+    ## Income6       11.675     15.845   0.737    0.463    
+    ## Income7       17.953     12.903   1.391    0.167    
+    ## Income8       -5.269     15.845  -0.333    0.740    
+    ## Income9       21.953     18.889   1.162    0.248    
+    ## Income10      -2.422     18.889  -0.128    0.898    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 25.83 on 118 degrees of freedom
+    ## Residual standard error: 25.18 on 110 degrees of freedom
     ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.04363,    Adjusted R-squared:  0.03552 
-    ## F-statistic: 5.383 on 1 and 118 DF,  p-value: 0.02205
+    ## Multiple R-squared:  0.1526, Adjusted R-squared:  0.08331 
+    ## F-statistic: 2.202 on 9 and 110 DF,  p-value: 0.02708
 
 ``` r
 bivariate4 %>% 
@@ -1010,8 +1038,16 @@ bivariate4 %>%
 
 | term        | estimate | p.value |      Low\_CI |     High\_CI |
 | :---------- | -------: | ------: | -----------: | -----------: |
-| (Intercept) |   53.030 |   0.000 | 3.339904e+18 | 3.445847e+27 |
-| Income      |    2.796 |   0.022 | 1.543000e+00 | 1.738590e+02 |
+| (Intercept) |   63.880 |   0.000 | 2.417485e+22 | 1.265552e+33 |
+| Income2     | \-14.297 |   0.193 | 0.000000e+00 | 1.185223e+03 |
+| Income3     |  \-7.556 |   0.341 | 0.000000e+00 | 2.735222e+03 |
+| Income4     |  \-7.543 |   0.355 | 0.000000e+00 | 4.395138e+03 |
+| Income5     |   12.988 |   0.101 | 9.200000e-02 | 2.073137e+12 |
+| Income6     |   11.675 |   0.463 | 0.000000e+00 | 3.615870e+18 |
+| Income7     |   17.953 |   0.167 | 1.000000e-03 | 6.033424e+18 |
+| Income8     |  \-5.269 |   0.740 | 0.000000e+00 | 1.582465e+11 |
+| Income9     |   21.953 |   0.248 | 0.000000e+00 | 4.097279e+25 |
+| Income10    |  \-2.422 |   0.898 | 0.000000e+00 | 1.063084e+15 |
 
 ##### Bivariate model 5 : composite\_sf36\_score ~ b\_0 + b\_1 Smoke\_i
 
@@ -1279,19 +1315,27 @@ summary(bivariate11)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -7.8041 -2.8041 -0.0792  2.6943 10.9208 
+    ## -8.0741 -3.0741  0.0064  2.8912 10.8966 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   7.9853     0.9131   8.746 2.03e-14 ***
-    ## Income       -0.1812     0.2072  -0.874    0.384    
+    ## (Intercept)  7.12500    1.12886   6.312 6.24e-09 ***
+    ## Income2     -1.00000    1.95524  -0.511    0.610    
+    ## Income3      0.94907    1.42460   0.666    0.507    
+    ## Income4      0.78804    1.46997   0.536    0.593    
+    ## Income5     -0.02155    1.40620  -0.015    0.988    
+    ## Income6     -1.45833    2.84090  -0.513    0.609    
+    ## Income7     -0.52500    2.31347  -0.227    0.821    
+    ## Income8      0.20833    2.84090   0.073    0.942    
+    ## Income9     -4.62500    3.38657  -1.366    0.175    
+    ## Income10    -1.12500    3.38657  -0.332    0.740    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.438 on 116 degrees of freedom
+    ## Residual standard error: 4.515 on 108 degrees of freedom
     ##   (6 observations deleted due to missingness)
-    ## Multiple R-squared:  0.006549,   Adjusted R-squared:  -0.002015 
-    ## F-statistic: 0.7647 on 1 and 116 DF,  p-value: 0.3837
+    ## Multiple R-squared:  0.04232,    Adjusted R-squared:  -0.03749 
+    ## F-statistic: 0.5302 on 9 and 108 DF,  p-value: 0.8498
 
 ``` r
 bivariate11 %>% 
@@ -1305,8 +1349,16 @@ bivariate11 %>%
 
 | term        | estimate | p.value | Low\_CI |  High\_CI |
 | :---------- | -------: | ------: | ------: | --------: |
-| (Intercept) |    7.985 |   0.000 | 490.618 | 17586.983 |
-| Income      |  \-0.181 |   0.384 |   0.556 |     1.252 |
+| (Intercept) |    7.125 |   0.000 | 135.971 | 11356.685 |
+| Income2     |  \-1.000 |   0.610 |   0.008 |    16.984 |
+| Income3     |    0.949 |   0.507 |   0.158 |    42.152 |
+| Income4     |    0.788 |   0.593 |   0.123 |    39.220 |
+| Income5     |  \-0.022 |   0.988 |   0.062 |    15.404 |
+| Income6     |  \-1.458 |   0.609 |   0.001 |    60.936 |
+| Income7     |  \-0.525 |   0.821 |   0.006 |    55.114 |
+| Income8     |    0.208 |   0.942 |   0.005 |   322.625 |
+| Income9     |  \-4.625 |   0.175 |   0.000 |     7.483 |
+| Income10    |  \-1.125 |   0.740 |   0.000 |   247.816 |
 
 ##### Bivariate model 12 : total\_PSS\_score ~ b\_0 + b\_1 Race\_i
 
@@ -1490,7 +1542,7 @@ bivariate15 %>%
 ``` r
 Correlation_Matrix = 
 CodedData_VariablesofInterest %>% 
-  select(HousingSatisfactionScore, total_PSS_score, Age, composite_sf36_score, Income) 
+  select(HousingSatisfactionScore, total_PSS_score, Age, composite_sf36_score) 
 ```
 
 ``` r
@@ -1499,21 +1551,19 @@ round(CM1,2)
 ```
 
     ##                          HousingSatisfactionScore total_PSS_score   Age
-    ## HousingSatisfactionScore                     1.00           -0.28  0.28
-    ## total_PSS_score                             -0.28            1.00  0.00
-    ## Age                                          0.28            0.00  1.00
-    ## composite_sf36_score                         0.20           -0.56 -0.29
-    ## Income                                      -0.03           -0.09 -0.07
-    ##                          composite_sf36_score Income
-    ## HousingSatisfactionScore                 0.20  -0.03
-    ## total_PSS_score                         -0.56  -0.09
-    ## Age                                     -0.29  -0.07
-    ## composite_sf36_score                     1.00   0.23
-    ## Income                                   0.23   1.00
+    ## HousingSatisfactionScore                     1.00           -0.30  0.29
+    ## total_PSS_score                             -0.30            1.00 -0.02
+    ## Age                                          0.29           -0.02  1.00
+    ## composite_sf36_score                         0.20           -0.55 -0.28
+    ##                          composite_sf36_score
+    ## HousingSatisfactionScore                 0.20
+    ## total_PSS_score                         -0.55
+    ## Age                                     -0.28
+    ## composite_sf36_score                     1.00
 
 ``` r
 corrplot(CM1, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-49-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-52-1.png" width="90%" />
