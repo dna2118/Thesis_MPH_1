@@ -1,0 +1,69 @@
+---
+title: "Analysis"
+author: "Dionna Attinson"
+date: "2/15/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(epitools)
+library(viridis)
+library(patchwork)
+library(modelr)
+library(MVN)
+library(mgcv)
+library(magrittr)
+library(lavaan)
+library(corrplot)
+library(gmodels)
+library(patchwork)
+library(gridExtra)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+```{r}
+FinalBetancesData %>% 
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease, data = .,)
+summary(linearregression1)
+
+linearregression1 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+
+##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
+
+```{r}
+linearregression2 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease, data = FinalBetancesData)
+summary(linearregression2)
+
+linearregression2 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Housing satisfaction was signficantly associated with self-reported mental health score at the 5% level of significance. For every unit increase in Housing Satisfaction, mental health score increased by .99  at the 5% level of significance. In addition, those with a chronic disease's mental health score decreased by 8.91 in comparison to those without a chronic disease at a 5% level of significance. 

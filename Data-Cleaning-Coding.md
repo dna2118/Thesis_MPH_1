@@ -43,7 +43,7 @@ VariablesofInterest =
         sf36_6, sf36_14, sf36_15, sf36_18, sf36_19, sf36_22, sf36_26, sf36_27, sf36_28,
         sf36_32, Education, Income, repairs_needed, asthma, anxiety, lungd, depression,
         heartdisease, cancer, diabetes,hypertension, products_used, neg_health_building, 
-        micerats, cockroaches, mildew, homesat,buildsat, neighborhoodsat, propmansat) %>% 
+        micerats, cockroaches, mildew, homesat,buildsat, neighborhoodsat, propmansat, sumtempsat, wintempsat) %>% 
   
   rename(Smoke = products_used) %>% 
   rename(Age = age) %>% 
@@ -70,23 +70,13 @@ VariablesofInterest =
         Race = recode(Race,
                       "Hispanic or Latino" = "Hispanic or Latinx",
                       "Other, specify:" = "Other",
-                      "Hispanic or Latino,Native American/ Alaskan Native" = "Bi/Multiracial",
-                      "Non- Hispanic Black or African American,Asian or Pacific Islander" = "Bi/Multiracial",
-                      "Non- Hispanic Black or African American,Hispanic or Latino" = "Bi/Multiracial",
-                      "Non-Hispanic White,Non- Hispanic Black or African American,Hispanic or Latino,Native American/ Alaskan Native,Asian or Pacific Islander" = "Bi/Multiracial"))
+                      "Hispanic or Latino,Native American/ Alaskan Native" = "Other",
+                      "Non- Hispanic Black or African American,Asian or Pacific Islander" = "Other",
+                      "Non- Hispanic Black or African American,Hispanic or Latino" = "Other",
+                      "Non-Hispanic White,Non- Hispanic Black or African American,Hispanic or Latino,Native American/ Alaskan Native,Asian or Pacific Islander" = "Other"))
 ```
 
-##### The two scales that will be used as the outcome variables include the Shortened Perceived Stress Scale and an adapted SF-36 scale. All of the qualitative responses in the dataset were recoded to correspond with their quantitative equivalent as identified by the authors of each scale.
-
-  - The PSS coding instructions were as follows: code 0 - never, 1 -
-    almost never, 2 - sometimes, 3 - fairly often, 4 - very often &
-    reverse your scores for questions 4, 5, 7, and 8. On these 4
-    questions, change the scores like this: 0 = 4, 1 = 3, 2 = 2, 3 = 1,
-    4 = 0.
-  - The SF-36 coding instructions include a two step process. The code
-    chunk below represents the first step.
-
-<!-- end list -->
+##### Below, I scored the Perceived Stress Scale (PSS-4) and the SF-12. The PSS coding instructions were as follows: code `0` - never, `1` - almost never, `2` - sometimes, `3` - fairly often, `4` - very often & reverse your scores for questions 4, 5, 7, and 8. On these 4 questions, change the scores to: 0 = 4, 1 = 3, 2 = 2, 3 = 1, 4 = 0.
 
 ``` r
 ##PSS Scale
@@ -98,18 +88,18 @@ CodedData_VariablesofInterest =
     pss_8_coded = pss_8_108,
     pss_9_coded = pss_8_109,
     pss_10_coded = pss_10, 
-    sf36_1_coded = sf36_1,
-    sf36_4_coded = sf36_4,  
-    sf36_6_coded = sf36_6,
-    sf36_14_coded = sf36_14,  
-    sf36_15_coded = sf36_15,  
-    sf36_18_coded = sf36_18,
-    sf36_19_coded = sf36_19,
-    sf36_22_coded = sf36_22,
-    sf36_26_coded = sf36_26,
-    sf36_27_coded = sf36_27,
-    sf36_28_coded = sf36_28,
-    sf36_32_coded = sf36_32) %>% 
+    gh1 = sf36_1,
+    pf02 = sf36_4,  
+    pf04 = sf36_6,
+    rp2 = sf36_14,  
+    rp3 = sf36_15,  
+    re2 = sf36_18,
+    re3 = sf36_19,
+    bp2 = sf36_22,
+    mh3 = sf36_26,
+    vt2 = sf36_27,
+    mh4 = sf36_28,
+    sf2 = sf36_32) %>% 
     
   mutate(pss_5_coded = recode(pss_5_coded, 
                         "Never" = "4",
@@ -141,60 +131,60 @@ CodedData_VariablesofInterest =
                         "Sometimes" = "2", 
                         "Fairly often" = "3",
                         "Very often" = "4"),
-         sf36_1_coded = recode(sf36_1_coded,
+         gh1 = recode(gh1,
                          "Excellent" = "1",
                          "Very Good" = "2",
                          "Good" = "3",
                          "Fair" = "4",
                          "Poor" = "5"),
-         sf36_4_coded = recode(sf36_4_coded, 
+         pf02 = recode(pf02, 
                          "Yes, limited a lot" = "1",
                          "Yes, limited a little" = "2",
                          "No, not limited at all" = "3"),
-         sf36_6_coded = recode(sf36_6_coded, 
+         pf04 = recode(pf04, 
                          "Yes, limited a lot" = "1",
                          "Yes, limited a little" = "2",
                          "No, not limited at all" = "3"),
-         sf36_14_coded = recode(sf36_14_coded, 
+         rp2 = recode(rp2, 
                          "Yes" = "1",
                          "No" = "2"),
-         sf36_15_coded = recode(sf36_15_coded, 
+         rp3 = recode(rp3, 
                          "Yes" = "1",
                          "No" = "2"), 
-         sf36_18_coded = recode(sf36_18_coded, 
+         re2 = recode(re2, 
                          "Yes" = "1",
                          "No" = "2"), 
-         sf36_19_coded = recode(sf36_19_coded, 
+         re3 = recode(re3, 
                          "Yes" = "1",
                          "No" = "2"),
-         sf36_22_coded = recode(sf36_22_coded,
+         bp2 = recode(bp2,
                          "Not at all" = "1",
                          "A little bit" = "2",
                          "Moderately" = "3",
                          "Quite a bit" = "4",
                          "Extremely" = "5"),
-         sf36_26_coded =  recode(sf36_26_coded,
+         mh3 =  recode(mh3,
                           "All of the time" = "1",
                           "Most of the time" = "2",
                           "A good bit of the time" = "3",
                           "Some of the time" = "4",
                           "A little of the time" = "5",
                           "None of the time" = "6"),
-         sf36_27_coded = recode(sf36_27_coded,
+         vt2 = recode(vt2,
                           "All of the time" = "1",
                           "Most of the time" = "2",
                           "A good bit of the time" = "3",
                           "Some of the time" = "4",
                           "A little of the time" = "5",
                           "None of the time" = "6"),
-         sf36_28_coded = recode(sf36_28_coded,
+         mh4 = recode(mh4,
                           "All of the time" = "1",
                           "Most of the time" = "2",
                           "A good bit of the time" = "3",
                           "Some of the time" = "4",
                           "A little of the time" = "5",
                           "None of the time" = "6"),
-         sf36_32_coded = recode(sf36_32_coded,
+         sf2 = recode(sf2,
                          "All of the time" = "1",
                          "Most of the time" = "2",
                          "Some of the time" = "3",
@@ -202,99 +192,139 @@ CodedData_VariablesofInterest =
                          "None of the time" = "5")) 
 ```
 
-##### The code chunk below now represents the second step of scoring the SF-36. This requires transforming the original scale.
+##### The code chunk below now represents the second step of scoring the SF-12. This requires reversing the scores of certain questions so that a higher SF-12 score means better health.
 
 ``` r
 CodedData_VariablesofInterest = 
   CodedData_VariablesofInterest %>% 
   mutate(
-     sf36_1_coded = recode(sf36_1_coded,
-                         "1" = "100",
-                         "2" = "75",
-                         "3" = "50",
-                         "4" = "25",
-                         "5" = "0"),
-        sf36_4_coded = recode(sf36_4_coded, 
-                          "1" = "0",
-                          "2" = "50",
-                          "3" = "100"),
-        sf36_6_coded = recode(sf36_6_coded, 
-                          "1" = "0",
-                          "2" = "50",
-                          "3" = "100"),
-         sf36_14_coded = recode(sf36_14_coded, 
-                         "1" = "0",
-                         "2" = "100"),
-         sf36_15_coded = recode(sf36_15_coded, 
-                         "1" = "0",
-                         "2" = "100"),
-         sf36_18_coded = recode(sf36_18_coded, 
-                         "1" = "0",
-                         "2" = "100"), 
-         sf36_19_coded = recode(sf36_19_coded, 
-                         "1" = "0",
-                         "2" = "100"),
-         sf36_22_coded = recode(sf36_22_coded,
-                         "1" = "100",
-                         "2" = "75",
-                         "3" = "50",
-                         "4" = "25",
-                         "5" = "0"),
-        sf36_26_coded =  recode(sf36_26_coded,
-                          "1" = "100",
-                          "2" = "80",
-                          "3" = "60",
-                          "4" = "40",
-                          "5" = "20",
-                          "6" = "0"),
-         sf36_27_coded = recode(sf36_27_coded,
-                          "1" = "100",
-                          "2" = "80",
-                          "3" = "60",
-                          "4" = "40",
-                          "5" = "20",
-                          "6" = "0"),
-         sf36_28_coded = recode(sf36_28_coded,
-                          "1" = "0",
-                          "2"= "20",
-                          "3" = "40",
-                          "4" = "60",
-                          "5"= "80",
-                          "6" = "100"),
-         sf36_32_coded = recode(sf36_32_coded,
-                         "1" = "0",
-                         "2" = "25",
-                         "3" = "50",
-                         "4" = "75",
-                         "5" = "100"))
+     gh1 = recode(gh1,
+                         "1" = "5",
+                         "2" = "4",
+                         "3" = "3",
+                         "4" = "2",
+                         "5" = "1"),
+         bp2 = recode(bp2,
+                          "1" = "6",
+                          "2" = "5",
+                          "3" = "4",
+                          "4" = "3",
+                          "5" = "2",
+                          "6" = "1"),
+         mh3 = recode(mh3,
+                          "1" = "6",
+                          "2" = "5",
+                          "3" = "4",
+                          "4" = "3",
+                          "5" = "2",
+                          "6" = "1"),
+         vt2 = recode(vt2,
+                          "1" = "6",
+                          "2" = "5",
+                          "3" = "4",
+                          "4" = "3",
+                          "5" = "2",
+                          "6" = "1"))
 ```
 
-##### Next, I transformed the PSS scale and SF-36 scale to numeric variables so that composite scores could be calculated for each individual.
+##### Next, I created dummy variables for each of the SF-12 variables.
+
+``` r
+  CodedData_VariablesofInterest$pf02_1 <- as.numeric(CodedData_VariablesofInterest$pf02 == 1L) 
+  CodedData_VariablesofInterest$pf02_2 <- as.numeric(CodedData_VariablesofInterest$pf02 == 2L) 
+  CodedData_VariablesofInterest$pf04_1 <- as.numeric(CodedData_VariablesofInterest$pf04 == 1L) 
+  CodedData_VariablesofInterest$pf04_2 <- as.numeric(CodedData_VariablesofInterest$pf04 == 2L) 
+  CodedData_VariablesofInterest$rp2_1 <- as.numeric(CodedData_VariablesofInterest$rp2 == 1L) 
+  CodedData_VariablesofInterest$rp3_1 <- as.numeric(CodedData_VariablesofInterest$rp3 == 1L) 
+  CodedData_VariablesofInterest$bp2_1 <- as.numeric(CodedData_VariablesofInterest$bp2 == 1L) 
+  CodedData_VariablesofInterest$bp2_2 <- as.numeric(CodedData_VariablesofInterest$bp2 == 2L) 
+  CodedData_VariablesofInterest$bp2_3 <- as.numeric(CodedData_VariablesofInterest$bp2 == 3L) 
+  CodedData_VariablesofInterest$bp2_4 <- as.numeric(CodedData_VariablesofInterest$bp2 == 4L) 
+  CodedData_VariablesofInterest$gh1_1 <- as.numeric(CodedData_VariablesofInterest$gh1 == 1L) 
+  CodedData_VariablesofInterest$gh1_2 <- as.numeric(CodedData_VariablesofInterest$gh1 == 2L) 
+  CodedData_VariablesofInterest$gh1_3 <- as.numeric(CodedData_VariablesofInterest$gh1 == 3L) 
+  CodedData_VariablesofInterest$gh1_4 <- as.numeric(CodedData_VariablesofInterest$gh1 == 4L) 
+  CodedData_VariablesofInterest$vt2_1 <- as.numeric(CodedData_VariablesofInterest$vt2 == 1L) 
+  CodedData_VariablesofInterest$vt2_2 <- as.numeric(CodedData_VariablesofInterest$vt2 == 2L) 
+  CodedData_VariablesofInterest$vt2_3 <- as.numeric(CodedData_VariablesofInterest$vt2 == 3L) 
+  CodedData_VariablesofInterest$vt2_4 <- as.numeric(CodedData_VariablesofInterest$vt2 == 4L) 
+  CodedData_VariablesofInterest$vt2_5 <- as.numeric(CodedData_VariablesofInterest$vt2 == 5L) 
+  CodedData_VariablesofInterest$sf2_1 <- as.numeric(CodedData_VariablesofInterest$sf2 == 1L) 
+  CodedData_VariablesofInterest$sf2_2 <- as.numeric(CodedData_VariablesofInterest$sf2 == 2L) 
+  CodedData_VariablesofInterest$sf2_3 <- as.numeric(CodedData_VariablesofInterest$sf2 == 3L) 
+  CodedData_VariablesofInterest$sf2_4 <- as.numeric(CodedData_VariablesofInterest$sf2 == 4L) 
+  CodedData_VariablesofInterest$re2_1 <- as.numeric(CodedData_VariablesofInterest$re2 == 1L) 
+  CodedData_VariablesofInterest$re3_1 <- as.numeric(CodedData_VariablesofInterest$re3 == 1L) 
+  CodedData_VariablesofInterest$mh3_1 <- as.numeric(CodedData_VariablesofInterest$mh3 == 1L) 
+  CodedData_VariablesofInterest$mh3_2 <- as.numeric(CodedData_VariablesofInterest$mh3 == 2L) 
+  CodedData_VariablesofInterest$mh3_3 <- as.numeric(CodedData_VariablesofInterest$mh3 == 3L) 
+  CodedData_VariablesofInterest$mh3_4 <- as.numeric(CodedData_VariablesofInterest$mh3 == 4L) 
+  CodedData_VariablesofInterest$mh3_5 <- as.numeric(CodedData_VariablesofInterest$mh3 == 5L) 
+  CodedData_VariablesofInterest$mh4_1 <- as.numeric(CodedData_VariablesofInterest$mh4 == 1L) 
+  CodedData_VariablesofInterest$mh4_2 <- as.numeric(CodedData_VariablesofInterest$mh4 == 2L) 
+  CodedData_VariablesofInterest$mh4_3 <- as.numeric(CodedData_VariablesofInterest$mh4 == 3L) 
+  CodedData_VariablesofInterest$mh4_4 <- as.numeric(CodedData_VariablesofInterest$mh4 == 4L) 
+  CodedData_VariablesofInterest$mh4_5 <- as.numeric(CodedData_VariablesofInterest$mh4 == 5L) 
+```
+
+##### I then created SF-12 weights and aggregates of indicator variables using physical and mental regression weights.
+
+``` r
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(RAWPCS12 =
+                   (-7.23216*pf02_1) + (-3.45555*pf02_2) +
+                   (-6.24397*pf04_1) + (-2.73557*pf04_2) +
+                   (-4.61617*rp2_1) + 
+                   (-5.51747*rp3_1) +
+                   (-11.25544*bp2_1) + (-8.38063*bp2_2) +
+                   (-6.50522*bp2_3) + (-3.80130*bp2_4) + (-8.37399*gh1_1) +
+                   (-5.56461*gh1_2) + (-3.02396*gh1_3) + (-1.31872*gh1_4) +
+                   (-2.44706*vt2_1) + (-2.02168*vt2_2) + (-1.6185*vt2_3) +
+                   (-1.14387*vt2_4) + (-0.42251*vt2_5) + (-0.33682*sf2_1) +
+                   (-0.94342*sf2_2) + (-0.18043*sf2_3) + (0.11038*sf2_4) +
+                   (3.04365*re2_1) + (2.32091*re3_1) + (3.46638*mh3_1) +
+                   (2.90426*mh3_2) + (2.37241*mh3_3) + (1.36689*mh3_4) +
+                   (0.66514*mh3_5) + (4.61446*mh4_1) + (3.41593*mh4_2) +
+                   (2.34247*mh4_3) + (1.28044*mh4_4) + (0.41188*mh4_5),
+
+           RAWMCS12 =
+                   (3.93115*pf02_1) + (1.8684*pf02_2) +
+                   (2.68282*pf04_1) + (1.43103*pf04_2) + (1.4406*rp2_1) +
+                   (1.66968*rp3_1) + (1.48619*bp2_1) + (1.76691*bp2_2) +
+                   (1.49384*bp2_3) + (0.90384*bp2_4) + (-1.71175*gh1_1) +
+                   (-0.16891*gh1_2) + (0.03482*gh1_3) + (-0.06064*gh1_4) +
+                   (-6.02409*vt2_1) + (-4.88962*vt2_2) + (-3.29805*vt2_3) +
+                   (-1.65178*vt2_4) + (-0.92057*vt2_5) + (-6.29724*sf2_1) +
+                   (-8.26066*sf2_2) + (-5.63286*sf2_3) + (-3.13896*sf2_4) +
+                   (-6.82672*re2_1) + (-5.69921*re3_1) + (-10.19085*mh3_1) +
+                   (-7.92717*mh3_2) + (-6.31121*mh3_3) + (-4.09842*mh3_4) +
+                   (-1.94949*mh3_5) + (-16.15395*mh4_1) + (-10.77911*mh4_2) +
+                   (-8.09914*mh4_3) + (-4.59055*mh4_4) + (-1.95934*mh4_5))
+```
+
+##### We then computed a norm-based standardization to PCS12 and MCS12.
 
 ``` r
 CodedData_VariablesofInterest = 
   CodedData_VariablesofInterest %>% 
   mutate(
-    sf36_1_coded = as.numeric(sf36_1_coded),
-    sf36_4_coded = as.numeric(sf36_4_coded), 
-    sf36_6_coded = as.numeric(sf36_6_coded),
-    sf36_14_coded = as.numeric(sf36_14_coded),
-    sf36_15_coded = as.numeric(sf36_15_coded),
-    sf36_18_coded = as.numeric(sf36_18_coded),
-    sf36_19_coded = as.numeric(sf36_19_coded),
-    sf36_22_coded = as.numeric(sf36_22_coded),
-    sf36_26_coded = as.numeric(sf36_26_coded),
-    sf36_27_coded = as.numeric(sf36_27_coded),
-    sf36_28_coded = as.numeric(sf36_28_coded),
-    sf36_32_coded = as.numeric(sf36_32_coded), 
-    pss_5_coded =  as.numeric(pss_5_coded),
-    pss_6_coded =  as.numeric(pss_6_coded),
-    pss_8_coded = as.numeric(pss_8_coded),
-    pss_9_coded = as.numeric(pss_9_coded),
-    pss_10_coded = as.numeric(pss_10_coded))
+  PCS12 = (RAWPCS12 + 56.57706),
+  MCS12 = (RAWMCS12 + 60.75781))
 ```
 
-##### For the SF-36 scale, a total SF-36 score was created from the totals of each participant. This was then divided by 12 to get the composite SF-36 score (mean). This resulted in the variable `composite_sf36_score`. The higher the composite SF-36 score, the better their overall health status.
+``` r
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+pss_5_coded =  as.numeric(pss_5_coded),
+pss_6_coded =  as.numeric(pss_6_coded),
+pss_8_coded = as.numeric(pss_8_coded),
+pss_9_coded = as.numeric(pss_9_coded),
+pss_10_coded = as.numeric(pss_10_coded))
+```
+
+##### For the SF-12 scale, a standardized SF-12 score was created for both physical and mental health for each participant. This resulted in the variables `PCS12` and `MCS12`. The higher the SF-12 scores, the better their overall health-related quality of life.
 
 ##### For the PSS scale, a total score was created from the questions which became the variable `total_PSS_score`. I then created stress categories for future categorical analysis:
 
@@ -308,8 +338,12 @@ stress.
   - The participant’s satisfaction with their apartment
   - The participant’s satisfcation with their building
   - The participant’s satisfcation with their neighbhorhood
-  - The participant’s satisfaction with their property
-management
+  - The participant’s satisfaction with their property management
+  - The participant’s satisfcation with their apartment’s temperature in
+    the summer
+  - The participant’s satisfaction with their apartment’s temperature in
+    the
+winter
 
 ##### Lastly, a binary chronic disease outcome was created. If a participant responded that they or someone in their home have the following conditions, they were coded as `1`:
 
@@ -327,11 +361,6 @@ management
 ``` r
 CodedData_VariablesofInterest = 
 CodedData_VariablesofInterest %>% 
-  mutate(
-    total_sf36_score = sf36_1_coded + sf36_4_coded + sf36_6_coded + sf36_14_coded +
-    sf36_15_coded + sf36_18_coded + sf36_19_coded + sf36_22_coded + 
-    sf36_26_coded + sf36_27_coded + sf36_28_coded + sf36_32_coded) %>% 
-  mutate(composite_sf36_score = total_sf36_score/12) %>% 
   mutate(
     total_PSS_score = pss_5_coded + pss_6_coded + pss_8_coded + pss_9_coded + pss_10_coded,
     PSS_Category = total_PSS_score, 
@@ -374,6 +403,20 @@ CodedData_VariablesofInterest %>%
                           "Dissatisfied" = "2", 
                           "Satisfied" = "3",
                           "Very Satisfied" ="4"),
+   WinTempSat_Coded = wintempsat, 
+   WinTempSat_Coded = recode(WinTempSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"), 
+   SumTempSat_Coded = sumtempsat, 
+   SumTempSat_Coded = recode(SumTempSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+   WinTempSat_Coded = as.numeric(WinTempSat_Coded),
+   SumTempSat_Coded = as.numeric(SumTempSat_Coded),
    AptSat_Coded = as.numeric(AptSat_Coded), 
    BuildingSat_Coded = as.numeric(BuildingSat_Coded),
    NeighborhoodSat_Coded = as.numeric(NeighborhoodSat_Coded),
@@ -396,14 +439,14 @@ CodedData_VariablesofInterest %>%
 CodedData_VariablesofInterest = 
   CodedData_VariablesofInterest %>% 
   mutate(
-  PropertyManSat_Coded = replace_na(PropertyManSat_Coded, 0),
-  HousingSatisfactionScore = AptSat_Coded + BuildingSat_Coded + NeighborhoodSat_Coded +
-  PropertyManSat_Coded,
+  PropertyManSat_Coded = na_mean(PropertyManSat_Coded),
+  WinTempSat_Coded = na_mean(WinTempSat_Coded),
+  HousingSatisfactionScore = AptSat_Coded + BuildingSat_Coded + NeighborhoodSat_Coded + PropertyManSat_Coded + WinTempSat_Coded + SumTempSat_Coded,
   Satisfaction_Category = HousingSatisfactionScore,
   Satisfaction_Category = 
-          case_when(Satisfaction_Category >= 13 ~ 'High Satisfaction',
-                    Satisfaction_Category >= 7 ~ 'Moderate Satisfaction',
-                    Satisfaction_Category >= 4  ~ 'Low Satisfaction'))
+          case_when(Satisfaction_Category >= 18 ~ 'High Satisfaction',
+                    Satisfaction_Category >= 12 ~ 'Moderate Satisfaction',
+                    Satisfaction_Category >= 6  ~ 'Low Satisfaction'))
 ```
 
 ##### Below, I changed variables into factors and numeric values.
@@ -432,6 +475,17 @@ CodedData_VariablesofInterest =
   )
 ```
 
+##### In order to collapse education categories into fewer groups, education levels were finalized into three categories:
+
+  - Less than high school (included those who never attended school, or
+    did not complete a high school degree/G.E.D)
+  - High school/G.E.D
+  - Post High School Education (included those who attended vocational
+    school, some college, 2-year/4-year college degree, and post
+    graduate education)
+
+<!-- end list -->
+
 ``` r
 CodedData_VariablesofInterest = 
 CodedData_VariablesofInterest %>% 
@@ -448,7 +502,49 @@ CodedData_VariablesofInterest[53, "Education"] = NA
 ``` r
 CodedData_VariablesofInterest = 
   CodedData_VariablesofInterest %>% 
-  mutate(Education = as.factor(Education))
+  mutate(
+  Education_Group = Education, 
+  Education_Group = recode(Education_Group, 
+                    "Never Attended School" = "Less than High School",
+                    "Vocational School" = "Post High School Education",
+                    "Some College" = "Post High School Education",
+                    "2 Year Community College Degree" = "Post High School Education",
+                    "4 Year College Degree" = "Post High School Education",
+                    "Post-Graduate Degree" = "Post High School Education",
+                    "High School/Secondary School Diploma" =    "High School/G.E.D.",
+                    "G.E.D." = "High School/G.E.D."))
+```
+
+``` r
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(Education_Group = as.factor(Education_Group))
+```
+
+##### In order to collapse income categories into fewer groups, education levels were finalized into three categories:
+
+  - `1` - Total personal income less than $10,000/year
+  - `2` - Total personal income between $10,000 - $24,000/year
+  - `3` - Total personal income $25,000k + /year
+
+<!-- end list -->
+
+``` r
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+  Income_Group = Income, 
+  Income_Group = recode(Income_Group, 
+                    "2" = "1",
+                    "3" = "1",
+                    "4" = "2",
+                    "5" = "2",
+                    "6" = "3",
+                    "7" = "3",
+                    "8" = "3",
+                    "9" = "3",
+                    "10" = "3"),
+  Income_Group = factor(Income_Group,levels= c("1","2","3")))
 ```
 
 ### Univariable/Descriptive Analyses
@@ -457,55 +553,293 @@ CodedData_VariablesofInterest =
 
 #### Outcome Variables
 
-##### Perceived Stress Score
+##### Overall Physical Health Status (Outcome 1)
 
 ``` r
 CodedData_VariablesofInterest %>% 
-  group_by(PSS_Category) %>% 
-  summarize(n=n()) %>%
-   mutate(
-  percent = n/124*100) %>% 
-  knitr::kable(col.names=c("Perceived Stress Score", "n", "Percent(%)"), digits = 2)
-```
-
-| Perceived Stress Score |  n | Percent(%) |
-| :--------------------- | -: | ---------: |
-| High Perceived Stress  | 11 |       8.87 |
-| Low Stress             | 54 |      43.55 |
-| Moderate Stress        | 55 |      44.35 |
-| NA                     |  4 |       3.23 |
-
-##### Overall Health Status
-
-``` r
-CodedData_VariablesofInterest %>% 
-  select(composite_sf36_score) %>% 
+  select(PCS12) %>% 
   summary() %>% 
-  knitr::kable(col.names = c("Summary of Overall Health Score"))
+  knitr::kable(col.names = c("Summary of Self-Reported Physical Health"))
 ```
 
-|  | Summary of Overall Health Score |
-|  | :------------------------------ |
-|  | Min. : 1.667                    |
-|  | 1st Qu.: 45.208                 |
-|  | Median : 62.917                 |
-|  | Mean : 63.394                   |
-|  | 3rd Qu.: 88.958                 |
-|  | Max. :100.000                   |
-|  | NA’s :1                         |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:left;">
+
+Summary of Self-Reported Physical Health
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Min. :14.86
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+1st Qu.:32.52
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Median :44.05
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Mean :43.03
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+3rd Qu.:54.75
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Max. :63.81
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+NA’s :1
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
   drop_na() %>% 
-  group_by(composite_sf36_score) %>% 
+  group_by(PCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
-    ggplot(aes(x= composite_sf36_score)) +   geom_density() + 
-  geom_vline(aes(xintercept = mean(composite_sf36_score)), 
-             linetype = "dashed", size = 0.6,
-             color = "#FC4E07")
+    ggplot(aes(x= Age_Category, y = PCS12)) + geom_boxplot() +
+  geom_jitter() +  facet_grid(. ~ Gender)
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-15-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-19-1.png" width="90%" />
+
+##### Overall Mentall Health Status (Outcome 2)
+
+``` r
+CodedData_VariablesofInterest %>% 
+  select(MCS12) %>% 
+  summary() %>% 
+  knitr::kable(col.names = c("Summary of Self-Reported Mental Health"))
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:left;">
+
+Summary of Self-Reported Mental Health
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Min. :19.57
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+1st Qu.:43.25
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Median :53.49
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Mean :49.86
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+3rd Qu.:58.84
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+Max. :69.92
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+</td>
+
+<td style="text-align:left;">
+
+NA’s :1
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+``` r
+CodedData_VariablesofInterest %>% 
+  drop_na() %>% 
+  group_by(MCS12, Age_Category, Gender) %>% 
+  summarize(n = n()) %>% 
+    ggplot(aes(x= Age_Category, y = MCS12)) + geom_boxplot() +
+  geom_jitter() +  facet_grid(. ~ Gender)
+```
+
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-21-1.png" width="90%" />
 
 #### Independent Variables
 
@@ -522,10 +856,83 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names=c("Smoking Status", "n", "Percent(%)"), digits = 2)
 ```
 
-| Smoking Status |  n | Percent(%) |
-| :------------- | -: | ---------: |
-| Non-smoker(s)  | 97 |      78.23 |
-| Smoker(s)      | 27 |      21.77 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Smoking Status
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Non-smoker(s)
+
+</td>
+
+<td style="text-align:right;">
+
+97
+
+</td>
+
+<td style="text-align:right;">
+
+78.23
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Smoker(s)
+
+</td>
+
+<td style="text-align:right;">
+
+27
+
+</td>
+
+<td style="text-align:right;">
+
+21.77
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -540,12 +947,105 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names=c("Race/Ethnicity", "n", "Percent(%)"), digits = 2)
 ```
 
-| Race/Ethnicity                          |  n | Percent(%) |
-| :-------------------------------------- | -: | ---------: |
-| Bi/Multiracial                          |  5 |       4.03 |
-| Hispanic or Latinx                      | 87 |      70.16 |
-| Non- Hispanic Black or African American | 26 |      20.97 |
-| Other                                   |  6 |       4.84 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Race/Ethnicity
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Hispanic or Latinx
+
+</td>
+
+<td style="text-align:right;">
+
+87
+
+</td>
+
+<td style="text-align:right;">
+
+70.16
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Non- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+26
+
+</td>
+
+<td style="text-align:right;">
+
+20.97
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Other
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+8.87
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -556,13 +1056,258 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names=c("Age Group", "n", "Percent(%)"), digits = 2)
 ```
 
-| Age Group |  n | Percent(%) |
-| :-------- | -: | ---------: |
-| 18-24     |  7 |       5.65 |
-| 25-44     | 25 |      20.16 |
-| 45-64     | 47 |      37.90 |
-| 65+       | 43 |      34.68 |
-| NA        |  2 |       1.61 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Age Group
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+18-24
+
+</td>
+
+<td style="text-align:right;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+5.65
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+25-44
+
+</td>
+
+<td style="text-align:right;">
+
+25
+
+</td>
+
+<td style="text-align:right;">
+
+20.16
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+45-64
+
+</td>
+
+<td style="text-align:right;">
+
+47
+
+</td>
+
+<td style="text-align:right;">
+
+37.90
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+65+
+
+</td>
+
+<td style="text-align:right;">
+
+43
+
+</td>
+
+<td style="text-align:right;">
+
+34.68
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+1.61
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+``` r
+CodedData_VariablesofInterest %>% 
+  group_by(Gender) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Gender", "n", "Percent(%)"), digits = 2)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Gender
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Female
+
+</td>
+
+<td style="text-align:right;">
+
+97
+
+</td>
+
+<td style="text-align:right;">
+
+78.23
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Male
+
+</td>
+
+<td style="text-align:right;">
+
+26
+
+</td>
+
+<td style="text-align:right;">
+
+20.97
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Other, please specify:
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+0.81
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -574,22 +1319,7 @@ CodedData_VariablesofInterest %>%
       title = "Figure 1. Distribution of Age by Gender")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-19-1.png" width="90%" />
-
-``` r
-CodedData_VariablesofInterest %>% 
-  group_by(Gender) %>% 
-  summarize(n=n()) %>%
-  mutate(
-  percent = n/124*100) %>% 
-  knitr::kable(col.names=c("Gender", "n", "Percent(%)"), digits = 2)
-```
-
-| Gender                 |  n | Percent(%) |
-| :--------------------- | -: | ---------: |
-| Female                 | 97 |      78.23 |
-| Male                   | 26 |      20.97 |
-| Other, please specify: |  1 |       0.81 |
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-26-1.png" width="90%" />
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -597,13 +1327,199 @@ CodedData_VariablesofInterest %>%
   select(Gender, Age) %>% 
   group_by(Gender) %>% 
   summarize(Mean = mean(Age)) %>% 
-  knitr::kable(col.names=c("Age Group", "Mean Age"), digits = 2)
+  knitr::kable(col.names=c("Gender", "Mean Age"), digits = 2)
 ```
 
-| Age Group | Mean Age |
-| :-------- | -------: |
-| Female    |    54.76 |
-| Male      |    54.75 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Gender
+
+</th>
+
+<th style="text-align:right;">
+
+Mean Age
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Female
+
+</td>
+
+<td style="text-align:right;">
+
+54.76
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Male
+
+</td>
+
+<td style="text-align:right;">
+
+54.75
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+``` r
+CodedData_VariablesofInterest %>% 
+  group_by(PSS_Category) %>% 
+  summarize(n=n()) %>%
+   mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Perceived Stress Score", "n", "Percent(%)"), digits = 2)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Perceived Stress Score
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+High Perceived Stress
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+8.87
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Low Stress
+
+</td>
+
+<td style="text-align:right;">
+
+54
+
+</td>
+
+<td style="text-align:right;">
+
+43.55
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Moderate Stress
+
+</td>
+
+<td style="text-align:right;">
+
+55
+
+</td>
+
+<td style="text-align:right;">
+
+44.35
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+3.23
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -614,19 +1530,281 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names=c("Income Category", "n", "Percent(%)"), digits = 2)
 ```
 
-| Income Category |  n | Percent(%) |
-| :-------------- | -: | ---------: |
-| 1               | 16 |      12.90 |
-| 2               |  9 |       7.26 |
-| 3               | 28 |      22.58 |
-| 4               | 24 |      19.35 |
-| 5               | 29 |      23.39 |
-| 6               |  3 |       2.42 |
-| 7               |  5 |       4.03 |
-| 8               |  3 |       2.42 |
-| 9               |  2 |       1.61 |
-| 10              |  2 |       1.61 |
-| NA              |  3 |       2.42 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Income Category
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+16
+
+</td>
+
+<td style="text-align:right;">
+
+12.90
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+7.26
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+28
+
+</td>
+
+<td style="text-align:right;">
+
+22.58
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+24
+
+</td>
+
+<td style="text-align:right;">
+
+19.35
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+29
+
+</td>
+
+<td style="text-align:right;">
+
+23.39
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+4.03
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+1.61
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+10
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+1.61
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -637,18 +1815,259 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names=c("Education Completed", "n", "Percent(%)"), digits = 2)
 ```
 
-| Education Completed                  |  n | Percent(%) |
-| :----------------------------------- | -: | ---------: |
-| 2 Year Community College Degree      |  7 |       5.65 |
-| 4 Year College Degree                |  6 |       4.84 |
-| G.E.D.                               |  5 |       4.03 |
-| High School/Secondary School Diploma | 41 |      33.06 |
-| Less than High School                | 53 |      42.74 |
-| Never Attended School                |  1 |       0.81 |
-| Post-Graduate Degree                 |  3 |       2.42 |
-| Some College                         |  4 |       3.23 |
-| Vocational School                    |  3 |       2.42 |
-| NA                                   |  1 |       0.81 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Education Completed
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+Percent(%)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+2 Year Community College Degree
+
+</td>
+
+<td style="text-align:right;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+5.65
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+4 Year College Degree
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+4.84
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+4.03
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+High School/Secondary School Diploma
+
+</td>
+
+<td style="text-align:right;">
+
+41
+
+</td>
+
+<td style="text-align:right;">
+
+33.06
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Less than High School
+
+</td>
+
+<td style="text-align:right;">
+
+53
+
+</td>
+
+<td style="text-align:right;">
+
+42.74
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Never Attended School
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+0.81
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Post-Graduate Degree
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Some College
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+3.23
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Vocational School
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+0.81
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ### 2x2 Tables and Visualizations
 
@@ -662,40 +2081,185 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names = c("Age Group","Female (n)", "Male (n)", "Other (n)"))
 ```
 
-| Age Group | Female (n) | Male (n) | Other (n) |
-| :-------- | ---------: | -------: | --------: |
-| 18-24     |          5 |        2 |        NA |
-| 25-44     |         19 |        6 |        NA |
-| 45-64     |         38 |        8 |         1 |
-| 65+       |         33 |       10 |        NA |
-| NA        |          2 |       NA |        NA |
+<table>
 
-``` r
-CodedData_VariablesofInterest %>% 
-  drop_na() %>% 
-  select(Income, Age_Category) %>% 
-  group_by(Age_Category) %>% 
-  summarize(Mean = mean(Income)) %>% 
-  knitr::kable(col.names=c("Age Group", "Mean Income"),digits = 2)
-```
+<thead>
 
-| Age Group | Mean Income |
-| :-------- | ----------: |
-| 18-24     |          NA |
-| 25-44     |          NA |
-| 45-64     |          NA |
-| 65+       |          NA |
+<tr>
 
-``` r
-CodedData_VariablesofInterest %>% 
-  ggplot(aes(x=Age_Category, fill = Gender)) + geom_bar() +
-  labs(x = "Age Group",
-      y = "Count",
-      color = "Gender",
-      title = "Figure 2. Age Group by Gender")
-```
+<th style="text-align:left;">
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-26-1.png" width="90%" />
+Age Group
+
+</th>
+
+<th style="text-align:right;">
+
+Female (n)
+
+</th>
+
+<th style="text-align:right;">
+
+Male (n)
+
+</th>
+
+<th style="text-align:right;">
+
+Other (n)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+18-24
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+25-44
+
+</td>
+
+<td style="text-align:right;">
+
+19
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+45-64
+
+</td>
+
+<td style="text-align:right;">
+
+38
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+65+
+
+</td>
+
+<td style="text-align:right;">
+
+33
+
+</td>
+
+<td style="text-align:right;">
+
+10
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>%
@@ -706,27 +2270,160 @@ CodedData_VariablesofInterest %>%
     names_from = Race,
     values_from = n
   ) %>% 
-  knitr::kable(col.names = c("Age Group", "Hispanic or Latinx (n)", "Non-Hispanic Black or African American (n)", "Bi/Multiracial (n)", "Other (n)"))
+  knitr::kable(col.names = c("Age Group", "Hispanic or Latinx (n)", "Non-Hispanic Black or African American (n)", "Other (n)"))
 ```
 
-| Age Group | Hispanic or Latinx (n) | Non-Hispanic Black or African American (n) | Bi/Multiracial (n) | Other (n) |
-| :-------- | ---------------------: | -----------------------------------------: | -----------------: | --------: |
-| 18-24     |                      5 |                                          2 |                 NA |        NA |
-| 25-44     |                     14 |                                          7 |                  3 |         1 |
-| 45-64     |                     27 |                                         11 |                  1 |         5 |
-| 65+       |                     33 |                                          4 |                  1 |        NA |
+<table>
 
-``` r
-CodedData_VariablesofInterest %>% 
-  group_by(Age_Category, Race) %>% 
-  ggplot(aes(x= Age_Category, fill = Race)) + geom_bar() +
-  labs(x = "Age Group",
-      y = "Count",
-      color = "Race/Ethnicity",
-      title = "Figure 3. Age by Race/Ethnicity")
-```
+<thead>
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-28-1.png" width="90%" />
+<tr>
+
+<th style="text-align:left;">
+
+Age Group
+
+</th>
+
+<th style="text-align:right;">
+
+Hispanic or Latinx (n)
+
+</th>
+
+<th style="text-align:right;">
+
+Non-Hispanic Black or African American (n)
+
+</th>
+
+<th style="text-align:right;">
+
+Other (n)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+18-24
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+25-44
+
+</td>
+
+<td style="text-align:right;">
+
+14
+
+</td>
+
+<td style="text-align:right;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+45-64
+
+</td>
+
+<td style="text-align:right;">
+
+27
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+65+
+
+</td>
+
+<td style="text-align:right;">
+
+33
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>%
@@ -739,13 +2436,104 @@ CodedData_VariablesofInterest %>%
   pivot_wider(
     names_from = Race,
     values_from = n) %>% 
-  knitr::kable(col.names = c("Smoking Status", "Bi/Multiracial (n)", "Hispanic or Latinx (n)", "Black or African American (n)", "Other (n)"))
+  knitr::kable(col.names = c("Smoking Status", "Hispanic or Latinx (n)", "Black or African American (n)", "Other (n)"))
 ```
 
-| Smoking Status | Bi/Multiracial (n) | Hispanic or Latinx (n) | Black or African American (n) | Other (n) |
-| :------------- | -----------------: | ---------------------: | ----------------------------: | --------: |
-| Non-smoker(s)  |                  3 |                     71 |                            20 |         3 |
-| Smoker(s)      |                  2 |                     16 |                             6 |         3 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Smoking Status
+
+</th>
+
+<th style="text-align:right;">
+
+Hispanic or Latinx (n)
+
+</th>
+
+<th style="text-align:right;">
+
+Black or African American (n)
+
+</th>
+
+<th style="text-align:right;">
+
+Other (n)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Non-smoker(s)
+
+</td>
+
+<td style="text-align:right;">
+
+71
+
+</td>
+
+<td style="text-align:right;">
+
+20
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Smoker(s)
+
+</td>
+
+<td style="text-align:right;">
+
+16
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>%
@@ -762,10 +2550,119 @@ CodedData_VariablesofInterest %>%
   knitr::kable(col.names = c("Smoking Status", "18-24 (n)", "25-44 (n)", "45-64 (n)", "65+ (n)"))
 ```
 
-| Smoking Status | 18-24 (n) | 25-44 (n) | 45-64 (n) | 65+ (n) |
-| :------------- | --------: | --------: | --------: | ------: |
-| Non-smoker(s)  |         6 |        16 |        34 |      33 |
-| Smoker(s)      |         1 |         9 |        10 |       5 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Smoking Status
+
+</th>
+
+<th style="text-align:right;">
+
+18-24 (n)
+
+</th>
+
+<th style="text-align:right;">
+
+25-44 (n)
+
+</th>
+
+<th style="text-align:right;">
+
+45-64 (n)
+
+</th>
+
+<th style="text-align:right;">
+
+65+ (n)
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Non-smoker(s)
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+16
+
+</td>
+
+<td style="text-align:right;">
+
+34
+
+</td>
+
+<td style="text-align:right;">
+
+33
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Smoker(s)
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+10
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -782,7 +2679,7 @@ ggplot(aes(x=Smoke, y=Age)) +
       title = "Figure 4. Distribution of Age by Smoking Status")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-31-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-35-1.png" width="90%" />
 
 ``` r
 CodedData_VariablesofInterest %>% 
@@ -796,48 +2693,79 @@ CodedData_VariablesofInterest %>%
 theme(legend.position = "bottom")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-32-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-36-1.png" width="90%" />
 
 ### Exploratory Analyses of Relationships between Variables
 
 ``` r
-#Part 1
 CodedData_VariablesofInterest %>%  
-  group_by(total_PSS_score, composite_sf36_score, Age_Category) %>%
+  group_by(total_PSS_score, PCS12, Age_Category) %>%
   summarize(n=n()) %>% 
-  ggplot(aes(x = total_PSS_score, y = composite_sf36_score,  color = Age_Category)) +
+  ggplot(aes(x = total_PSS_score, y = PCS12,  color = Age_Category)) +
   geom_point(size = 1.5, alpha = 0.8) +
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Perceived Stress Score",
       y = "Overall Health Score",
       color = "Age",
-      title = "Figure 6. Relationship between Perceived Stress and Health Status") +
+      title = "Figure 6. Relationship between Perceived Stress and Physical Health Status") +
       theme(legend.position = "right") 
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-33-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-37-1.png" width="90%" />
 
 ``` r
-#Part 2
 CodedData_VariablesofInterest %>%  
-  group_by(HousingSatisfactionScore, composite_sf36_score, Age_Category) %>%
+  group_by(HousingSatisfactionScore, PCS12, Age_Category) %>%
   summarize(n=n()) %>% 
-  ggplot(aes(x = HousingSatisfactionScore, y = composite_sf36_score,  color = Age_Category)) +
+  ggplot(aes(x = HousingSatisfactionScore, y = PCS12,  color = Age_Category)) +
   geom_point(size = 1, alpha = 0.5) +
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Housing Satisfaction Score",
       y = "Overall Health Score",
       color = "Age",
-      title = "Figure 7. Relationship between Housing Satisfaction and Health Status") +
+      title = "Figure 7. Relationship between Housing Satisfaction and Physical Health Status") +
       theme(legend.position = "right")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-34-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-38-1.png" width="90%" />
 
 ``` r
-#Part 3
+CodedData_VariablesofInterest %>%  
+  group_by(total_PSS_score, MCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = total_PSS_score, y = MCS12,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Perceived Stress Score",
+      y = "Overall Mental Health Score",
+      color = "Age",
+      title = "Figure 8. Relationship between Perceived Stress and Mental Health Status") +
+      theme(legend.position = "right") 
+```
+
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-39-1.png" width="90%" />
+
+``` r
+CodedData_VariablesofInterest %>%  
+  group_by(HousingSatisfactionScore, MCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = MCS12,  color = Age_Category)) +
+  geom_point(size = 1, alpha = 0.5) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Overall Mental Health Score",
+      color = "Age",
+      title = "Figure 9. Relationship between Housing Satisfaction and Mental Health Status") +
+      theme(legend.position = "right")
+```
+
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-40-1.png" width="90%" />
+
+``` r
 CodedData_VariablesofInterest %>%  
   group_by(HousingSatisfactionScore, total_PSS_score, Age_Category) %>%
   summarize(n=n()) %>% 
@@ -848,701 +2776,2967 @@ CodedData_VariablesofInterest %>%
       x = "Housing Satisfaction Score",
       y = "Perceived Stress Score",
       color = "Age",
-      title = "Figure 8. Relationship between Housing Satisfaction and Perceived Stress") +
+      title = "Figure 10. Relationship between Housing Satisfaction and Perceived Stress") +
       theme(legend.position = "right")
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-35-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-41-1.png" width="90%" />
 
 ### Initial bivariate analyses
 
-##### Bivariate model 1 : composite\_sf36\_score ~ b\_0 + b\_1 total\_PSS\_score\_i
+##### Bivariate model 1 : PCS12 ~ b\_0 + b\_1 total\_PSS\_score\_i
 
 ``` r
-bivariate1 = lm(composite_sf36_score ~ total_PSS_score, data = CodedData_VariablesofInterest)
+bivariate1 = lm(PCS12 ~ total_PSS_score, data = CodedData_VariablesofInterest)
 summary(bivariate1) 
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ total_PSS_score, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ total_PSS_score, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -52.225 -14.892   2.345  17.752  45.795 
+    ## -30.424 -10.014   1.471  10.007  22.214 
     ## 
     ## Coefficients:
     ##                 Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)      88.1490     3.8970  22.620  < 2e-16 ***
-    ## total_PSS_score  -3.3462     0.4593  -7.286 3.92e-11 ***
+    ## (Intercept)      47.8602     2.1033  22.755   <2e-16 ***
+    ## total_PSS_score  -0.6450     0.2479  -2.602   0.0105 *  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 22.25 on 118 degrees of freedom
+    ## Residual standard error: 12.01 on 118 degrees of freedom
     ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.3103, Adjusted R-squared:  0.3044 
-    ## F-statistic: 53.08 on 1 and 118 DF,  p-value: 3.924e-11
+    ## Multiple R-squared:  0.05426,    Adjusted R-squared:  0.04624 
+    ## F-statistic:  6.77 on 1 and 118 DF,  p-value: 0.01046
 
 ``` r
 bivariate1 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term              | estimate | p.value |      Low\_CI |     High\_CI |
-| :---------------- | -------: | ------: | -----------: | -----------: |
-| (Intercept)       |   88.149 |       0 | 9.234996e+34 | 3.979489e+41 |
-| total\_PSS\_score |  \-3.346 |       0 | 1.400000e-02 | 8.700000e-02 |
+<table>
 
-##### Bivariate model 2 : composite\_sf36\_score ~ b\_0 + b\_1 Age\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+47.860
+
+</td>
+
+<td style="text-align:right;">
+
+0.00
+
+</td>
+
+<td style="text-align:right;">
+
+43.738
+
+</td>
+
+<td style="text-align:right;">
+
+51.983
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_PSS\_score
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.645
+
+</td>
+
+<td style="text-align:right;">
+
+0.01
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.131
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.159
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 2 : PCS12 ~ b\_0 + b\_1 Age\_i
 
 ``` r
-bivariate2 = lm(composite_sf36_score ~ Age, data = CodedData_VariablesofInterest)
+bivariate2 = lm(PCS12 ~ Age, data = CodedData_VariablesofInterest)
 summary(bivariate2)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ Age, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ Age, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -68.622 -17.200   1.028  20.986  43.485 
+    ## -26.751  -7.031   1.766   8.699  26.579 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  86.5376     7.6771  11.272  < 2e-16 ***
-    ## Age          -0.4289     0.1321  -3.246  0.00152 ** 
+    ## (Intercept) 59.46012    3.33386  17.835  < 2e-16 ***
+    ## Age         -0.30039    0.05738  -5.235 7.28e-07 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 25.61 on 118 degrees of freedom
+    ## Residual standard error: 11.12 on 118 degrees of freedom
     ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.08197,    Adjusted R-squared:  0.07419 
-    ## F-statistic: 10.54 on 1 and 118 DF,  p-value: 0.001524
+    ## Multiple R-squared:  0.1885, Adjusted R-squared:  0.1816 
+    ## F-statistic:  27.4 on 1 and 118 DF,  p-value: 7.278e-07
 
 ``` r
 bivariate2 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term        | estimate | p.value |      Low\_CI |     High\_CI |
-| :---------- | -------: | ------: | -----------: | -----------: |
-| (Intercept) |   86.538 |   0.000 | 1.116709e+31 | 1.311141e+44 |
-| Age         |  \-0.429 |   0.002 | 5.030000e-01 | 8.440000e-01 |
+<table>
 
-##### Bivariate model 3 : composite\_sf36\_score ~ b\_0 + b\_1 Race\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+59.46
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+52.926
+
+</td>
+
+<td style="text-align:right;">
+
+65.994
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.30
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.413
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.188
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 3 : PCS12 ~ b\_0 + b\_1 Race\_i
 
 ``` r
-bivariate3 = lm(composite_sf36_score ~ Race, data = CodedData_VariablesofInterest)
+bivariate3 = lm(PCS12 ~ Race, data = CodedData_VariablesofInterest)
 summary(bivariate3)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ Race, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ Race, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -61.846 -18.304  -0.596  25.862  36.487 
+    ## -29.952 -10.621   1.232  11.313  21.376 
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                  64.0000    12.0291   5.320
-    ## RaceHispanic or Latinx                       -0.4874    12.3738  -0.039
-    ## RaceNon- Hispanic Black or African American  -1.4038    13.1349  -0.107
-    ## RaceOther                                     0.6528    16.2874   0.040
+    ## (Intercept)                                   42.434      1.323  32.064
+    ## RaceNon- Hispanic Black or African American    2.373      2.747   0.864
+    ## RaceOther                                      1.012      3.930   0.257
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                 4.93e-07 ***
-    ## RaceHispanic or Latinx                         0.969    
-    ## RaceNon- Hispanic Black or African American    0.915    
-    ## RaceOther                                      0.968    
+    ## (Intercept)                                   <2e-16 ***
+    ## RaceNon- Hispanic Black or African American    0.389    
+    ## RaceOther                                      0.797    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 26.9 on 119 degrees of freedom
+    ## Residual standard error: 12.27 on 120 degrees of freedom
     ##   (1 observation deleted due to missingness)
-    ## Multiple R-squared:  0.0003379,  Adjusted R-squared:  -0.02486 
-    ## F-statistic: 0.01341 on 3 and 119 DF,  p-value: 0.9979
+    ## Multiple R-squared:  0.006299,   Adjusted R-squared:  -0.01026 
+    ## F-statistic: 0.3803 on 2 and 120 DF,  p-value: 0.6845
 
 ``` r
 bivariate3 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term                                        | estimate | p.value |      Low\_CI |     High\_CI |
-| :------------------------------------------ | -------: | ------: | -----------: | -----------: |
-| (Intercept)                                 |   64.000 |   0.000 | 3.593409e+17 | 1.081900e+38 |
-| RaceHispanic or Latinx                      |  \-0.487 |   0.969 | 0.000000e+00 | 2.094662e+10 |
-| RaceNon- Hispanic Black or African American |  \-1.404 |   0.915 | 0.000000e+00 | 3.723437e+10 |
-| RaceOther                                   |    0.653 |   0.968 | 0.000000e+00 | 1.404850e+14 |
+<table>
 
-##### Bivariate model 4 : composite\_sf36\_score ~ b\_0 + b\_1 Income\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+42.434
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+39.841
+
+</td>
+
+<td style="text-align:right;">
+
+45.028
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceNon- Hispanic Black or African
+American
+
+</td>
+
+<td style="text-align:right;">
+
+2.373
+
+</td>
+
+<td style="text-align:right;">
+
+0.389
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.010
+
+</td>
+
+<td style="text-align:right;">
+
+7.757
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceOther
+
+</td>
+
+<td style="text-align:right;">
+
+1.012
+
+</td>
+
+<td style="text-align:right;">
+
+0.797
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.691
+
+</td>
+
+<td style="text-align:right;">
+
+8.714
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 4 : PCS12 ~ b\_0 + b\_1 Income\_i
 
 ``` r
-bivariate4 = lm(composite_sf36_score ~ Income, data = CodedData_VariablesofInterest)
+bivariate4 = lm(PCS12 ~ Income_Group, data = CodedData_VariablesofInterest)
 summary(bivariate4)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ Income, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ Income_Group, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -64.368 -16.736   1.529  17.631  50.417 
+    ## -30.310  -9.763   1.841  10.100  22.930 
     ## 
     ## Coefficients:
-    ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   63.880      6.296  10.146   <2e-16 ***
-    ## Income2      -14.297     10.905  -1.311    0.193    
-    ## Income3       -7.556      7.893  -0.957    0.341    
-    ## Income4       -7.543      8.128  -0.928    0.355    
-    ## Income5       12.988      7.843   1.656    0.101    
-    ## Income6       11.675     15.845   0.737    0.463    
-    ## Income7       17.953     12.903   1.391    0.167    
-    ## Income8       -5.269     15.845  -0.333    0.740    
-    ## Income9       21.953     18.889   1.162    0.248    
-    ## Income10      -2.422     18.889  -0.128    0.898    
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)     40.050      1.666  24.037   <2e-16 ***
+    ## Income_Group2    5.117      2.345   2.182   0.0311 *  
+    ## Income_Group3    7.058      3.521   2.004   0.0473 *  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 25.18 on 110 degrees of freedom
+    ## Residual standard error: 12.01 on 117 degrees of freedom
     ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.1526, Adjusted R-squared:  0.08331 
-    ## F-statistic: 2.202 on 9 and 110 DF,  p-value: 0.02708
+    ## Multiple R-squared:  0.05326,    Adjusted R-squared:  0.03707 
+    ## F-statistic: 3.291 on 2 and 117 DF,  p-value: 0.0407
 
 ``` r
 bivariate4 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term        | estimate | p.value |      Low\_CI |     High\_CI |
-| :---------- | -------: | ------: | -----------: | -----------: |
-| (Intercept) |   63.880 |   0.000 | 2.417485e+22 | 1.265552e+33 |
-| Income2     | \-14.297 |   0.193 | 0.000000e+00 | 1.185223e+03 |
-| Income3     |  \-7.556 |   0.341 | 0.000000e+00 | 2.735222e+03 |
-| Income4     |  \-7.543 |   0.355 | 0.000000e+00 | 4.395138e+03 |
-| Income5     |   12.988 |   0.101 | 9.200000e-02 | 2.073137e+12 |
-| Income6     |   11.675 |   0.463 | 0.000000e+00 | 3.615870e+18 |
-| Income7     |   17.953 |   0.167 | 1.000000e-03 | 6.033424e+18 |
-| Income8     |  \-5.269 |   0.740 | 0.000000e+00 | 1.582465e+11 |
-| Income9     |   21.953 |   0.248 | 0.000000e+00 | 4.097279e+25 |
-| Income10    |  \-2.422 |   0.898 | 0.000000e+00 | 1.063084e+15 |
+<table>
 
-##### Bivariate model 5 : composite\_sf36\_score ~ b\_0 + b\_1 Smoke\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+40.050
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+36.784
+
+</td>
+
+<td style="text-align:right;">
+
+43.315
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+5.117
+
+</td>
+
+<td style="text-align:right;">
+
+0.031
+
+</td>
+
+<td style="text-align:right;">
+
+0.520
+
+</td>
+
+<td style="text-align:right;">
+
+9.713
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+7.058
+
+</td>
+
+<td style="text-align:right;">
+
+0.047
+
+</td>
+
+<td style="text-align:right;">
+
+0.156
+
+</td>
+
+<td style="text-align:right;">
+
+13.960
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 5 : PCS12 ~ b\_0 + b\_1 Smoke\_i
 
 ``` r
-bivariate5 = lm(composite_sf36_score ~ Smoke, data = CodedData_VariablesofInterest)
+bivariate5 = lm(PCS12 ~ Smoke, data = CodedData_VariablesofInterest)
 summary(bivariate5)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ Smoke, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ Smoke, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -58.642 -18.845  -1.345  26.155  39.691 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -28.3274 -10.4733   0.8781  11.5647  20.6273 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   64.262      2.718  23.646   <2e-16 ***
-    ## Smoke1        -3.954      5.801  -0.682    0.497    
+    ## (Intercept)  43.1836     1.2510  34.519   <2e-16 ***
+    ## Smoke1       -0.7149     2.6701  -0.268    0.789    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 26.63 on 121 degrees of freedom
+    ## Residual standard error: 12.26 on 121 degrees of freedom
     ##   (1 observation deleted due to missingness)
-    ## Multiple R-squared:  0.003824,   Adjusted R-squared:  -0.004408 
-    ## F-statistic: 0.4645 on 1 and 121 DF,  p-value: 0.4968
+    ## Multiple R-squared:  0.0005922,  Adjusted R-squared:  -0.007667 
+    ## F-statistic: 0.0717 on 1 and 121 DF,  p-value: 0.7893
 
 ``` r
 bivariate5 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term        | estimate | p.value |      Low\_CI |     High\_CI |
-| :---------- | -------: | ------: | -----------: | -----------: |
-| (Intercept) |   64.262 |   0.000 | 3.938555e+25 | 1.667477e+30 |
-| Smoke1      |  \-3.954 |   0.497 | 0.000000e+00 | 1.661852e+03 |
+<table>
 
-##### Bivariate model 6 : composite\_sf36\_score ~ b\_0 + b\_1 ChronicDisease\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+43.184
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+40.732
+
+</td>
+
+<td style="text-align:right;">
+
+45.636
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Smoke1
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.715
+
+</td>
+
+<td style="text-align:right;">
+
+0.789
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.948
+
+</td>
+
+<td style="text-align:right;">
+
+4.518
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 6 : PCS12 ~ b\_0 + b\_1 ChronicDisease\_i
 
 ``` r
-bivariate6 = lm(composite_sf36_score ~ Chronic_Disease, data = CodedData_VariablesofInterest)
+bivariate6 = lm(PCS12 ~ Chronic_Disease, data = CodedData_VariablesofInterest)
 summary(bivariate6)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ Chronic_Disease, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ Chronic_Disease, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -56.775 -16.775   1.141  18.997  41.558 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -27.4921 -10.4746   0.3831   9.6609  22.0680 
     ## 
     ## Coefficients:
     ##                  Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)        81.003      4.804  16.861  < 2e-16 ***
-    ## Chronic_Disease1  -22.561      5.438  -4.149 6.24e-05 ***
+    ## (Intercept)        47.591      2.312  20.581   <2e-16 ***
+    ## Chronic_Disease1   -5.848      2.617  -2.234   0.0273 *  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 24.96 on 121 degrees of freedom
+    ## Residual standard error: 12.02 on 121 degrees of freedom
     ##   (1 observation deleted due to missingness)
-    ## Multiple R-squared:  0.1245, Adjusted R-squared:  0.1173 
-    ## F-statistic: 17.21 on 1 and 121 DF,  p-value: 6.238e-05
+    ## Multiple R-squared:  0.03962,    Adjusted R-squared:  0.03169 
+    ## F-statistic: 4.992 on 1 and 121 DF,  p-value: 0.0273
 
 ``` r
 bivariate6 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term              | estimate | p.value |      Low\_CI |     High\_CI |
-| :---------------- | -------: | ------: | -----------: | -----------: |
-| (Intercept)       |   81.003 |       0 | 1.230046e+31 | 1.855519e+39 |
-| Chronic\_Disease1 | \-22.561 |       0 | 0.000000e+00 | 0.000000e+00 |
+<table>
 
-##### Bivariate model 7 : composite\_sf36\_score ~ b\_0 + b\_1 TotalSatisfactionScore\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+47.591
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+43.059
+
+</td>
+
+<td style="text-align:right;">
+
+52.123
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Chronic\_Disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.848
+
+</td>
+
+<td style="text-align:right;">
+
+0.027
+
+</td>
+
+<td style="text-align:right;">
+
+\-10.978
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.718
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 7 : PCS12 ~ b\_0 + b\_1 TotalSatisfactionScore\_i
 
 ``` r
-bivariate7 = lm(composite_sf36_score ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
+bivariate7 = lm(PCS12 ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
 summary(bivariate7)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ HousingSatisfactionScore, 
-    ##     data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -55.101 -20.251  -1.139  25.528  39.599 
+    ## -28.670 -10.760   1.589  11.407  20.464 
     ## 
     ## Coefficients:
     ##                          Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)               46.8490     9.2444   5.068 1.46e-06 ***
-    ## HousingSatisfactionScore   1.5642     0.8447   1.852   0.0665 .  
+    ## (Intercept)               45.4074     4.9511   9.171 1.52e-15 ***
+    ## HousingSatisfactionScore  -0.1472     0.2984  -0.493    0.623    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 26.31 on 121 degrees of freedom
+    ## Residual standard error: 12.25 on 121 degrees of freedom
     ##   (1 observation deleted due to missingness)
-    ## Multiple R-squared:  0.02756,    Adjusted R-squared:  0.01952 
-    ## F-statistic: 3.429 on 1 and 121 DF,  p-value: 0.06649
+    ## Multiple R-squared:  0.002007,   Adjusted R-squared:  -0.006241 
+    ## F-statistic: 0.2433 on 1 and 121 DF,  p-value: 0.6227
 
 ``` r
 bivariate7 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term                     | estimate | p.value |      Low\_CI |     High\_CI |
-| :----------------------- | -------: | ------: | -----------: | -----------: |
-| (Intercept)              |   46.849 |   0.000 | 3.001251e+12 | 1.641372e+28 |
-| HousingSatisfactionScore |    1.564 |   0.066 | 9.130000e-01 | 2.502500e+01 |
+<table>
 
-##### Bivariate model 8 : total\_PSS\_score ~ b\_0 + b\_1 TotalSatisfactionScore\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+45.407
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+35.703
+
+</td>
+
+<td style="text-align:right;">
+
+55.112
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.147
+
+</td>
+
+<td style="text-align:right;">
+
+0.623
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.732
+
+</td>
+
+<td style="text-align:right;">
+
+0.438
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 7a : PCS12 ~ b\_0 + b\_1 Education\_i
 
 ``` r
-bivariate8 = lm(total_PSS_score ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
+bivariate7a = lm(PCS12 ~ Education_Group, data = CodedData_VariablesofInterest)
+summary(bivariate7a)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ Education_Group, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -30.431  -9.648   1.824   9.935  24.011 
+    ## 
+    ## Coefficients:
+    ##                                           Estimate Std. Error t value
+    ## (Intercept)                                 45.612      1.773  25.722
+    ## Education_GroupLess than High School        -5.813      2.424  -2.398
+    ## Education_GroupPost High School Education   -0.325      3.071  -0.106
+    ##                                           Pr(>|t|)    
+    ## (Intercept)                                 <2e-16 ***
+    ## Education_GroupLess than High School         0.018 *  
+    ## Education_GroupPost High School Education    0.916    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 12.03 on 119 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.05371,    Adjusted R-squared:  0.03781 
+    ## F-statistic: 3.377 on 2 and 119 DF,  p-value: 0.03745
+
+``` r
+bivariate7a %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+45.612
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+42.137
+
+</td>
+
+<td style="text-align:right;">
+
+49.088
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupLess than High School
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.813
+
+</td>
+
+<td style="text-align:right;">
+
+0.018
+
+</td>
+
+<td style="text-align:right;">
+
+\-10.563
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.062
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School
+Education
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.325
+
+</td>
+
+<td style="text-align:right;">
+
+0.916
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.345
+
+</td>
+
+<td style="text-align:right;">
+
+5.695
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 8 : MCS12 ~ b\_0 + b\_1 TotalSatisfactionScore\_i
+
+``` r
+bivariate8 = lm(MCS12 ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
 summary(bivariate8)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ HousingSatisfactionScore, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -8.0324 -3.2948 -0.1781  2.8484 10.3848 
+    ## -26.901  -7.542   1.526   8.117  21.061 
     ## 
     ## Coefficients:
     ##                          Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)               11.7410     1.5261   7.693 4.78e-12 ***
-    ## HousingSatisfactionScore  -0.4272     0.1400  -3.051  0.00282 ** 
+    ## (Intercept)               35.8398     4.5934   7.802 2.41e-12 ***
+    ## HousingSatisfactionScore   0.8667     0.2768   3.131  0.00218 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.293 on 118 degrees of freedom
-    ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.0731, Adjusted R-squared:  0.06524 
-    ## F-statistic: 9.306 on 1 and 118 DF,  p-value: 0.002821
+    ## Residual standard error: 11.36 on 121 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.07494,    Adjusted R-squared:  0.0673 
+    ## F-statistic: 9.803 on 1 and 121 DF,  p-value: 0.002185
 
 ``` r
 bivariate8 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term                     | estimate | p.value |  Low\_CI |    High\_CI |
-| :----------------------- | -------: | ------: | -------: | ----------: |
-| (Intercept)              |   11.741 |   0.000 | 6309.730 | 2500923.201 |
-| HousingSatisfactionScore |  \-0.427 |   0.003 |    0.496 |       0.858 |
+<table>
 
-##### Bivariate model 9 : total\_PSS\_score ~ b\_0 + b\_1 Smoke\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+35.840
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+26.837
+
+</td>
+
+<td style="text-align:right;">
+
+44.843
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+0.867
+
+</td>
+
+<td style="text-align:right;">
+
+0.002
+
+</td>
+
+<td style="text-align:right;">
+
+0.324
+
+</td>
+
+<td style="text-align:right;">
+
+1.409
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 9 : MCS12 ~ b\_0 + b\_1 Smoke\_i
 
 ``` r
-bivariate9 = lm(total_PSS_score ~ Smoke, data = CodedData_VariablesofInterest)
+bivariate9 = lm(MCS12 ~ Smoke, data = CodedData_VariablesofInterest)
 summary(bivariate9)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ Smoke, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ Smoke, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -7.2581 -3.2581 -0.2216  2.7419 10.7419 
+    ## -29.372  -6.867   3.373   9.002  19.806 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  7.25806    0.46235  15.698   <2e-16 ***
-    ## Smoke1      -0.07288    0.97472  -0.075    0.941    
+    ## (Intercept)   50.117      1.205  41.596   <2e-16 ***
+    ## Smoke1        -1.174      2.572  -0.456    0.649    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.459 on 118 degrees of freedom
-    ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  4.737e-05,  Adjusted R-squared:  -0.008427 
-    ## F-statistic: 0.00559 on 1 and 118 DF,  p-value: 0.9405
+    ## Residual standard error: 11.81 on 121 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.001719,   Adjusted R-squared:  -0.006531 
+    ## F-statistic: 0.2083 on 1 and 121 DF,  p-value: 0.6489
 
 ``` r
 bivariate9 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term        | estimate | p.value | Low\_CI | High\_CI |
-| :---------- | -------: | ------: | ------: | -------: |
-| (Intercept) |    7.258 |   0.000 | 573.558 | 3513.155 |
-| Smoke1      |  \-0.073 |   0.941 |   0.138 |    6.281 |
+<table>
 
-##### Bivariate model 10 : total\_PSS\_score ~ b\_0 + b\_1 ChronicDisease\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+50.117
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.756
+
+</td>
+
+<td style="text-align:right;">
+
+52.479
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Smoke1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.174
+
+</td>
+
+<td style="text-align:right;">
+
+0.649
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.214
+
+</td>
+
+<td style="text-align:right;">
+
+3.867
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 10 : MCS12 ~ b\_0 + b\_1 ChronicDisease\_i
 
 ``` r
-bivariate10 = lm(total_PSS_score ~ Chronic_Disease, data = CodedData_VariablesofInterest)
+bivariate10 = lm(MCS12 ~ Chronic_Disease, data = CodedData_VariablesofInterest)
 summary(bivariate10)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ Chronic_Disease, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ Chronic_Disease, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -7.9681 -2.9681  0.0319  3.0319 10.0319 
+    ## -28.195  -7.203   1.437   8.990  19.334 
     ## 
     ## Coefficients:
     ##                  Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)        4.6154     0.8307   5.556 1.73e-07 ***
-    ## Chronic_Disease1   3.3527     0.9386   3.572 0.000514 ***
+    ## (Intercept)        57.301      2.141  26.763  < 2e-16 ***
+    ## Chronic_Disease1   -9.534      2.423  -3.934  0.00014 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.236 on 118 degrees of freedom
-    ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.09758,    Adjusted R-squared:  0.08994 
-    ## F-statistic: 12.76 on 1 and 118 DF,  p-value: 0.0005136
+    ## Residual standard error: 11.13 on 121 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.1134, Adjusted R-squared:  0.1061 
+    ## F-statistic: 15.48 on 1 and 121 DF,  p-value: 0.0001398
 
 ``` r
 bivariate10 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term              | estimate | p.value | Low\_CI | High\_CI |
-| :---------------- | -------: | ------: | ------: | -------: |
-| (Intercept)       |    4.615 |   0.000 |  19.831 |  514.675 |
-| Chronic\_Disease1 |    3.353 |   0.001 |   4.541 |  179.880 |
+<table>
 
-##### Bivariate model 11 : total\_PSS\_score ~ b\_0 + b\_1 Income\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+57.301
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+53.104
+
+</td>
+
+<td style="text-align:right;">
+
+61.497
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Chronic\_Disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-9.534
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+\-14.284
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.784
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 11 : MCS12 ~ b\_0 + b\_1 Income\_i
 
 ``` r
-bivariate11 = lm(total_PSS_score ~ Income, data = CodedData_VariablesofInterest)
+bivariate11 = lm(MCS12 ~ Income_Group, data = CodedData_VariablesofInterest)
 summary(bivariate11)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ Income, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ Income_Group, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -8.0741 -3.0741  0.0064  2.8912 10.8966 
+    ## -31.196  -6.643   3.613   8.791  19.838 
     ## 
     ## Coefficients:
-    ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  7.12500    1.12886   6.312 6.24e-09 ***
-    ## Income2     -1.00000    1.95524  -0.511    0.610    
-    ## Income3      0.94907    1.42460   0.666    0.507    
-    ## Income4      0.78804    1.46997   0.536    0.593    
-    ## Income5     -0.02155    1.40620  -0.015    0.988    
-    ## Income6     -1.45833    2.84090  -0.513    0.609    
-    ## Income7     -0.52500    2.31347  -0.227    0.821    
-    ## Income8      0.20833    2.84090   0.073    0.942    
-    ## Income9     -4.62500    3.38657  -1.366    0.175    
-    ## Income10    -1.12500    3.38657  -0.332    0.740    
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    49.4975     1.6404  30.173   <2e-16 ***
+    ## Income_Group2   0.5868     2.3090   0.254    0.800    
+    ## Income_Group3   2.7711     3.4670   0.799    0.426    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.515 on 108 degrees of freedom
-    ##   (6 observations deleted due to missingness)
-    ## Multiple R-squared:  0.04232,    Adjusted R-squared:  -0.03749 
-    ## F-statistic: 0.5302 on 9 and 108 DF,  p-value: 0.8498
+    ## Residual standard error: 11.83 on 117 degrees of freedom
+    ##   (4 observations deleted due to missingness)
+    ## Multiple R-squared:  0.005433,   Adjusted R-squared:  -0.01157 
+    ## F-statistic: 0.3195 on 2 and 117 DF,  p-value: 0.7271
 
 ``` r
 bivariate11 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term        | estimate | p.value | Low\_CI |  High\_CI |
-| :---------- | -------: | ------: | ------: | --------: |
-| (Intercept) |    7.125 |   0.000 | 135.971 | 11356.685 |
-| Income2     |  \-1.000 |   0.610 |   0.008 |    16.984 |
-| Income3     |    0.949 |   0.507 |   0.158 |    42.152 |
-| Income4     |    0.788 |   0.593 |   0.123 |    39.220 |
-| Income5     |  \-0.022 |   0.988 |   0.062 |    15.404 |
-| Income6     |  \-1.458 |   0.609 |   0.001 |    60.936 |
-| Income7     |  \-0.525 |   0.821 |   0.006 |    55.114 |
-| Income8     |    0.208 |   0.942 |   0.005 |   322.625 |
-| Income9     |  \-4.625 |   0.175 |   0.000 |     7.483 |
-| Income10    |  \-1.125 |   0.740 |   0.000 |   247.816 |
+<table>
 
-##### Bivariate model 12 : total\_PSS\_score ~ b\_0 + b\_1 Race\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+49.498
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+46.282
+
+</td>
+
+<td style="text-align:right;">
+
+52.713
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+0.587
+
+</td>
+
+<td style="text-align:right;">
+
+0.800
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.939
+
+</td>
+
+<td style="text-align:right;">
+
+5.112
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+2.771
+
+</td>
+
+<td style="text-align:right;">
+
+0.426
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.024
+
+</td>
+
+<td style="text-align:right;">
+
+9.566
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 12 : MCS12 ~ b\_0 + b\_1 Race\_i
 
 ``` r
-bivariate12 = lm(total_PSS_score ~ Race, data = CodedData_VariablesofInterest)
+bivariate12 = lm(MCS12 ~ Race, data = CodedData_VariablesofInterest)
 summary(bivariate12) 
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ Race, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ Race, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -7.5600 -3.2114 -0.0952  2.5562 10.9048 
+    ## -30.326  -6.017   3.545   8.950  19.817 
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                   7.4000     2.0084   3.685
-    ## RaceHispanic or Latinx                       -0.3048     2.0673  -0.147
-    ## RaceNon- Hispanic Black or African American   0.1600     2.2000   0.073
-    ## RaceOther                                     0.4333     2.7193   0.159
+    ## (Intercept)                                   50.106      1.277  39.250
+    ## RaceNon- Hispanic Black or African American   -1.616      2.650  -0.610
+    ## RaceOther                                      1.064      3.791   0.281
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                  0.00035 ***
-    ## RaceHispanic or Latinx                       0.88305    
-    ## RaceNon- Hispanic Black or African American  0.94215    
-    ## RaceOther                                    0.87367    
+    ## (Intercept)                                   <2e-16 ***
+    ## RaceNon- Hispanic Black or African American    0.543    
+    ## RaceOther                                      0.779    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.491 on 116 degrees of freedom
-    ##   (4 observations deleted due to missingness)
-    ## Multiple R-squared:  0.002796,   Adjusted R-squared:  -0.02299 
-    ## F-statistic: 0.1084 on 3 and 116 DF,  p-value: 0.955
+    ## Residual standard error: 11.84 on 120 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.004317,   Adjusted R-squared:  -0.01228 
+    ## F-statistic: 0.2601 on 2 and 120 DF,  p-value: 0.7714
 
 ``` r
 bivariate12 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term                                        | estimate | p.value | Low\_CI |  High\_CI |
-| :------------------------------------------ | -------: | ------: | ------: | --------: |
-| (Intercept)                                 |    7.400 |   0.000 |  31.932 | 83816.233 |
-| RaceHispanic or Latinx                      |  \-0.305 |   0.883 |   0.013 |    42.397 |
-| RaceNon- Hispanic Black or African American |    0.160 |   0.942 |   0.016 |    87.540 |
-| RaceOther                                   |    0.433 |   0.874 |   0.007 |   318.372 |
+<table>
 
-##### Bivariate model 13 : total\_PSS\_score ~ b\_0 + b\_1 Age\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+50.106
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.604
+
+</td>
+
+<td style="text-align:right;">
+
+52.608
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.616
+
+</td>
+
+<td style="text-align:right;">
+
+0.543
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.809
+
+</td>
+
+<td style="text-align:right;">
+
+3.577
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceOther
+
+</td>
+
+<td style="text-align:right;">
+
+1.064
+
+</td>
+
+<td style="text-align:right;">
+
+0.779
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.366
+
+</td>
+
+<td style="text-align:right;">
+
+8.495
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 13 : MCS12 ~ b\_0 + b\_1 Age\_i
 
 ``` r
-bivariate13 = lm(total_PSS_score ~ Age, data = CodedData_VariablesofInterest)
+bivariate13 = lm(MCS12 ~ Age, data = CodedData_VariablesofInterest)
 summary(bivariate13)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ Age, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ Age, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -7.4928 -3.2455  0.5432  2.6463 10.7803 
+    ## -29.912  -6.851   3.309   9.257  20.192 
     ## 
     ## Coefficients:
     ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  7.616530   1.348216   5.649 1.18e-07 ***
-    ## Age         -0.005154   0.023359  -0.221    0.826    
+    ## (Intercept) 49.145870   3.559180  13.808   <2e-16 ***
+    ## Age          0.009129   0.061259   0.149    0.882    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.461 on 115 degrees of freedom
-    ##   (7 observations deleted due to missingness)
-    ## Multiple R-squared:  0.0004231,  Adjusted R-squared:  -0.008269 
-    ## F-statistic: 0.04868 on 1 and 115 DF,  p-value: 0.8258
+    ## Residual standard error: 11.87 on 118 degrees of freedom
+    ##   (4 observations deleted due to missingness)
+    ## Multiple R-squared:  0.0001882,  Adjusted R-squared:  -0.008285 
+    ## F-statistic: 0.02221 on 1 and 118 DF,  p-value: 0.8818
 
 ``` r
 bivariate13 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term        | estimate | p.value | Low\_CI |  High\_CI |
-| :---------- | -------: | ------: | ------: | --------: |
-| (Intercept) |    7.617 |   0.000 | 144.608 | 28539.184 |
-| Age         |  \-0.005 |   0.826 |   0.950 |     1.041 |
+<table>
 
-##### Bivariate model 14 : total\_PSS\_score ~ b\_0 + b\_1 Gender\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+49.146
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+42.170
+
+</td>
+
+<td style="text-align:right;">
+
+56.122
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Age
+
+</td>
+
+<td style="text-align:right;">
+
+0.009
+
+</td>
+
+<td style="text-align:right;">
+
+0.882
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.111
+
+</td>
+
+<td style="text-align:right;">
+
+0.129
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 14 : MCS12 ~ b\_0 + b\_1 Gender\_i
 
 ``` r
-bivariate14 = lm(total_PSS_score ~ Gender_Coded, data = CodedData_VariablesofInterest)
+bivariate14 = lm(MCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
 summary(bivariate14)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = total_PSS_score ~ Gender_Coded, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -7.6105 -2.6667  0.3333  2.3895 10.3895 
+    ## -30.152  -6.215   3.086   8.645  18.992 
     ## 
     ## Coefficients:
     ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)     5.6667     0.8983   6.308 5.21e-09 ***
-    ## Gender_Coded1   1.9439     1.0054   1.933   0.0556 .  
+    ## (Intercept)     52.224      2.313  22.581   <2e-16 ***
+    ## Gender_Coded1   -3.044      2.607  -1.168    0.245    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.401 on 117 degrees of freedom
-    ##   (5 observations deleted due to missingness)
-    ## Multiple R-squared:  0.03096,    Adjusted R-squared:  0.02268 
-    ## F-statistic: 3.738 on 1 and 117 DF,  p-value: 0.0556
+    ## Residual standard error: 11.79 on 120 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.01123,    Adjusted R-squared:  0.002994 
+    ## F-statistic: 1.363 on 1 and 120 DF,  p-value: 0.2453
 
 ``` r
 bivariate14 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term           | estimate | p.value | Low\_CI | High\_CI |
-| :------------- | -------: | ------: | ------: | -------: |
-| (Intercept)    |    5.667 |   0.000 |  49.699 | 1681.338 |
-| Gender\_Coded1 |    1.944 |   0.056 |   0.974 |   50.120 |
+<table>
 
-##### Bivariate model 15 : composite\_sf36\_score ~ b\_0 + b\_1 Gender\_i
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+52.224
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.691
+
+</td>
+
+<td style="text-align:right;">
+
+56.757
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.044
+
+</td>
+
+<td style="text-align:right;">
+
+0.245
+
+</td>
+
+<td style="text-align:right;">
+
+\-8.154
+
+</td>
+
+<td style="text-align:right;">
+
+2.066
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 15 : PCS12 ~ b\_0 + b\_1 Gender\_i
 
 ``` r
-bivariate15 = lm(composite_sf36_score ~ Gender_Coded, data = CodedData_VariablesofInterest)
+bivariate15 = lm(PCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
 summary(bivariate15)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = composite_sf36_score ~ Gender_Coded, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -65.897 -18.955  -0.182  23.776  37.943 
+    ## -27.983 -10.079   1.049  11.267  20.140 
     ## 
     ## Coefficients:
     ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)     69.231      5.205  13.301   <2e-16 ***
-    ## Gender_Coded1   -7.173      5.867  -1.223    0.224    
+    ## (Intercept)     44.189      2.402  18.397   <2e-16 ***
+    ## Gender_Coded1   -1.349      2.708  -0.498    0.619    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 26.54 on 120 degrees of freedom
+    ## Residual standard error: 12.25 on 120 degrees of freedom
     ##   (2 observations deleted due to missingness)
-    ## Multiple R-squared:  0.0123, Adjusted R-squared:  0.004072 
-    ## F-statistic: 1.495 on 1 and 120 DF,  p-value: 0.2239
+    ## Multiple R-squared:  0.002066,   Adjusted R-squared:  -0.006251 
+    ## F-statistic: 0.2484 on 1 and 120 DF,  p-value: 0.6191
 
 ``` r
 bivariate15 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = exp(estimate + 1.96*std.error),
-         Low_CI = exp(estimate - 1.96*std.error)) %>% 
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
 
-| term           | estimate | p.value |      Low\_CI |     High\_CI |
-| :------------- | -------: | ------: | -----------: | -----------: |
-| (Intercept)    |   69.231 |   0.000 | 4.326563e+25 | 3.140068e+34 |
-| Gender\_Coded1 |  \-7.173 |   0.224 | 0.000000e+00 | 7.569000e+01 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+44.189
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+39.481
+
+</td>
+
+<td style="text-align:right;">
+
+48.897
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.349
+
+</td>
+
+<td style="text-align:right;">
+
+0.619
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.657
+
+</td>
+
+<td style="text-align:right;">
+
+3.958
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 16 : MCS12 ~ b\_0 + b\_1 Education\_i
+
+``` r
+bivariate16 = lm(MCS12 ~ Education_Group, data = CodedData_VariablesofInterest)
+summary(bivariate16)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ Education_Group, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -31.638  -6.988   3.797   9.324  19.447 
+    ## 
+    ## Coefficients:
+    ##                                           Estimate Std. Error t value
+    ## (Intercept)                                 51.418      1.745  29.462
+    ## Education_GroupLess than High School        -2.288      2.385  -0.959
+    ## Education_GroupPost High School Education   -2.694      3.023  -0.891
+    ##                                           Pr(>|t|)    
+    ## (Intercept)                                 <2e-16 ***
+    ## Education_GroupLess than High School         0.339    
+    ## Education_GroupPost High School Education    0.375    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.84 on 119 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.01005,    Adjusted R-squared:  -0.006592 
+    ## F-statistic: 0.6038 on 2 and 119 DF,  p-value: 0.5484
+
+``` r
+bivariate16 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+51.418
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.998
+
+</td>
+
+<td style="text-align:right;">
+
+54.839
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupLess than High School
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.288
+
+</td>
+
+<td style="text-align:right;">
+
+0.339
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.963
+
+</td>
+
+<td style="text-align:right;">
+
+2.387
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School
+Education
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.694
+
+</td>
+
+<td style="text-align:right;">
+
+0.375
+
+</td>
+
+<td style="text-align:right;">
+
+\-8.619
+
+</td>
+
+<td style="text-align:right;">
+
+3.230
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 17 : MCS12 ~ b\_0 + b\_1 total\_PSS\_score\_i
+
+``` r
+bivariate17 = lm(MCS12 ~ total_PSS_score, data = CodedData_VariablesofInterest)
+summary(bivariate17)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ total_PSS_score, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -27.473  -5.008  -0.154   6.978  19.391 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)      62.1067     1.6202  38.334  < 2e-16 ***
+    ## total_PSS_score  -1.6736     0.1909  -8.765 1.64e-14 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 9.249 on 118 degrees of freedom
+    ##   (4 observations deleted due to missingness)
+    ## Multiple R-squared:  0.3943, Adjusted R-squared:  0.3892 
+    ## F-statistic: 76.82 on 1 and 118 DF,  p-value: 1.64e-14
+
+``` r
+bivariate17 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+62.107
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+58.931
+
+</td>
+
+<td style="text-align:right;">
+
+65.282
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_PSS\_score
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.674
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.048
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.299
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ### Checking for multicollinearity
 
 ``` r
 Correlation_Matrix = 
 CodedData_VariablesofInterest %>% 
-  select(HousingSatisfactionScore, total_PSS_score, Age, composite_sf36_score) 
+  select(HousingSatisfactionScore, total_PSS_score, Age, MCS12, PCS12) 
 ```
 
 ``` r
@@ -1551,19 +5745,1074 @@ round(CM1,2)
 ```
 
     ##                          HousingSatisfactionScore total_PSS_score   Age
-    ## HousingSatisfactionScore                     1.00           -0.30  0.29
-    ## total_PSS_score                             -0.30            1.00 -0.02
-    ## Age                                          0.29           -0.02  1.00
-    ## composite_sf36_score                         0.20           -0.55 -0.28
-    ##                          composite_sf36_score
-    ## HousingSatisfactionScore                 0.20
-    ## total_PSS_score                         -0.55
-    ## Age                                     -0.28
-    ## composite_sf36_score                     1.00
+    ## HousingSatisfactionScore                     1.00           -0.28  0.36
+    ## total_PSS_score                             -0.28            1.00 -0.02
+    ## Age                                          0.36           -0.02  1.00
+    ## MCS12                                        0.29           -0.63  0.02
+    ## PCS12                                       -0.02           -0.23 -0.42
+    ##                          MCS12 PCS12
+    ## HousingSatisfactionScore  0.29 -0.02
+    ## total_PSS_score          -0.63 -0.23
+    ## Age                       0.02 -0.42
+    ## MCS12                     1.00  0.06
+    ## PCS12                     0.06  1.00
 
 ``` r
 corrplot(CM1, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
 ```
 
-<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-52-1.png" width="90%" />
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-61-1.png" width="90%" />
+
+### Final dataset
+
+``` r
+FinalBetancesData = 
+  CodedData_VariablesofInterest %>% 
+  select(Age, Age_Category, Gender, Gender_Coded, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
+
+FinalBetancesData %>% 
+    rename(
+    Smoking_Status = Smoke,
+    Age_Group = Age_Category 
+  )
+```
+
+    ## # A tibble: 124 x 13
+    ##      Age Age_Group Gender Gender_Coded Education_Group Income_Group Race 
+    ##    <dbl> <chr>     <chr>  <fct>        <fct>           <fct>        <fct>
+    ##  1    72 65+       Female 1            High School/G.… 1            Hisp…
+    ##  2    51 45-64     Female 1            High School/G.… 1            Hisp…
+    ##  3    47 45-64     Female 1            Less than High… 1            Non-…
+    ##  4    59 45-64     Other… <NA>         High School/G.… 1            Non-…
+    ##  5    28 25-44     Female 1            High School/G.… 1            Non-…
+    ##  6    49 45-64     Female 1            Less than High… 3            Hisp…
+    ##  7    NA <NA>      Female 1            Less than High… 1            Hisp…
+    ##  8    36 25-44     Female 1            High School/G.… 1            Hisp…
+    ##  9    49 45-64     Female 1            Less than High… <NA>         Hisp…
+    ## 10    61 45-64     Male   0            Post High Scho… 2            Hisp…
+    ## # … with 114 more rows, and 6 more variables: Smoking_Status <fct>,
+    ## #   Chronic_Disease <fct>, HousingSatisfactionScore <dbl>, MCS12 <dbl>,
+    ## #   PCS12 <dbl>, total_PSS_score <dbl>
+
+### Final Analysis (Regression Models)
+
+``` r
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease, data = FinalBetancesData)
+summary(linearregression1)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ HousingSatisfactionScore + total_PSS_score + 
+    ##     Age + Income_Group + Race + Gender_Coded + Education_Group + 
+    ##     Chronic_Disease, data = FinalBetancesData)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -26.4373  -6.0826   0.4842   8.3104  27.0866 
+    ## 
+    ## Coefficients:
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 57.75364    6.70041   8.619
+    ## HousingSatisfactionScore                     0.33524    0.32843   1.021
+    ## total_PSS_score                             -0.47450    0.25973  -1.827
+    ## Age                                         -0.30660    0.06459  -4.747
+    ## Income_Group2                                4.62146    2.29360   2.015
+    ## Income_Group3                                3.85962    3.39816   1.136
+    ## RaceNon- Hispanic Black or African American -1.23430    2.77439  -0.445
+    ## RaceOther                                   -2.52145    3.91293  -0.644
+    ## Gender_Coded1                                0.71610    2.75861   0.260
+    ## Education_GroupLess than High School        -2.41525    2.49959  -0.966
+    ## Education_GroupPost High School Education    1.04356    2.98034   0.350
+    ## Chronic_Disease1                            -1.91949    2.66590  -0.720
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 9.10e-14 ***
+    ## HousingSatisfactionScore                      0.3098    
+    ## total_PSS_score                               0.0706 .  
+    ## Age                                         6.75e-06 ***
+    ## Income_Group2                                 0.0465 *  
+    ## Income_Group3                                 0.2587    
+    ## RaceNon- Hispanic Black or African American   0.6573    
+    ## RaceOther                                     0.5208    
+    ## Gender_Coded1                                 0.7957    
+    ## Education_GroupLess than High School          0.3362    
+    ## Education_GroupPost High School Education     0.7269    
+    ## Chronic_Disease1                              0.4732    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.88 on 102 degrees of freedom
+    ##   (10 observations deleted due to missingness)
+    ## Multiple R-squared:  0.3006, Adjusted R-squared:  0.2252 
+    ## F-statistic: 3.986 on 11 and 102 DF,  p-value: 7.771e-05
+
+``` r
+linearregression1 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+57.754
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+44.621
+
+</td>
+
+<td style="text-align:right;">
+
+70.886
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+0.335
+
+</td>
+
+<td style="text-align:right;">
+
+0.310
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.308
+
+</td>
+
+<td style="text-align:right;">
+
+0.979
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_PSS\_score
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.474
+
+</td>
+
+<td style="text-align:right;">
+
+0.071
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.984
+
+</td>
+
+<td style="text-align:right;">
+
+0.035
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.307
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.433
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.180
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+4.621
+
+</td>
+
+<td style="text-align:right;">
+
+0.047
+
+</td>
+
+<td style="text-align:right;">
+
+0.126
+
+</td>
+
+<td style="text-align:right;">
+
+9.117
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+3.860
+
+</td>
+
+<td style="text-align:right;">
+
+0.259
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.801
+
+</td>
+
+<td style="text-align:right;">
+
+10.520
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.234
+
+</td>
+
+<td style="text-align:right;">
+
+0.657
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.672
+
+</td>
+
+<td style="text-align:right;">
+
+4.203
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceOther
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.521
+
+</td>
+
+<td style="text-align:right;">
+
+0.521
+
+</td>
+
+<td style="text-align:right;">
+
+\-10.191
+
+</td>
+
+<td style="text-align:right;">
+
+5.148
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+0.716
+
+</td>
+
+<td style="text-align:right;">
+
+0.796
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.691
+
+</td>
+
+<td style="text-align:right;">
+
+6.123
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupLess than High School
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.415
+
+</td>
+
+<td style="text-align:right;">
+
+0.336
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.314
+
+</td>
+
+<td style="text-align:right;">
+
+2.484
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School
+Education
+
+</td>
+
+<td style="text-align:right;">
+
+1.044
+
+</td>
+
+<td style="text-align:right;">
+
+0.727
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.798
+
+</td>
+
+<td style="text-align:right;">
+
+6.885
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Chronic\_Disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.919
+
+</td>
+
+<td style="text-align:right;">
+
+0.473
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.145
+
+</td>
+
+<td style="text-align:right;">
+
+3.306
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance.
+
+``` r
+linearregression2 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease, data = FinalBetancesData)
+summary(linearregression2)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ HousingSatisfactionScore + Age + Income_Group + 
+    ##     Race + Gender_Coded + Education_Group + Chronic_Disease, 
+    ##     data = FinalBetancesData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -26.396  -5.906   0.830   8.224  25.213 
+    ## 
+    ## Coefficients:
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 43.75479    6.40979   6.826
+    ## HousingSatisfactionScore                     0.99015    0.31355   3.158
+    ## Age                                         -0.02030    0.06422  -0.316
+    ## Income_Group2                               -0.13103    2.26312  -0.058
+    ## Income_Group3                                2.63585    3.38813   0.778
+    ## RaceNon- Hispanic Black or African American -0.86504    2.77839  -0.311
+    ## RaceOther                                   -1.27085    3.89809  -0.326
+    ## Gender_Coded1                               -0.55263    2.62887  -0.210
+    ## Education_GroupLess than High School        -2.80388    2.48292  -1.129
+    ## Education_GroupPost High School Education   -1.58275    2.99027  -0.529
+    ## Chronic_Disease1                            -8.91028    2.54430  -3.502
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 5.81e-10 ***
+    ## HousingSatisfactionScore                    0.002075 ** 
+    ## Age                                         0.752526    
+    ## Income_Group2                               0.953941    
+    ## Income_Group3                               0.438339    
+    ## RaceNon- Hispanic Black or African American 0.756154    
+    ## RaceOther                                   0.745060    
+    ## Gender_Coded1                               0.833907    
+    ## Education_GroupLess than High School        0.261358    
+    ## Education_GroupPost High School Education   0.597713    
+    ## Chronic_Disease1                            0.000679 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.92 on 105 degrees of freedom
+    ##   (8 observations deleted due to missingness)
+    ## Multiple R-squared:  0.2265, Adjusted R-squared:  0.1529 
+    ## F-statistic: 3.075 on 10 and 105 DF,  p-value: 0.001828
+
+``` r
+linearregression2 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+43.755
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+31.192
+
+</td>
+
+<td style="text-align:right;">
+
+56.318
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+0.990
+
+</td>
+
+<td style="text-align:right;">
+
+0.002
+
+</td>
+
+<td style="text-align:right;">
+
+0.376
+
+</td>
+
+<td style="text-align:right;">
+
+1.605
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.020
+
+</td>
+
+<td style="text-align:right;">
+
+0.753
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.146
+
+</td>
+
+<td style="text-align:right;">
+
+0.106
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.131
+
+</td>
+
+<td style="text-align:right;">
+
+0.954
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.567
+
+</td>
+
+<td style="text-align:right;">
+
+4.305
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+2.636
+
+</td>
+
+<td style="text-align:right;">
+
+0.438
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.005
+
+</td>
+
+<td style="text-align:right;">
+
+9.277
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.865
+
+</td>
+
+<td style="text-align:right;">
+
+0.756
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.311
+
+</td>
+
+<td style="text-align:right;">
+
+4.581
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceOther
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.271
+
+</td>
+
+<td style="text-align:right;">
+
+0.745
+
+</td>
+
+<td style="text-align:right;">
+
+\-8.911
+
+</td>
+
+<td style="text-align:right;">
+
+6.369
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.553
+
+</td>
+
+<td style="text-align:right;">
+
+0.834
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.705
+
+</td>
+
+<td style="text-align:right;">
+
+4.600
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupLess than High School
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.804
+
+</td>
+
+<td style="text-align:right;">
+
+0.261
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.670
+
+</td>
+
+<td style="text-align:right;">
+
+2.063
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School
+Education
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.583
+
+</td>
+
+<td style="text-align:right;">
+
+0.598
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.444
+
+</td>
+
+<td style="text-align:right;">
+
+4.278
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Chronic\_Disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-8.910
+
+</td>
+
+<td style="text-align:right;">
+
+0.001
+
+</td>
+
+<td style="text-align:right;">
+
+\-13.897
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.923
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Housing satisfaction was signficantly associated with self-reported mental health score at the 5% level of significance. For every one unit increase in Housing Satisfaction, mental health score increased by .99 at the 5% level of significance. In addition, those with a chronic disease’s mental health score was 8.91 lower compared to those without a chronic disease at a 5% level of significance.
+
+``` r
+estimates_full = tibble(
+  outcome = c("Physical Health Score", "Mental Health Score"),
+  Estimate = c(0.335, .990),
+  pvalue = c(0.310, 0.002),
+  Low_CI = c(-0.308, 0.376),
+  High_CI = c(0.979, 1.605))
+estimates_full %>% 
+  ggplot(aes(x = Estimate, y = outcome, group = 1)) +
+  geom_vline(aes(xintercept = 0), linetype = "dashed") +
+  geom_errorbarh(aes(xmax = High_CI, xmin = Low_CI), size = 0.5, height = 0.2) +
+  geom_point(size = 3.5, color = "orange") +
+  ylab("") +
+  xlab("Estimate") +
+  ggtitle("Housing Satisfaction and estimates of select outcomes") +
+  labs(
+    caption = "Data from Smoke-free Housing Study (2019)"
+  )
+```
+
+<img src="Data-Cleaning-Coding_files/figure-gfm/unnamed-chunk-65-1.png" width="90%" />

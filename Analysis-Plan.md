@@ -6,19 +6,26 @@ Dionna Attinson
 ### Research Questions
 
 Housing is a pathway in which health disparities are created and are
-sustained over time (Swope, C. B., & Hernández, D., 2019). Due to the
-historical disenfranchisement of communities through housing policies,
-poor housing quality continues to disproportionately affect low-income
-communities of color. Inadequate housing conditions are associated with
-a myriad of negative health outcomes, including chronic disease,
-respiratory infections, injury and poor mental health (Krieger, J., &
-Higgins, D. L., 2002).
+sustained over time [(Swope, C. B., & Hernández,
+D., 2019)](https://search-proquest-com.ezproxy.cul.columbia.edu/docview/2287894207/fulltextPDF/544CD27E35ED44D2PQ/1?accountid=10226)
+. Due to the historical disenfranchisement of communities through
+housing policies, poor housing quality continues to disproportionately
+affect low-income communities of color. Inadequate housing conditions
+are associated with a myriad of negative health outcomes, including
+chronic disease, respiratory infections, injury and poor mental health
+(Krieger, J., & Higgins, D. L., 2002).
 
 As such, my research question is as follows:
 
   - Is housing quality reflected in housing satisfaction among residents
     in the South Bronx associated with self-rated psychosocial health
     and overall health status?
+
+The outcomes that will be chosen for this analysis include: `Perceived
+Stress Score` and `Overall Health Status`. The primary independent
+variable is `Housing Satisfaction Score`, with `age`, `income`, `race`,
+`Chronic Disease`, `Smoking Status` and `education` as confounders. All
+of the collected data was self-reported.
 
 ### The dataset
 
@@ -49,16 +56,25 @@ The variables chosen for the main analysis include:
   - Age (18+)
   - Gender
   - Race/Ethnicity
-  - Income (on a 1-10 scale, each number representing a range of income)
+  - Education - This represents the highest education level a
+    participant received. This variable was separated into three
+    categories: Less than High school, High school/G.E.D, Post-High
+    School Education
+  - Income - This represents the total personal income for an individual
+    per year. This variable was separated into three categories, on a
+    1-3 scale, each number representing a range of income. `1` - Total
+    personal income less than $10,000/year, `2` - Total personal income
+    between $10,000 - $24,000/year, and `3` - Total personal income
+    $25,000k + /year
   - A total housing satisfaction score
   - A perceived stress scale score (PSS-5)
   - An overall health status score (SF-36)
   - A Chronic Disease variable (if the participant identified that they
-    had a chronic condition they were coded as Yes = 1 if they did not
-    have a chronic condition, they were coded as 0), and
+    had a chronic condition they were coded as Yes = `1` if they did not
+    have a chronic condition, they were coded as `0`), and
   - A Smoke variable (if the participant identified that they currently
-    smoked, they were coded as Yes = 1, if they stated that they did not
-    smoke, they were coded as a 0)
+    smoked, they were coded as Yes = `1`, if they stated that they did
+    not smoke, they were coded as a `0`)
 
 ### Methods
 
@@ -72,6 +88,7 @@ estimate mean and standard deviation (SD) for continuous variables, or
 percentages for categorical variables. This study will use multiple
 ordinary least squares (OLS) regression models to analyze the
 associations between housing satisfaction and health outcomes. Smoking
-status, gender, age, and race will be included in the model as
-confounders. All statistical analyses will be performed by using R,
-version 3.6.1. A p-value \< 0.05 will be considered significant.
+status, chronic disease, gender, age, income, education, and race will
+be included in the model as confounders. All statistical analyses will
+be performed by using R, version 3.6.1. A p-value \< 0.05 will be
+considered significant.
