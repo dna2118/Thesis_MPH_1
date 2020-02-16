@@ -744,9 +744,9 @@ ggplot(aes(x=Smoke, y=Age)) +
 
 ```{r}
 CodedData_VariablesofInterest %>% 
-  group_by(Age_Category, Education) %>% 
+  group_by(Age_Category, Education_Group) %>% 
   drop_na() %>% 
-  ggplot(aes(x= Age_Category, fill = Education)) + geom_bar() + coord_flip() +
+  ggplot(aes(x= Age_Category, fill = Education_Group)) + geom_bar() + coord_flip() +
   labs(x = "Age Group",
       y = "Count",
       color = "Education",
@@ -1161,6 +1161,674 @@ estimates_full %>%
   xlab("Estimate") +
   ggtitle("Housing Satisfaction and estimates of select outcomes") +
   labs(
-    caption = "Data from Smoke-free Housing Study (2019)"
+    caption = "Data from Smoke-free Housing Study Betances Site (2019)"
   )
+```
+
+### Data Cleaning and Recoding (SoBRO Data)
+```{r}
+SoBROData = 
+  readxl::read_xls('./SOBRODATA.xls') %>% 
+  janitor::clean_names()
+```
+
+##### In the code chunk below, a number of variables were recoded as binary. 
+* `Smoke` was the variable that identified the smoking status of an individual. Those who responded that they smoke ANY products including marijuana, THC, hash, hookah, E-cigarettes, Cigarettes or Cigarillos were coded as `1` = Smoker. Those who responded that they did not smoke any products were coded as `0`, Non-smoker.
+* Evidence of mice/rats, cockroaches, and having a mildew odor present in the home were all coded as `1` = Yes, `0` = No.
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+        micerats = recode(micerats, 
+                          "Yes" = "1", 
+                          "No" = "0"),
+        cockroach = recode(cockroach, 
+                             "Yes" = "1", 
+                             "No" = "0"),
+        mildew = recode(mildew, 
+                            "Yes" = "1",
+                            "No" = "0"),
+        buildingillhealth = recode(buildingillhealth, 
+                                      "Yes" = "1",
+                                      "No" = "0"),
+        race = recode(race,
+                      "Hispanic or Latino" = "Hispanic or Latinx",
+                      "Other, specify:" = "Other"))
+```
+
+##### Below, I scored the Perceived Stress Scale (PSS-4) and the SF-12. The PSS coding instructions were as follows: code `0` - never, `1` - almost never, `2` - sometimes, `3` - fairly often, `4` - very often & reverse your scores for questions 4, 5, 7, and 8. On these 4 questions, change the scores to: 0 = 4, 1 = 3, 2 = 2, 3 = 1, 4 = 0. 
+
+```{r}
+##PSS Scale
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+    pss_1_coded = pss1,
+    pss_2_coded = pss2,
+    pss_3_coded = pss3,
+    pss_4_coded = pss4,
+    pss_5_coded = pss5) %>% 
+    
+  mutate(pss_1_coded = recode(pss_1_coded, 
+                        "Never" = "4",
+                        "Almost never" = "3",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "1",
+                        "Very often" = "0"), 
+         pss_2_coded = recode(pss_2_coded, 
+                        "Never" = "0",
+                        "Almost never" = "1",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "3",
+                        "Very often" = "4"),
+         pss_3_coded = recode(pss_3_coded, 
+                        "Never" = "4",
+                        "Almost never" = "3",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "1",
+                        "Very often" = "0"),
+         pss_4_coded = recode(pss_4_coded, 
+                        "Never" = "0",
+                        "Almost never" = "1",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "3",
+                        "Very often" = "4"),
+         pss_5_coded = recode(pss_5_coded, 
+                        "Never" = "0",
+                        "Almost never" = "1",
+                        "Sometimes" = "2", 
+                        "Fairly often" = "3",
+                        "Very often" = "4"),
+         gh1 = recode(gh1,
+                         "Excellent" = "1",
+                         "Very Good" = "2",
+                         "Good" = "3",
+                         "Fair" = "4",
+                         "Poor" = "5"),
+         pf02 = recode(pf02, 
+                         "Yes, limited a lot" = "1",
+                         "Yes, limited a little" = "2",
+                         "No, not limited at all" = "3"),
+         pf04 = recode(pf04, 
+                         "Yes, limited a lot" = "1",
+                         "Yes, limited a little" = "2",
+                         "No, not limited at all" = "3"),
+         rp2 = recode(rp2, 
+                         "Yes" = "1",
+                         "No" = "2"),
+         rp3 = recode(rp3, 
+                         "Yes" = "1",
+                         "No" = "2"), 
+         re2 = recode(re2, 
+                         "Yes" = "1",
+                         "No" = "2"), 
+         re3 = recode(re3, 
+                         "Yes" = "1",
+                         "No" = "2"),
+         bp2 = recode(bp2,
+                         "Not at all" = "1",
+                         "A little bit" = "2",
+                         "Moderately" = "3",
+                         "Quite a bit" = "4",
+                         "Extremely" = "5"),
+         mh3 =  recode(mh3,
+                          "All of the time" = "1",
+                          "Most of the time" = "2",
+                          "A good bit of the time" = "3",
+                          "Some of the time" = "4",
+                          "A little of the time" = "5",
+                          "None of the time" = "6"),
+         vt2 = recode(vt2,
+                          "All of the time" = "1",
+                          "Most of the time" = "2",
+                          "A good bit of the time" = "3",
+                          "Some of the time" = "4",
+                          "A little of the time" = "5",
+                          "None of the time" = "6"),
+         mh4 = recode(mh4,
+                          "All of the time" = "1",
+                          "Most of the time" = "2",
+                          "A good bit of the time" = "3",
+                          "Some of the time" = "4",
+                          "A little of the time" = "5",
+                          "None of the time" = "6"),
+         sf2 = recode(sf2,
+                         "All of the time" = "1",
+                         "Most of the time" = "2",
+                         "Some of the time" = "3",
+                         "A little of the time" = "4",
+                         "None of the time" = "5")) 
+```
+
+##### The code chunk below now represents the second step of scoring the SF-12. This requires reversing the scores of certain questions so that a higher SF-12 score means better health.
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+     gh1 = recode(gh1,
+                         "1" = "5",
+                         "2" = "4",
+                         "3" = "3",
+                         "4" = "2",
+                         "5" = "1"),
+         bp2 = recode(bp2,
+                          "1" = "6",
+                          "2" = "5",
+                          "3" = "4",
+                          "4" = "3",
+                          "5" = "2",
+                          "6" = "1"),
+         mh3 = recode(mh3,
+                          "1" = "6",
+                          "2" = "5",
+                          "3" = "4",
+                          "4" = "3",
+                          "5" = "2",
+                          "6" = "1"),
+         vt2 = recode(vt2,
+                          "1" = "6",
+                          "2" = "5",
+                          "3" = "4",
+                          "4" = "3",
+                          "5" = "2",
+                          "6" = "1"))
+```
+
+##### Next, I created dummy variables for each of the SF-12 variables.
+```{r}
+  SoBROData$pf02_1 <- as.numeric(SoBROData$pf02 == 1L) 
+  SoBROData$pf02_2 <- as.numeric(SoBROData$pf02 == 2L) 
+  SoBROData$pf04_1 <- as.numeric(SoBROData$pf04 == 1L) 
+  SoBROData$pf04_2 <- as.numeric(SoBROData$pf04 == 2L) 
+  SoBROData$rp2_1 <- as.numeric(SoBROData$rp2 == 1L) 
+  SoBROData$rp3_1 <- as.numeric(SoBROData$rp3 == 1L) 
+  SoBROData$bp2_1 <- as.numeric(SoBROData$bp2 == 1L) 
+  SoBROData$bp2_2 <- as.numeric(SoBROData$bp2 == 2L) 
+  SoBROData$bp2_3 <- as.numeric(SoBROData$bp2 == 3L) 
+  SoBROData$bp2_4 <- as.numeric(SoBROData$bp2 == 4L) 
+  SoBROData$gh1_1 <- as.numeric(SoBROData$gh1 == 1L) 
+  SoBROData$gh1_2 <- as.numeric(SoBROData$gh1 == 2L) 
+  SoBROData$gh1_3 <- as.numeric(SoBROData$gh1 == 3L) 
+  SoBROData$gh1_4 <- as.numeric(SoBROData$gh1 == 4L) 
+  SoBROData$vt2_1 <- as.numeric(SoBROData$vt2 == 1L) 
+  SoBROData$vt2_2 <- as.numeric(SoBROData$vt2 == 2L) 
+  SoBROData$vt2_3 <- as.numeric(SoBROData$vt2 == 3L) 
+  SoBROData$vt2_4 <- as.numeric(SoBROData$vt2 == 4L) 
+  SoBROData$vt2_5 <- as.numeric(SoBROData$vt2 == 5L) 
+  SoBROData$sf2_1 <- as.numeric(SoBROData$sf2 == 1L) 
+  SoBROData$sf2_2 <- as.numeric(SoBROData$sf2 == 2L) 
+  SoBROData$sf2_3 <- as.numeric(SoBROData$sf2 == 3L) 
+  SoBROData$sf2_4 <- as.numeric(SoBROData$sf2 == 4L) 
+  SoBROData$re2_1 <- as.numeric(SoBROData$re2 == 1L) 
+  SoBROData$re3_1 <- as.numeric(SoBROData$re3 == 1L) 
+  SoBROData$mh3_1 <- as.numeric(SoBROData$mh3 == 1L) 
+  SoBROData$mh3_2 <- as.numeric(SoBROData$mh3 == 2L) 
+  SoBROData$mh3_3 <- as.numeric(SoBROData$mh3 == 3L) 
+  SoBROData$mh3_4 <- as.numeric(SoBROData$mh3 == 4L) 
+  SoBROData$mh3_5 <- as.numeric(SoBROData$mh3 == 5L) 
+  SoBROData$mh4_1 <- as.numeric(SoBROData$mh4 == 1L) 
+  SoBROData$mh4_2 <- as.numeric(SoBROData$mh4 == 2L) 
+  SoBROData$mh4_3 <- as.numeric(SoBROData$mh4 == 3L) 
+  SoBROData$mh4_4 <- as.numeric(SoBROData$mh4 == 4L) 
+  SoBROData$mh4_5 <- as.numeric(SoBROData$mh4 == 5L) 
+```  
+
+##### I then created SF-12 weights and aggregates of indicator variables using physical and mental regression weights. 
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(RAWPCS12 =
+                   (-7.23216*pf02_1) + (-3.45555*pf02_2) +
+                   (-6.24397*pf04_1) + (-2.73557*pf04_2) +
+                   (-4.61617*rp2_1) + 
+                   (-5.51747*rp3_1) +
+                   (-11.25544*bp2_1) + (-8.38063*bp2_2) +
+                   (-6.50522*bp2_3) + (-3.80130*bp2_4) + (-8.37399*gh1_1) +
+                   (-5.56461*gh1_2) + (-3.02396*gh1_3) + (-1.31872*gh1_4) +
+                   (-2.44706*vt2_1) + (-2.02168*vt2_2) + (-1.6185*vt2_3) +
+                   (-1.14387*vt2_4) + (-0.42251*vt2_5) + (-0.33682*sf2_1) +
+                   (-0.94342*sf2_2) + (-0.18043*sf2_3) + (0.11038*sf2_4) +
+                   (3.04365*re2_1) + (2.32091*re3_1) + (3.46638*mh3_1) +
+                   (2.90426*mh3_2) + (2.37241*mh3_3) + (1.36689*mh3_4) +
+                   (0.66514*mh3_5) + (4.61446*mh4_1) + (3.41593*mh4_2) +
+                   (2.34247*mh4_3) + (1.28044*mh4_4) + (0.41188*mh4_5),
+
+           RAWMCS12 =
+                   (3.93115*pf02_1) + (1.8684*pf02_2) +
+                   (2.68282*pf04_1) + (1.43103*pf04_2) + (1.4406*rp2_1) +
+                   (1.66968*rp3_1) + (1.48619*bp2_1) + (1.76691*bp2_2) +
+                   (1.49384*bp2_3) + (0.90384*bp2_4) + (-1.71175*gh1_1) +
+                   (-0.16891*gh1_2) + (0.03482*gh1_3) + (-0.06064*gh1_4) +
+                   (-6.02409*vt2_1) + (-4.88962*vt2_2) + (-3.29805*vt2_3) +
+                   (-1.65178*vt2_4) + (-0.92057*vt2_5) + (-6.29724*sf2_1) +
+                   (-8.26066*sf2_2) + (-5.63286*sf2_3) + (-3.13896*sf2_4) +
+                   (-6.82672*re2_1) + (-5.69921*re3_1) + (-10.19085*mh3_1) +
+                   (-7.92717*mh3_2) + (-6.31121*mh3_3) + (-4.09842*mh3_4) +
+                   (-1.94949*mh3_5) + (-16.15395*mh4_1) + (-10.77911*mh4_2) +
+                   (-8.09914*mh4_3) + (-4.59055*mh4_4) + (-1.95934*mh4_5))
+```
+
+##### We then computed a norm-based standardization to PCS12 and MCS12.
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+  PCS12 = (RAWPCS12 + 56.57706),
+  MCS12 = (RAWMCS12 + 60.75781))
+```
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+pss_1_coded =  as.numeric(pss_1_coded),
+pss_2_coded =  as.numeric(pss_2_coded),
+pss_3_coded = as.numeric(pss_3_coded),
+pss_4_coded = as.numeric(pss_4_coded),
+pss_5_coded = as.numeric(pss_5_coded))
+```
+
+##### For the SF-12 scale, a standardized SF-12 score was created for both physical and mental health for each participant. This resulted in the variables `PCS12` and `MCS12`. The higher the SF-12 scores, the better their overall health-related quality of life.
+
+##### For the PSS scale, a total score was created from the questions which became the variable `total_PSS_score`. I then created stress categories for future categorical analysis: 
+* Scores ranging from 0-6 would be considered low stress.
+* Scores ranging from 7-13 ould be considered moderate stress.
+* Scores ranging from 14-20 would be considered high perceived stress.
+
+##### Further, several other variables were transformed. Age was transformed to a categorical variable, creating the age groups of 18-24, 25-44, 45-64, and 65+. Gender was transformed into a binary variable (0 = male, 1 = female), and a Housing Satisfaction Score was created. A higher score indicates higher overall housing satisfaction. This score was created based off of the totals of four questions: 
+* The participant's satisfaction with their apartment
+* The participant's satisfcation with their building 
+* The participant's satisfcation with their neighbhorhood
+* The participant's satisfaction with their property management 
+* The participant's satisfcation with their apartment's temperature in the summer
+* The participant's satisfaction with their apartment's temperature in the winter
+
+##### Lastly, a binary chronic disease outcome was created. If a participant responded that they or someone in their home have the following conditions, they were coded as `1`: 
+* Cancer
+* Heart Disease
+* Diabetes
+* Hypertension
+* Asthma
+* Lung Disease 
+* Anxiety
+* Depression 
+```{r}
+SoBROData = 
+SoBROData %>% 
+  mutate(
+    total_PSS_score = pss_1_coded + pss_2_coded + pss_3_coded + pss_4_coded + pss_5_coded,
+    PSS_Category = total_PSS_score, 
+    PSS_Category = 
+          case_when(PSS_Category >= 14 ~ 'High Perceived Stress',
+                    PSS_Category >= 7 ~ 'Moderate Stress',
+                    PSS_Category >= 0  ~ 'Low Stress'),
+    Age_Category = age,
+    Age_Category = 
+          case_when(Age_Category >= 65  ~ '65+',
+                    Age_Category >= 45  ~ '45-64',
+                    Age_Category >= 25 ~ '25-44',
+                    Age_Category >= 18 ~ '18-24'),
+    Gender_Coded = gender, 
+    Gender_Coded = recode(Gender_Coded, 
+                          "Male" = "0",
+                          "Female" = "1",
+                          `Other, please specify:` = "Other"),
+    AptSat_Coded = aptsat, 
+    AptSat_Coded = recode(AptSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"), 
+    BuildingSat_Coded = buildsat, 
+    BuildingSat_Coded = recode(BuildingSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+    NeighborhoodSat_Coded = neighsat, 
+    NeighborhoodSat_Coded = recode(NeighborhoodSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+   PropertyManSat_Coded = propertymansat,
+   PropertyManSat_Coded = recode(PropertyManSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+   WinTempSat_Coded = wintempsat, 
+   WinTempSat_Coded = recode(WinTempSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"), 
+   SumTempSat_Coded = sumtempsat, 
+   SumTempSat_Coded = recode(SumTempSat_Coded,
+                          "Very Dissatisfied" = "1",
+                          "Dissatisfied" = "2", 
+                          "Satisfied" = "3",
+                          "Very Satisfied" ="4"),
+   WinTempSat_Coded = as.numeric(WinTempSat_Coded),
+   SumTempSat_Coded = as.numeric(SumTempSat_Coded),
+   AptSat_Coded = as.numeric(AptSat_Coded), 
+   BuildingSat_Coded = as.numeric(BuildingSat_Coded),
+   NeighborhoodSat_Coded = as.numeric(NeighborhoodSat_Coded),
+   PropertyManSat_Coded = as.numeric(PropertyManSat_Coded))
+
+```
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+  PropertyManSat_Coded = na_mean(PropertyManSat_Coded),
+  WinTempSat_Coded = na_mean(WinTempSat_Coded),
+  HousingSatisfactionScore = AptSat_Coded + BuildingSat_Coded + NeighborhoodSat_Coded + PropertyManSat_Coded + WinTempSat_Coded + SumTempSat_Coded,
+  Satisfaction_Category = HousingSatisfactionScore,
+  Satisfaction_Category = 
+          case_when(Satisfaction_Category >= 18 ~ 'High Satisfaction',
+                    Satisfaction_Category >= 12 ~ 'Moderate Satisfaction',
+                    Satisfaction_Category >= 6  ~ 'Low Satisfaction'))
+```
+
+##### Below, I changed variables into factors and numeric values.
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+    education = as.factor(education),
+    Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
+    race = as.factor(race),
+    age = as.numeric(age),
+    income = factor(income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
+    smoking_status = factor(smoking_status, levels = c("0", "1")),
+    micerats = factor(micerats,levels = c("0","1")),
+    mildew = factor(mildew,levels = c("0","1")),
+    cockroach = factor(cockroach,levels = c("0","1")),
+    chronic_disease = factor(chronic_disease,levels = c("0","1")),
+    hiv = factor(hiv,levels = c("0","1")))
+```
+
+##### In order to collapse education categories into fewer groups, education levels were finalized into three categories: 
+* Less than high school (included those who never attended school, or did not complete a high school degree/G.E.D)
+* High school/G.E.D
+* Post High School Education (included those who attended vocational school, some college, 2-year/4-year college degree, and post graduate education)
+```{r}
+SoBROData = 
+SoBROData %>% 
+  mutate(education = as.character(education))
+```
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+  Education_Group = education, 
+  Education_Group = recode(Education_Group, 
+                    "Never Attended School" = "Less than High School",
+                    "Vocational School" = "Post High School Education",
+                    "Some College" = "Post High School Education",
+                    "2 Year Community College Degree" = "Post High School Education",
+                    "4 Year College Degree" = "Post High School Education",
+                    "Post-Graduate Degree" = "Post High School Education",
+                    "High School/Secondary School Diploma" = 	"High School/G.E.D.",
+                    "G.E.D." = "High School/G.E.D."))
+```
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(Education_Group = as.factor(Education_Group))
+```
+
+##### In order to collapse income categories into fewer groups, education levels were finalized into three categories:
+* `1` - Total personal income less than $10,000/year
+* `2` - Total personal income between $10,000 - $24,000/year
+* `3` - Total personal income $25,000k + /year
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+  Income_Group = income, 
+  Income_Group = recode(Income_Group, 
+                    "2" = "1",
+                    "3" = "1",
+                    "4" = "2",
+                    "5" = "2",
+                    "6" = "3",
+                    "7" = "3",
+                    "8" = "3",
+                    "9" = "3",
+                    "10" = "3"),
+  Income_Group = factor(Income_Group,levels= c("1","2","3")))
+```
+
+#### In order to collapse racial categories into fewer groups, race/ethnicity was finalized into three categories: 
+* Hispanic/Latinx
+* Non-Hispanic Black or African American 
+* Other (Included bi-racial/multiracial, Native American/Alaskan Native, and non-hispanic White)
+
+```{r}
+SoBROData = 
+  SoBROData %>% 
+  mutate(
+  Racial_Group = race,
+  Racial_Group = recode(Racial_Group,
+                "Native American/ Alaskan Native" = "Other",
+                "Non- Hispanic Black or African American,Hispanic or Latino,Asian or Pacific Islander,Other" = "Other",
+                "Non- Hispanic Black or African American,Hispanic or Latino" = "Other",
+                "Non- Hispanic Black or African American,Other, specify:" = "Other",
+                "Non-Hispanic White" = "Other",
+                "Non-Hispanic White,Hispanic or Latino" = "Other",
+                "Non-Hispanic White,Non- Hispanic Black or African American,Hispanic or Latino,Native American/ Alaskan Native,Asian or Pacific Islander" = "Other",
+                "Non-Hispanic White,Non- Hispanic Black or African American,Native American/ Alaskan Native,Other, specify:" = "Other",
+                "Non-Hispanic White,Non- Hispanic Black or African American,Other, specify:" = "Other",
+                
+                "Non- Hispanic Black or African American,Hispanic or Latino,Asian or Pacific Islander,Other, specify:" = "Other",
+"Non- Hispanic Black or African American,Hispanic or Latino,Other, specify:" = "Other"
+                ))
+
+```
+
+### Univariable/Descriptive Analyses
+##### The tables below provide descriptive analyses of the independent and dependent variables. 
+
+#### Outcome Variables 
+##### Overall Physical Health Status (Outcome 1)
+```{r}
+SoBROData %>% 
+  select(PCS12) %>% 
+  summary() %>% 
+  knitr::kable(col.names = c("Summary of Self-Reported Physical Health"))
+```
+
+```{r}
+SoBROData %>% 
+  group_by(PCS12, Age_Category, gender) %>% 
+  summarize(n = n()) %>% 
+    ggplot(aes(x= Age_Category, y = PCS12)) + geom_boxplot() +
+  geom_jitter() +  facet_grid(. ~ gender)
+```
+
+##### Overall Mentall Health Status (Outcome 2)
+```{r}
+SoBROData %>% 
+  select(MCS12) %>% 
+  summary() %>% 
+  knitr::kable(col.names = c("Summary of Self-Reported Mental Health"))
+```
+
+```{r}
+SoBROData %>% 
+  group_by(MCS12, Age_Category, gender) %>% 
+  summarize(n = n()) %>% 
+    ggplot(aes(x= Age_Category, y = MCS12)) + geom_boxplot() +
+  geom_jitter() +  facet_grid(. ~ gender)
+```
+
+#### Independent Variables
+```{r}
+SoBROData %>% 
+  group_by(smoking_status) %>% 
+  summarize(n=n()) %>% 
+  mutate(
+    percent = n/124*100) %>% 
+  mutate(
+    smoking_status = recode(smoking_status,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")) %>% 
+  knitr::kable(col.names=c("Smoking Status", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(Racial_Group) %>% 
+  summarize(n=n()) %>%
+   mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Race/Ethnicity", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(Age_Category) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Age Group", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(gender) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Gender", "n", "Percent(%)"), digits = 2)
+```
+
+
+```{r}
+SoBROData %>% 
+  group_by(age, gender) %>% 
+  ggplot(aes(x=gender, y=age)) + geom_violin() +
+  labs(x = "Gender",
+      y = "Age",
+      title = "Figure 1. Distribution of Age by Gender")
+```
+
+```{r}
+SoBROData %>% 
+  drop_na() %>% 
+  select(gender, age) %>% 
+  group_by(gender) %>% 
+  summarize(Mean = mean(age)) %>% 
+  knitr::kable(col.names=c("Gender", "Mean Age"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(PSS_Category) %>% 
+  summarize(n=n()) %>%
+   mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Perceived Stress Score", "n", "Percent(%)"), digits = 2)
+
+```
+
+```{r}
+SoBROData %>% 
+  group_by(Income_Group) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Income Category", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(education) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  knitr::kable(col.names=c("Education Completed", "n", "Percent(%)"), digits = 2)
+```
+
+### 2x2 Tables and Visualizations
+```{r}
+SoBROData %>% 
+  group_by(Age_Category, gender) %>% 
+  summarize(n=n()) %>%
+  pivot_wider(
+    names_from = gender,
+    values_from = n) %>% 
+  knitr::kable(col.names = c("Age Group","Female (n)", "Male (n)", "Other (n)"))
+```
+
+```{r}
+SoBROData %>%
+  group_by(Age_Category, Racial_Group) %>% 
+  summarize(n=n()) %>%
+  pivot_wider(
+    names_from = Racial_Group,
+    values_from = n
+  ) %>% 
+  knitr::kable(col.names = c("Age Group", "Hispanic or Latinx (n)", "Other (n)", "Black/African American (n)", "NA"))
+```
+
+```{r}
+SoBROData %>%
+  group_by(Racial_Group, smoking_status) %>% 
+  summarize(n=n()) %>%
+  mutate(
+    smoking_status = recode(smoking_status,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")) %>% 
+  pivot_wider(
+    names_from = Racial_Group,
+    values_from = n) %>% 
+  knitr::kable(col.names = c("Smoking Status", "Hispanic or Latinx (n)", "Other (n)", "Black/African American (n)", "N/A"))
+```
+
+```{r}
+SoBROData %>%
+  group_by(Age_Category, smoking_status) %>% 
+  summarize(n=n()) %>%
+  mutate(
+    smoking_status = recode(smoking_status,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")) %>% 
+  pivot_wider(
+    names_from = Age_Category,
+    values_from = n) %>% 
+  knitr::kable(col.names = c("Smoking Status", "18-24 (n)", "25-44 (n)", "45-64 (n)", "65+ (n)", "N/A"))
+```
+
+```{r}
+SoBROData %>% 
+  mutate(
+    smoking_status = recode(smoking_status,
+                   "0" = "Non-smoker(s)",
+                   "1" = "Smoker(s)")
+  ) %>% 
+ggplot(aes(x=smoking_status, y=age)) + 
+  geom_boxplot(outlier.shape=NA) + #avoid plotting outliers twice
+  geom_jitter(position=position_jitter(width=.1, height=0)) + 
+  labs(x = "Smoking Status",
+      y = "Age",
+      title = "Figure 4. Distribution of Age by Smoking Status")
+```
+
+```{r}
+SoBROData %>% 
+  group_by(Age_Category, Education_Group) %>% 
+  ggplot(aes(x= Age_Category, fill = Education_Group)) + geom_bar() + coord_flip() +
+  labs(x = "Age Group",
+      y = "Count",
+      color = "Education",
+      title = "Figure 5. Education by Age Group") +
+theme(legend.position = "bottom")
 ```
