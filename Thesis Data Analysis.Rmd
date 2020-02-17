@@ -463,7 +463,7 @@ CodedData_VariablesofInterest =
   CodedData_VariablesofInterest %>% 
   mutate(
     Education = as.factor(Education),
-    Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
+    Gender_Coded = as.factor(Gender_Coded),
     Race = as.factor(Race),
     Age = as.numeric(Age),
     Income = factor(Income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
@@ -478,7 +478,8 @@ CodedData_VariablesofInterest =
     micerats = factor(micerats,levels = c("0","1")),
     mildew = factor(mildew,levels = c("0","1")),
     cockroaches = factor(cockroaches,levels = c("0","1")),
-    Chronic_Disease = factor(Chronic_Disease,levels = c("0","1"))
+    Chronic_Disease = factor(Chronic_Disease,levels = c("0","1")),
+    Education = factor(Education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree"))
   )
 ```
 
@@ -512,7 +513,8 @@ CodedData_VariablesofInterest =
                     "4 Year College Degree" = "Post High School Education",
                     "Post-Graduate Degree" = "Post High School Education",
                     "High School/Secondary School Diploma" = 	"High School/G.E.D.",
-                    "G.E.D." = "High School/G.E.D."))
+                    "G.E.D." = "High School/G.E.D."),
+   Education_Group = factor(Education_Group, levels = c("Less than High School", "High School/G.E.D.", "Post High School Education")))
 ```
 
 ```{r}
@@ -1459,7 +1461,7 @@ SoBROData %>%
     total_PSS_score = pss_1_coded + pss_2_coded + pss_3_coded + pss_4_coded + pss_5_coded,
     PSS_Category = total_PSS_score, 
     PSS_Category = 
-          case_when(PSS_Category >= 14 ~ 'High Perceived Stress',
+          case_when(PSS_Category >= 14 ~ 'High Stress',
                     PSS_Category >= 7 ~ 'Moderate Stress',
                     PSS_Category >= 0  ~ 'Low Stress'),
     Age_Category = age,
@@ -1472,7 +1474,7 @@ SoBROData %>%
     Gender_Coded = recode(Gender_Coded, 
                           "Male" = "0",
                           "Female" = "1",
-                          `Other, please specify:` = "Other"),
+                          `Other, please specify:` = "2"),
     AptSat_Coded = aptsat, 
     AptSat_Coded = recode(AptSat_Coded,
                           "Very Dissatisfied" = "1",
@@ -1524,6 +1526,7 @@ SoBROData =
   mutate(
   PropertyManSat_Coded = na_mean(PropertyManSat_Coded),
   WinTempSat_Coded = na_mean(WinTempSat_Coded),
+  SumTempSat_Coded = na_mean(SumTempSat_Coded),
   HousingSatisfactionScore = AptSat_Coded + BuildingSat_Coded + NeighborhoodSat_Coded + PropertyManSat_Coded + WinTempSat_Coded + SumTempSat_Coded,
   Satisfaction_Category = HousingSatisfactionScore,
   Satisfaction_Category = 
@@ -1539,16 +1542,18 @@ SoBROData =
   SoBROData %>% 
   mutate(
     education = as.factor(education),
-    Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
+    Gender_Coded = as.factor(Gender_Coded),
     race = as.factor(race),
     age = as.numeric(age),
+    PSS_Category = factor(PSS_Category, levels = c("Low Stress", "Moderate Stress", "High Stress")),
     income = factor(income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
     smoking_status = factor(smoking_status, levels = c("0", "1")),
     micerats = factor(micerats,levels = c("0","1")),
     mildew = factor(mildew,levels = c("0","1")),
     cockroach = factor(cockroach,levels = c("0","1")),
     chronic_disease = factor(chronic_disease,levels = c("0","1")),
-    hiv = factor(hiv,levels = c("0","1")))
+    hiv = factor(hiv,levels = c("0","1")),
+    education = factor(education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree")))
 ```
 
 ##### In order to collapse education categories into fewer groups, education levels were finalized into three categories: 
@@ -1574,7 +1579,8 @@ SoBROData =
                     "4 Year College Degree" = "Post High School Education",
                     "Post-Graduate Degree" = "Post High School Education",
                     "High School/Secondary School Diploma" = 	"High School/G.E.D.",
-                    "G.E.D." = "High School/G.E.D."))
+                    "G.E.D." = "High School/G.E.D."), 
+  Education_Group = factor(Education_Group, levels = c("Less than High School", "High School/G.E.D.", "Post High School Education")))
 ```
 
 ```{r}
@@ -1722,7 +1728,6 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  drop_na() %>% 
   select(gender, age) %>% 
   group_by(gender) %>% 
   summarize(Mean = mean(age)) %>% 
@@ -1741,7 +1746,7 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(Income_Group) %>% 
+  group_by(income) %>% 
   summarize(n=n()) %>%
   mutate(
   percent = n/124*100) %>% 
@@ -1831,4 +1836,427 @@ SoBROData %>%
       color = "Education",
       title = "Figure 5. Education by Age Group") +
 theme(legend.position = "bottom")
+```
+
+### Exploratory Analyses of Relationships between Variables
+```{r}
+SoBROData%>%  
+  group_by(total_PSS_score, PCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = total_PSS_score, y = PCS12,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Perceived Stress Score",
+      y = "Overall Health Score",
+      color = "Age",
+      title = "Figure 6. Relationship between Perceived Stress and Physical Health Status") +
+      theme(legend.position = "right") 
+```
+
+```{r}
+SoBROData %>%  
+  group_by(HousingSatisfactionScore, PCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = PCS12,  color = Age_Category)) +
+  geom_point(size = 1, alpha = 0.5) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Overall Health Score",
+      color = "Age",
+      title = "Figure 7. Relationship between Housing Satisfaction and Physical Health Status") +
+      theme(legend.position = "right")
+```
+
+```{r}
+SoBROData %>%  
+  group_by(total_PSS_score, MCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = total_PSS_score, y = MCS12,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Perceived Stress Score",
+      y = "Overall Mental Health Score",
+      color = "Age",
+      title = "Figure 8. Relationship between Perceived Stress and Mental Health Status") +
+      theme(legend.position = "right") 
+```
+
+```{r}
+SoBROData %>%  
+  group_by(HousingSatisfactionScore, MCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = MCS12,  color = Age_Category)) +
+  geom_point(size = 1, alpha = 0.5) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Overall Mental Health Score",
+      color = "Age",
+      title = "Figure 9. Relationship between Housing Satisfaction and Mental Health Status") +
+      theme(legend.position = "right")
+```
+
+```{r}
+SoBROData %>%  
+  group_by(HousingSatisfactionScore, total_PSS_score, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = total_PSS_score,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Perceived Stress Score",
+      color = "Age",
+      title = "Figure 10. Relationship between Housing Satisfaction and Perceived Stress") +
+      theme(legend.position = "right")
+```
+
+### Initial bivariate analyses 
+
+##### Bivariate model 1(SOBRO) : PCS12 ~ b_0 + b_1 total_PSS_score_i 
+```{r}
+bivariateSOBRO1 = lm(PCS12 ~ total_PSS_score, data = SoBROData)
+summary(bivariateSOBRO1) 
+
+bivariateSOBRO1 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 2 : PCS12 ~ b_0 + b_1 Age_i 
+```{r}
+bivariateSOBRO2 = lm(PCS12 ~ age, data = SoBROData)
+summary(bivariateSOBRO2)
+
+bivariateSOBRO2 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 3 : PCS12 ~ b_0 + b_1 Race_i 
+```{r}
+bivariateSOBRO3 = lm(PCS12 ~ Racial_Group, data = SoBROData)
+
+bivariateSOBRO3 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 4 : PCS12 ~ b_0 + b_1 Income_i 
+```{r}
+bivariateSOBRO4 = lm(PCS12 ~ Income_Group, data = SoBROData)
+summary(bivariateSOBRO4)
+
+bivariateSOBRO4 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 5 : PCS12 ~ b_0 + b_1 Smoke_i 
+```{r}
+bivariateSOBRO5 = lm(PCS12 ~ smoking_status, data = SoBROData)
+summary(bivariateSOBRO5)
+
+bivariateSOBRO5 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 6 : PCS12 ~ b_0 + b_1 ChronicDisease_i 
+```{r}
+bivariateSOBRO6 = lm(PCS12 ~ chronic_disease, data = SoBROData)
+summary(bivariateSOBRO6)
+
+bivariateSOBRO6 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 7 : PCS12 ~ b_0 + b_1 TotalSatisfactionScore_i 
+```{r}
+bivariateSOBRO7 = lm(PCS12 ~ HousingSatisfactionScore, data = SoBROData)
+summary(bivariateSOBRO7)
+
+bivariateSOBRO7 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 7a : PCS12 ~ b_0 + b_1 Education_i 
+
+```{r}
+bivariateSOBRO7a = lm(PCS12 ~ Education_Group, data = SoBROData)
+summary(bivariateSOBRO7a)
+
+bivariateSOBRO7a %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 8 : MCS12 ~ b_0 + b_1 TotalSatisfactionScore_i 
+```{r}
+bivariateSOBRO8 = lm(MCS12 ~ HousingSatisfactionScore, data = SoBROData)
+summary(bivariateSOBRO8)
+
+bivariateSOBRO8 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 9 : MCS12 ~ b_0 + b_1 Smoke_i 
+```{r}
+bivariateSOBRO9 = lm(MCS12 ~ smoking_status, data = SoBROData)
+summary(bivariateSOBRO9)
+
+bivariateSOBRO9 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 10 : MCS12 ~ b_0 + b_1 ChronicDisease_i 
+```{r}
+bivariateSOBRO10 = lm(MCS12 ~ chronic_disease, data = SoBROData)
+summary(bivariateSOBRO10)
+
+bivariateSOBRO10 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 11 : MCS12 ~ b_0 + b_1 Income_i 
+```{r}
+bivariateSOBRO11 = lm(MCS12 ~ Income_Group, data = SoBROData)
+summary(bivariateSOBRO11)
+
+bivariateSOBRO11 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 12 : MCS12 ~ b_0 + b_1 Race_i 
+```{r}
+bivariateSOBRO12 = lm(MCS12 ~ Racial_Group, data = SoBROData)
+summary(bivariateSOBRO12) 
+
+bivariateSOBRO12 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 13 : MCS12 ~ b_0 + b_1 Age_i
+```{r}
+bivariateSOBRO13 = lm(MCS12 ~ age, data = SoBROData)
+summary(bivariateSOBRO13)
+
+bivariateSOBRO13 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 14 : MCS12 ~ b_0 + b_1 Gender_i 
+```{r}
+bivariateSOBRO14 = lm(MCS12 ~ Gender_Coded, data = SoBROData)
+summary(bivariateSOBRO14)
+
+bivariateSOBRO14 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 15 : PCS12 ~ b_0 + b_1 Gender_i 
+```{r}
+bivariateSOBRO15 = lm(PCS12 ~ Gender_Coded, data = SoBROData)
+summary(bivariateSOBRO15)
+
+bivariateSOBRO15 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 16 : MCS12 ~ b_0 + b_1 Education_i 
+```{r}
+bivariateSOBRO16 = lm(MCS12 ~ Education_Group, data = SoBROData)
+summary(bivariateSOBRO16)
+
+bivariateSOBRO16 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 17 : MCS12 ~ b_0 + b_1 total_PSS_score_i 
+```{r}
+bivariateSOBRO17 = lm(MCS12 ~ total_PSS_score, data = SoBROData)
+summary(bivariateSOBRO17)
+
+bivariateSOBRO17 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+### Checking for multicollinearity
+```{r}
+Correlation_Matrix = 
+SoBROData %>% 
+  select(HousingSatisfactionScore, total_PSS_score, age, MCS12, PCS12) 
+```
+
+```{r}
+CM1 = cor(Correlation_Matrix, use = "complete.obs")
+round(CM1,2)
+corrplot(CM1, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+
+### Final Analysis (Regression Models)
+
+```{r}
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + smoking_status, data = SoBROData)
+summary(linearregression1SOBRO)
+
+linearregression1SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+
+##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
+
+```{r}
+linearregression2SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + smoking_status, data = SoBROData)
+summary(linearregression2SOBRO)
+
+linearregression2SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Housing satisfaction was not signficantly associated with self-reported mental health scores. Those who had completed less than high school for their education, had decreased mental health scores by 7.077 compared to those who graduated high school or received their G.E.D at a 5% level of signficance. 
+
+```{r}
+library(summarytools)
+
+print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Age_Category, prop = "r"),
+      method = "render")
+
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Age_Category, prop = "r"),
+      method = "render")
+
+print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Income_Group, prop = "r"),
+      method = "render")
+
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Income_Group, prop = "r"),
+      method = "render")
+
+print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Education_Group, prop = "r"),
+      method = "render")
+
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Education_Group, prop = "r"),
+      method = "render")
+
+print(ctable(x = SoBROData$gender, y = SoBROData$Age_Category, prop = "r"),
+      method = "render")
+
+print(ctable(x = FinalBetancesData$Gender, y = FinalBetancesData$Age_Category, prop = "r"),
+      method = "render")
+
+print(ctable(x = SoBROData$Age_Category, y = SoBROData$smoking_status, prop = "r"),
+      method = "render")
+
+print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Smoke, prop = "r"),
+      method = "render")
+
+print(ctable(x = SoBROData$Age_Category, y = SoBROData$chronic_disease, prop = "r"),
+      method = "render")
+
+print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Chronic_Disease, prop = "r"),
+      method = "render")
+```
+
+```{r}
+FinalSobroData = 
+  SoBROData %>% 
+  select(age, Age_Category, gender, Gender_Coded, Education_Group, Income_Group, Racial_Group, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
 ```

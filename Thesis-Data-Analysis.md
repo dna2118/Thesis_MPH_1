@@ -456,7 +456,7 @@ CodedData_VariablesofInterest =
   CodedData_VariablesofInterest %>% 
   mutate(
     Education = as.factor(Education),
-    Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
+    Gender_Coded = as.factor(Gender_Coded),
     Race = as.factor(Race),
     Age = as.numeric(Age),
     Income = factor(Income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
@@ -471,7 +471,8 @@ CodedData_VariablesofInterest =
     micerats = factor(micerats,levels = c("0","1")),
     mildew = factor(mildew,levels = c("0","1")),
     cockroaches = factor(cockroaches,levels = c("0","1")),
-    Chronic_Disease = factor(Chronic_Disease,levels = c("0","1"))
+    Chronic_Disease = factor(Chronic_Disease,levels = c("0","1")),
+    Education = factor(Education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree"))
   )
 ```
 
@@ -512,7 +513,8 @@ CodedData_VariablesofInterest =
                     "4 Year College Degree" = "Post High School Education",
                     "Post-Graduate Degree" = "Post High School Education",
                     "High School/Secondary School Diploma" =    "High School/G.E.D.",
-                    "G.E.D." = "High School/G.E.D."))
+                    "G.E.D." = "High School/G.E.D."),
+   Education_Group = factor(Education_Group, levels = c("Less than High School", "High School/G.E.D.", "Post High School Education")))
 ```
 
 ``` r
@@ -1381,6 +1383,22 @@ Male
 <td style="text-align:right;">
 
 54.75
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Other, please specify:
+
+</td>
+
+<td style="text-align:right;">
+
+59.00
 
 </td>
 
@@ -2381,7 +2399,7 @@ NA
 
 <td style="text-align:right;">
 
-11
+12
 
 </td>
 
@@ -2614,7 +2632,7 @@ Non-smoker(s)
 
 <td style="text-align:right;">
 
-34
+35
 
 </td>
 
@@ -3933,13 +3951,13 @@ summary(bivariate7a)
     ## 
     ## Coefficients:
     ##                                           Estimate Std. Error t value
-    ## (Intercept)                                 45.612      1.773  25.722
-    ## Education_GroupLess than High School        -5.813      2.424  -2.398
-    ## Education_GroupPost High School Education   -0.325      3.071  -0.106
+    ## (Intercept)                                 39.800      1.652  24.092
+    ## Education_GroupHigh School/G.E.D.            5.813      2.424   2.398
+    ## Education_GroupPost High School Education    5.488      3.003   1.827
     ##                                           Pr(>|t|)    
     ## (Intercept)                                 <2e-16 ***
-    ## Education_GroupLess than High School         0.018 *  
-    ## Education_GroupPost High School Education    0.916    
+    ## Education_GroupHigh School/G.E.D.           0.0180 *  
+    ## Education_GroupPost High School Education   0.0701 .  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -4010,7 +4028,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-45.612
+39.800
 
 </td>
 
@@ -4022,13 +4040,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-42.137
+36.562
 
 </td>
 
 <td style="text-align:right;">
 
-49.088
+43.038
 
 </td>
 
@@ -4038,13 +4056,13 @@ High\_CI
 
 <td style="text-align:left;">
 
-Education\_GroupLess than High School
+Education\_GroupHigh School/G.E.D.
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.813
+5.813
 
 </td>
 
@@ -4056,13 +4074,13 @@ Education\_GroupLess than High School
 
 <td style="text-align:right;">
 
-\-10.563
+1.062
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.062
+10.563
 
 </td>
 
@@ -4079,25 +4097,25 @@ Education
 
 <td style="text-align:right;">
 
-\-0.325
+5.488
 
 </td>
 
 <td style="text-align:right;">
 
-0.916
+0.070
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.345
+\-0.398
 
 </td>
 
 <td style="text-align:right;">
 
-5.695
+11.374
 
 </td>
 
@@ -5100,19 +5118,20 @@ summary(bivariate14)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -30.152  -6.215   3.086   8.645  18.992 
+    ## -30.152  -6.118   2.727   8.643  18.992 
     ## 
     ## Coefficients:
-    ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)     52.224      2.313  22.581   <2e-16 ***
-    ## Gender_Coded1   -3.044      2.607  -1.168    0.245    
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)        52.224      2.313  22.581   <2e-16 ***
+    ## Gender_Coded1      -3.044      2.607  -1.168    0.245    
+    ## Gender_CodedNull    1.425     12.017   0.119    0.906    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Residual standard error: 11.79 on 120 degrees of freedom
-    ##   (2 observations deleted due to missingness)
-    ## Multiple R-squared:  0.01123,    Adjusted R-squared:  0.002994 
-    ## F-statistic: 1.363 on 1 and 120 DF,  p-value: 0.2453
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.01208,    Adjusted R-squared:  -0.004384 
+    ## F-statistic: 0.7337 on 2 and 120 DF,  p-value: 0.4823
 
 ``` r
 bivariate14 %>% 
@@ -5234,6 +5253,40 @@ Gender\_Coded1
 
 </tr>
 
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_CodedNull
+
+</td>
+
+<td style="text-align:right;">
+
+1.425
+
+</td>
+
+<td style="text-align:right;">
+
+0.906
+
+</td>
+
+<td style="text-align:right;">
+
+\-22.129
+
+</td>
+
+<td style="text-align:right;">
+
+24.978
+
+</td>
+
+</tr>
+
 </tbody>
 
 </table>
@@ -5250,20 +5303,21 @@ summary(bivariate15)
     ## lm(formula = PCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -27.983 -10.079   1.049  11.267  20.140 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -27.9833 -10.0653   0.8839  11.2198  20.1398 
     ## 
     ## Coefficients:
-    ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)     44.189      2.402  18.397   <2e-16 ***
-    ## Gender_Coded1   -1.349      2.708  -0.498    0.619    
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)        44.189      2.402  18.397   <2e-16 ***
+    ## Gender_Coded1      -1.349      2.708  -0.498    0.619    
+    ## Gender_CodedNull  -13.416     12.481  -1.075    0.285    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Residual standard error: 12.25 on 120 degrees of freedom
-    ##   (2 observations deleted due to missingness)
-    ## Multiple R-squared:  0.002066,   Adjusted R-squared:  -0.006251 
-    ## F-statistic: 0.2484 on 1 and 120 DF,  p-value: 0.6191
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.01037,    Adjusted R-squared:  -0.006124 
+    ## F-statistic: 0.6287 on 2 and 120 DF,  p-value: 0.535
 
 ``` r
 bivariate15 %>% 
@@ -5385,6 +5439,40 @@ Gender\_Coded1
 
 </tr>
 
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_CodedNull
+
+</td>
+
+<td style="text-align:right;">
+
+\-13.416
+
+</td>
+
+<td style="text-align:right;">
+
+0.285
+
+</td>
+
+<td style="text-align:right;">
+
+\-37.879
+
+</td>
+
+<td style="text-align:right;">
+
+11.048
+
+</td>
+
+</tr>
+
 </tbody>
 
 </table>
@@ -5406,13 +5494,13 @@ summary(bivariate16)
     ## 
     ## Coefficients:
     ##                                           Estimate Std. Error t value
-    ## (Intercept)                                 51.418      1.745  29.462
-    ## Education_GroupLess than High School        -2.288      2.385  -0.959
-    ## Education_GroupPost High School Education   -2.694      3.023  -0.891
+    ## (Intercept)                                49.1308     1.6259  30.218
+    ## Education_GroupHigh School/G.E.D.           2.2876     2.3852   0.959
+    ## Education_GroupPost High School Education  -0.4069     2.9555  -0.138
     ##                                           Pr(>|t|)    
     ## (Intercept)                                 <2e-16 ***
-    ## Education_GroupLess than High School         0.339    
-    ## Education_GroupPost High School Education    0.375    
+    ## Education_GroupHigh School/G.E.D.            0.339    
+    ## Education_GroupPost High School Education    0.891    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -5483,7 +5571,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-51.418
+49.131
 
 </td>
 
@@ -5495,13 +5583,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-47.998
+45.944
 
 </td>
 
 <td style="text-align:right;">
 
-54.839
+52.318
 
 </td>
 
@@ -5511,13 +5599,13 @@ High\_CI
 
 <td style="text-align:left;">
 
-Education\_GroupLess than High School
+Education\_GroupHigh School/G.E.D.
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.288
+2.288
 
 </td>
 
@@ -5529,13 +5617,13 @@ Education\_GroupLess than High School
 
 <td style="text-align:right;">
 
-\-6.963
+\-2.387
 
 </td>
 
 <td style="text-align:right;">
 
-2.387
+6.963
 
 </td>
 
@@ -5552,25 +5640,25 @@ Education
 
 <td style="text-align:right;">
 
-\-2.694
+\-0.407
 
 </td>
 
 <td style="text-align:right;">
 
-0.375
+0.891
 
 </td>
 
 <td style="text-align:right;">
 
-\-8.619
+\-6.200
 
 </td>
 
 <td style="text-align:right;">
 
-3.230
+5.386
 
 </td>
 
@@ -5784,7 +5872,7 @@ FinalBetancesData %>%
     ##  1    72 65+       Female 1            High School/G.… 1            Hisp…
     ##  2    51 45-64     Female 1            High School/G.… 1            Hisp…
     ##  3    47 45-64     Female 1            Less than High… 1            Non-…
-    ##  4    59 45-64     Other… <NA>         High School/G.… 1            Non-…
+    ##  4    59 45-64     Other… Null         High School/G.… 1            Non-…
     ##  5    28 25-44     Female 1            High School/G.… 1            Non-…
     ##  6    49 45-64     Female 1            Less than High… 3            Hisp…
     ##  7    NA <NA>      Female 1            Less than High… 1            Hisp…
@@ -5810,11 +5898,11 @@ summary(linearregression1)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -26.4373  -6.0826   0.4842   8.3104  27.0866 
+    ## -26.4373  -6.0794   0.2871   8.2915  27.0866 
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 57.75364    6.70041   8.619
+    ## (Intercept)                                 55.33839    7.37927   7.499
     ## HousingSatisfactionScore                     0.33524    0.32843   1.021
     ## total_PSS_score                             -0.47450    0.25973  -1.827
     ## Age                                         -0.30660    0.06459  -4.747
@@ -5823,11 +5911,12 @@ summary(linearregression1)
     ## RaceNon- Hispanic Black or African American -1.23430    2.77439  -0.445
     ## RaceOther                                   -2.52145    3.91293  -0.644
     ## Gender_Coded1                                0.71610    2.75861   0.260
-    ## Education_GroupLess than High School        -2.41525    2.49959  -0.966
-    ## Education_GroupPost High School Education    1.04356    2.98034   0.350
+    ## Gender_CodedNull                            -5.68578   11.70449  -0.486
+    ## Education_GroupHigh School/G.E.D.            2.41525    2.49959   0.966
+    ## Education_GroupPost High School Education    3.45882    3.10694   1.113
     ## Chronic_Disease1                            -1.91949    2.66590  -0.720
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                 9.10e-14 ***
+    ## (Intercept)                                 2.44e-11 ***
     ## HousingSatisfactionScore                      0.3098    
     ## total_PSS_score                               0.0706 .  
     ## Age                                         6.75e-06 ***
@@ -5836,16 +5925,17 @@ summary(linearregression1)
     ## RaceNon- Hispanic Black or African American   0.6573    
     ## RaceOther                                     0.5208    
     ## Gender_Coded1                                 0.7957    
-    ## Education_GroupLess than High School          0.3362    
-    ## Education_GroupPost High School Education     0.7269    
+    ## Gender_CodedNull                              0.6282    
+    ## Education_GroupHigh School/G.E.D.             0.3362    
+    ## Education_GroupPost High School Education     0.2682    
     ## Chronic_Disease1                              0.4732    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Residual standard error: 10.88 on 102 degrees of freedom
-    ##   (10 observations deleted due to missingness)
-    ## Multiple R-squared:  0.3006, Adjusted R-squared:  0.2252 
-    ## F-statistic: 3.986 on 11 and 102 DF,  p-value: 7.771e-05
+    ##   (9 observations deleted due to missingness)
+    ## Multiple R-squared:  0.3068, Adjusted R-squared:  0.2253 
+    ## F-statistic: 3.763 on 12 and 102 DF,  p-value: 9.978e-05
 
 ``` r
 linearregression1 %>% 
@@ -5909,7 +5999,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-57.754
+55.338
 
 </td>
 
@@ -5921,13 +6011,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-44.621
+40.875
 
 </td>
 
 <td style="text-align:right;">
 
-70.886
+69.802
 
 </td>
 
@@ -6209,13 +6299,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Education\_GroupLess than High School
+Gender\_CodedNull
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.415
+\-5.686
+
+</td>
+
+<td style="text-align:right;">
+
+0.628
+
+</td>
+
+<td style="text-align:right;">
+
+\-28.627
+
+</td>
+
+<td style="text-align:right;">
+
+17.255
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupHigh School/G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+2.415
 
 </td>
 
@@ -6227,13 +6351,13 @@ Education\_GroupLess than High School
 
 <td style="text-align:right;">
 
-\-7.314
+\-2.484
 
 </td>
 
 <td style="text-align:right;">
 
-2.484
+7.314
 
 </td>
 
@@ -6250,25 +6374,25 @@ Education
 
 <td style="text-align:right;">
 
-1.044
+3.459
 
 </td>
 
 <td style="text-align:right;">
 
-0.727
+0.268
 
 </td>
 
 <td style="text-align:right;">
 
-\-4.798
+\-2.631
 
 </td>
 
 <td style="text-align:right;">
 
-6.885
+9.548
 
 </td>
 
@@ -6326,12 +6450,12 @@ summary(linearregression2)
     ##     data = FinalBetancesData)
     ## 
     ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -26.396  -5.906   0.830   8.224  25.213 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -26.3962  -5.8208   0.8038   8.1782  25.2127 
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 43.75479    6.40979   6.826
+    ## (Intercept)                                 40.95091    7.05584   5.804
     ## HousingSatisfactionScore                     0.99015    0.31355   3.158
     ## Age                                         -0.02030    0.06422  -0.316
     ## Income_Group2                               -0.13103    2.26312  -0.058
@@ -6339,11 +6463,12 @@ summary(linearregression2)
     ## RaceNon- Hispanic Black or African American -0.86504    2.77839  -0.311
     ## RaceOther                                   -1.27085    3.89809  -0.326
     ## Gender_Coded1                               -0.55263    2.62887  -0.210
-    ## Education_GroupLess than High School        -2.80388    2.48292  -1.129
-    ## Education_GroupPost High School Education   -1.58275    2.99027  -0.529
+    ## Gender_CodedNull                             7.00449   11.67812   0.600
+    ## Education_GroupHigh School/G.E.D.            2.80388    2.48292   1.129
+    ## Education_GroupPost High School Education    1.22112    3.09963   0.394
     ## Chronic_Disease1                            -8.91028    2.54430  -3.502
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                 5.81e-10 ***
+    ## (Intercept)                                 6.95e-08 ***
     ## HousingSatisfactionScore                    0.002075 ** 
     ## Age                                         0.752526    
     ## Income_Group2                               0.953941    
@@ -6351,16 +6476,17 @@ summary(linearregression2)
     ## RaceNon- Hispanic Black or African American 0.756154    
     ## RaceOther                                   0.745060    
     ## Gender_Coded1                               0.833907    
-    ## Education_GroupLess than High School        0.261358    
-    ## Education_GroupPost High School Education   0.597713    
+    ## Gender_CodedNull                            0.549935    
+    ## Education_GroupHigh School/G.E.D.           0.261358    
+    ## Education_GroupPost High School Education   0.694411    
     ## Chronic_Disease1                            0.000679 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Residual standard error: 10.92 on 105 degrees of freedom
-    ##   (8 observations deleted due to missingness)
-    ## Multiple R-squared:  0.2265, Adjusted R-squared:  0.1529 
-    ## F-statistic: 3.075 on 10 and 105 DF,  p-value: 0.001828
+    ##   (7 observations deleted due to missingness)
+    ## Multiple R-squared:  0.2272, Adjusted R-squared:  0.1462 
+    ## F-statistic: 2.806 on 11 and 105 DF,  p-value: 0.003032
 
 ``` r
 linearregression2 %>% 
@@ -6424,7 +6550,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-43.755
+40.951
 
 </td>
 
@@ -6436,13 +6562,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-31.192
+27.121
 
 </td>
 
 <td style="text-align:right;">
 
-56.318
+54.780
 
 </td>
 
@@ -6690,13 +6816,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Education\_GroupLess than High School
+Gender\_CodedNull
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.804
+7.004
+
+</td>
+
+<td style="text-align:right;">
+
+0.550
+
+</td>
+
+<td style="text-align:right;">
+
+\-15.885
+
+</td>
+
+<td style="text-align:right;">
+
+29.894
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupHigh School/G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+2.804
 
 </td>
 
@@ -6708,13 +6868,13 @@ Education\_GroupLess than High School
 
 <td style="text-align:right;">
 
-\-7.670
+\-2.063
 
 </td>
 
 <td style="text-align:right;">
 
-2.063
+7.670
 
 </td>
 
@@ -6731,25 +6891,25 @@ Education
 
 <td style="text-align:right;">
 
-\-1.583
+1.221
 
 </td>
 
 <td style="text-align:right;">
 
-0.598
+0.694
 
 </td>
 
 <td style="text-align:right;">
 
-\-7.444
+\-4.854
 
 </td>
 
 <td style="text-align:right;">
 
-4.278
+7.296
 
 </td>
 
@@ -7135,7 +7295,7 @@ SoBROData %>%
     total_PSS_score = pss_1_coded + pss_2_coded + pss_3_coded + pss_4_coded + pss_5_coded,
     PSS_Category = total_PSS_score, 
     PSS_Category = 
-          case_when(PSS_Category >= 14 ~ 'High Perceived Stress',
+          case_when(PSS_Category >= 14 ~ 'High Stress',
                     PSS_Category >= 7 ~ 'Moderate Stress',
                     PSS_Category >= 0  ~ 'Low Stress'),
     Age_Category = age,
@@ -7148,7 +7308,7 @@ SoBROData %>%
     Gender_Coded = recode(Gender_Coded, 
                           "Male" = "0",
                           "Female" = "1",
-                          `Other, please specify:` = "Other"),
+                          `Other, please specify:` = "2"),
     AptSat_Coded = aptsat, 
     AptSat_Coded = recode(AptSat_Coded,
                           "Very Dissatisfied" = "1",
@@ -7199,6 +7359,7 @@ SoBROData =
   mutate(
   PropertyManSat_Coded = na_mean(PropertyManSat_Coded),
   WinTempSat_Coded = na_mean(WinTempSat_Coded),
+  SumTempSat_Coded = na_mean(SumTempSat_Coded),
   HousingSatisfactionScore = AptSat_Coded + BuildingSat_Coded + NeighborhoodSat_Coded + PropertyManSat_Coded + WinTempSat_Coded + SumTempSat_Coded,
   Satisfaction_Category = HousingSatisfactionScore,
   Satisfaction_Category = 
@@ -7214,16 +7375,18 @@ SoBROData =
   SoBROData %>% 
   mutate(
     education = as.factor(education),
-    Gender_Coded = factor(Gender_Coded, levels = c("0","1")),
+    Gender_Coded = as.factor(Gender_Coded),
     race = as.factor(race),
     age = as.numeric(age),
+    PSS_Category = factor(PSS_Category, levels = c("Low Stress", "Moderate Stress", "High Stress")),
     income = factor(income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
     smoking_status = factor(smoking_status, levels = c("0", "1")),
     micerats = factor(micerats,levels = c("0","1")),
     mildew = factor(mildew,levels = c("0","1")),
     cockroach = factor(cockroach,levels = c("0","1")),
     chronic_disease = factor(chronic_disease,levels = c("0","1")),
-    hiv = factor(hiv,levels = c("0","1")))
+    hiv = factor(hiv,levels = c("0","1")),
+    education = factor(education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree")))
 ```
 
 ##### In order to collapse education categories into fewer groups, education levels were finalized into three categories:
@@ -7256,7 +7419,8 @@ SoBROData =
                     "4 Year College Degree" = "Post High School Education",
                     "Post-Graduate Degree" = "Post High School Education",
                     "High School/Secondary School Diploma" =    "High School/G.E.D.",
-                    "G.E.D." = "High School/G.E.D."))
+                    "G.E.D." = "High School/G.E.D."), 
+  Education_Group = factor(Education_Group, levels = c("Less than High School", "High School/G.E.D.", "Post High School Education")))
 ```
 
 ``` r
@@ -8106,7 +8270,6 @@ SoBROData %>%
 
 ``` r
 SoBROData %>% 
-  drop_na() %>% 
   select(gender, age) %>% 
   group_by(gender) %>% 
   summarize(Mean = mean(age)) %>% 
@@ -8147,7 +8310,39 @@ Female
 
 <td style="text-align:right;">
 
-43
+43.99
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Male
+
+</td>
+
+<td style="text-align:right;">
+
+NA
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Other, please specify:
+
+</td>
+
+<td style="text-align:right;">
+
+35.75
 
 </td>
 
@@ -8200,28 +8395,6 @@ Percent(%)
 
 <td style="text-align:left;">
 
-High Perceived Stress
-
-</td>
-
-<td style="text-align:right;">
-
-14
-
-</td>
-
-<td style="text-align:right;">
-
-11.29
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 Low Stress
 
 </td>
@@ -8266,6 +8439,28 @@ Moderate Stress
 
 <td style="text-align:left;">
 
+High Stress
+
+</td>
+
+<td style="text-align:right;">
+
+14
+
+</td>
+
+<td style="text-align:right;">
+
+11.29
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 NA
 
 </td>
@@ -8290,7 +8485,7 @@ NA
 
 ``` r
 SoBROData %>% 
-  group_by(Income_Group) %>% 
+  group_by(income) %>% 
   summarize(n=n()) %>%
   mutate(
   percent = n/124*100) %>% 
@@ -8337,13 +8532,13 @@ Percent(%)
 
 <td style="text-align:right;">
 
-76
+23
 
 </td>
 
 <td style="text-align:right;">
 
-61.29
+18.55
 
 </td>
 
@@ -8359,13 +8554,13 @@ Percent(%)
 
 <td style="text-align:right;">
 
-48
+18
 
 </td>
 
 <td style="text-align:right;">
 
-38.71
+14.52
 
 </td>
 
@@ -8388,6 +8583,160 @@ Percent(%)
 <td style="text-align:right;">
 
 28.23
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+19
+
+</td>
+
+<td style="text-align:right;">
+
+15.32
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+29
+
+</td>
+
+<td style="text-align:right;">
+
+23.39
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+11
+
+</td>
+
+<td style="text-align:right;">
+
+8.87
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+4.03
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+7.26
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+9
+
+</td>
+
+<td style="text-align:right;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+5.65
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+10
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
 
 </td>
 
@@ -8572,28 +8921,6 @@ Less than High School
 
 <td style="text-align:left;">
 
-N/A
-
-</td>
-
-<td style="text-align:right;">
-
-3
-
-</td>
-
-<td style="text-align:right;">
-
-2.42
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 Post-Graduate Degree
 
 </td>
@@ -8651,6 +8978,28 @@ Vocational School
 <td style="text-align:right;">
 
 3.23
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2.42
 
 </td>
 
@@ -9456,3 +9805,12622 @@ theme(legend.position = "bottom")
 ```
 
 <img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-100-1.png" width="90%" />
+
+### Exploratory Analyses of Relationships between Variables
+
+``` r
+SoBROData%>%  
+  group_by(total_PSS_score, PCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = total_PSS_score, y = PCS12,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Perceived Stress Score",
+      y = "Overall Health Score",
+      color = "Age",
+      title = "Figure 6. Relationship between Perceived Stress and Physical Health Status") +
+      theme(legend.position = "right") 
+```
+
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-101-1.png" width="90%" />
+
+``` r
+SoBROData %>%  
+  group_by(HousingSatisfactionScore, PCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = PCS12,  color = Age_Category)) +
+  geom_point(size = 1, alpha = 0.5) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Overall Health Score",
+      color = "Age",
+      title = "Figure 7. Relationship between Housing Satisfaction and Physical Health Status") +
+      theme(legend.position = "right")
+```
+
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-102-1.png" width="90%" />
+
+``` r
+SoBROData %>%  
+  group_by(total_PSS_score, MCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = total_PSS_score, y = MCS12,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Perceived Stress Score",
+      y = "Overall Mental Health Score",
+      color = "Age",
+      title = "Figure 8. Relationship between Perceived Stress and Mental Health Status") +
+      theme(legend.position = "right") 
+```
+
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-103-1.png" width="90%" />
+
+``` r
+SoBROData %>%  
+  group_by(HousingSatisfactionScore, MCS12, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = MCS12,  color = Age_Category)) +
+  geom_point(size = 1, alpha = 0.5) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Overall Mental Health Score",
+      color = "Age",
+      title = "Figure 9. Relationship between Housing Satisfaction and Mental Health Status") +
+      theme(legend.position = "right")
+```
+
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-104-1.png" width="90%" />
+
+``` r
+SoBROData %>%  
+  group_by(HousingSatisfactionScore, total_PSS_score, Age_Category) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = total_PSS_score,  color = Age_Category)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Housing Satisfaction Score",
+      y = "Perceived Stress Score",
+      color = "Age",
+      title = "Figure 10. Relationship between Housing Satisfaction and Perceived Stress") +
+      theme(legend.position = "right")
+```
+
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-105-1.png" width="90%" />
+
+### Initial bivariate analyses
+
+##### Bivariate model 1(SOBRO) : PCS12 ~ b\_0 + b\_1 total\_PSS\_score\_i
+
+``` r
+bivariateSOBRO1 = lm(PCS12 ~ total_PSS_score, data = SoBROData)
+summary(bivariateSOBRO1) 
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ total_PSS_score, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -29.610  -6.466   3.041   6.613  23.814 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)      51.8609     1.4716  35.241  < 2e-16 ***
+    ## total_PSS_score  -0.5903     0.1788  -3.302  0.00116 ** 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.33 on 177 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.05802,    Adjusted R-squared:  0.0527 
+    ## F-statistic:  10.9 on 1 and 177 DF,  p-value: 0.001162
+
+``` r
+bivariateSOBRO1 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+51.861
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+48.977
+
+</td>
+
+<td style="text-align:right;">
+
+54.745
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_PSS\_score
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.590
+
+</td>
+
+<td style="text-align:right;">
+
+0.001
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.941
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.240
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 2 : PCS12 ~ b\_0 + b\_1 Age\_i
+
+``` r
+bivariateSOBRO2 = lm(PCS12 ~ age, data = SoBROData)
+summary(bivariateSOBRO2)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ age, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -28.347  -5.517   2.885   6.797  21.011 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) 59.71073    2.49904  23.893  < 2e-16 ***
+    ## age         -0.25670    0.05171  -4.965 1.62e-06 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 9.827 on 176 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.1228, Adjusted R-squared:  0.1179 
+    ## F-statistic: 24.65 on 1 and 176 DF,  p-value: 1.617e-06
+
+``` r
+bivariateSOBRO2 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+59.711
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+54.813
+
+</td>
+
+<td style="text-align:right;">
+
+64.609
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.257
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.358
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.155
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 3 : PCS12 ~ b\_0 + b\_1 Race\_i
+
+``` r
+bivariateSOBRO3 = lm(PCS12 ~ Racial_Group, data = SoBROData)
+
+bivariateSOBRO3 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+45.954
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+43.175
+
+</td>
+
+<td style="text-align:right;">
+
+48.732
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupOther
+
+</td>
+
+<td style="text-align:right;">
+
+3.439
+
+</td>
+
+<td style="text-align:right;">
+
+0.186
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.634
+
+</td>
+
+<td style="text-align:right;">
+
+8.512
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+2.257
+
+</td>
+
+<td style="text-align:right;">
+
+0.206
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.227
+
+</td>
+
+<td style="text-align:right;">
+
+5.740
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 4 : PCS12 ~ b\_0 + b\_1 Income\_i
+
+``` r
+bivariateSOBRO4 = lm(PCS12 ~ Income_Group, data = SoBROData)
+summary(bivariateSOBRO4)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ Income_Group, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -29.627  -5.233   3.844   7.655  18.655 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)     45.897      1.222  37.551   <2e-16 ***
+    ## Income_Group2    1.405      1.964   0.715    0.476    
+    ## Income_Group3    3.029      2.177   1.392    0.166    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.66 on 156 degrees of freedom
+    ##   (21 observations deleted due to missingness)
+    ## Multiple R-squared:  0.01264,    Adjusted R-squared:  -2.219e-05 
+    ## F-statistic: 0.9982 on 2 and 156 DF,  p-value: 0.3709
+
+``` r
+bivariateSOBRO4 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+45.897
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+43.501
+
+</td>
+
+<td style="text-align:right;">
+
+48.292
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+1.405
+
+</td>
+
+<td style="text-align:right;">
+
+0.476
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.446
+
+</td>
+
+<td style="text-align:right;">
+
+5.255
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+3.029
+
+</td>
+
+<td style="text-align:right;">
+
+0.166
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.237
+
+</td>
+
+<td style="text-align:right;">
+
+7.295
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 5 : PCS12 ~ b\_0 + b\_1 Smoke\_i
+
+``` r
+bivariateSOBRO5 = lm(PCS12 ~ smoking_status, data = SoBROData)
+summary(bivariateSOBRO5)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ smoking_status, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -28.476  -5.276   3.932   7.432  18.625 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)       49.376      1.147  43.040   <2e-16 ***
+    ## smoking_status1   -3.227      1.595  -2.023   0.0446 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.45 on 170 degrees of freedom
+    ##   (8 observations deleted due to missingness)
+    ## Multiple R-squared:  0.02352,    Adjusted R-squared:  0.01778 
+    ## F-statistic: 4.095 on 1 and 170 DF,  p-value: 0.04459
+
+``` r
+bivariateSOBRO5 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+49.376
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.128
+
+</td>
+
+<td style="text-align:right;">
+
+51.625
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+smoking\_status1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.227
+
+</td>
+
+<td style="text-align:right;">
+
+0.045
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.353
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.101
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 6 : PCS12 ~ b\_0 + b\_1 ChronicDisease\_i
+
+``` r
+bivariateSOBRO6 = lm(PCS12 ~ chronic_disease, data = SoBROData)
+summary(bivariateSOBRO6)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ chronic_disease, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -34.733  -4.528   2.430   6.746  21.915 
+    ## 
+    ## Coefficients:
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)        52.405      1.199  43.709  < 2e-16 ***
+    ## chronic_disease1   -7.555      1.527  -4.948 1.73e-06 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 9.959 on 178 degrees of freedom
+    ## Multiple R-squared:  0.1209, Adjusted R-squared:  0.116 
+    ## F-statistic: 24.48 on 1 and 178 DF,  p-value: 1.727e-06
+
+``` r
+bivariateSOBRO6 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+52.405
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+50.055
+
+</td>
+
+<td style="text-align:right;">
+
+54.755
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+chronic\_disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.555
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+\-10.547
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.562
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 7 : PCS12 ~ b\_0 + b\_1 TotalSatisfactionScore\_i
+
+``` r
+bivariateSOBRO7 = lm(PCS12 ~ HousingSatisfactionScore, data = SoBROData)
+summary(bivariateSOBRO7)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ HousingSatisfactionScore, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -30.133  -6.206   4.513   7.465  20.147 
+    ## 
+    ## Coefficients:
+    ##                          Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)              46.94677    4.07645  11.517   <2e-16 ***
+    ## HousingSatisfactionScore  0.04772    0.23196   0.206    0.837    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.66 on 176 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.0002404,  Adjusted R-squared:  -0.00544 
+    ## F-statistic: 0.04231 on 1 and 176 DF,  p-value: 0.8373
+
+``` r
+bivariateSOBRO7 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+46.947
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+38.957
+
+</td>
+
+<td style="text-align:right;">
+
+54.937
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+0.048
+
+</td>
+
+<td style="text-align:right;">
+
+0.837
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.407
+
+</td>
+
+<td style="text-align:right;">
+
+0.502
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 7a : PCS12 ~ b\_0 + b\_1 Education\_i
+
+``` r
+bivariateSOBRO7a = lm(PCS12 ~ Education_Group, data = SoBROData)
+summary(bivariateSOBRO7a)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ Education_Group, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -30.149  -5.605   3.809   6.976  18.553 
+    ## 
+    ## Coefficients:
+    ##                                           Estimate Std. Error t value
+    ## (Intercept)                                 42.130      1.622  25.975
+    ## Education_GroupHigh School/G.E.D.            6.795      2.068   3.286
+    ## Education_GroupPost High School Education    7.318      2.018   3.626
+    ##                                           Pr(>|t|)    
+    ## (Intercept)                                < 2e-16 ***
+    ## Education_GroupHigh School/G.E.D.         0.001228 ** 
+    ## Education_GroupPost High School Education 0.000377 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.26 on 174 degrees of freedom
+    ##   (3 observations deleted due to missingness)
+    ## Multiple R-squared:  0.07844,    Adjusted R-squared:  0.06784 
+    ## F-statistic: 7.405 on 2 and 174 DF,  p-value: 0.0008199
+
+``` r
+bivariateSOBRO7a %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+42.130
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+38.951
+
+</td>
+
+<td style="text-align:right;">
+
+45.309
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupHigh School/G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+6.795
+
+</td>
+
+<td style="text-align:right;">
+
+0.001
+
+</td>
+
+<td style="text-align:right;">
+
+2.742
+
+</td>
+
+<td style="text-align:right;">
+
+10.847
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School Education
+
+</td>
+
+<td style="text-align:right;">
+
+7.318
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+3.363
+
+</td>
+
+<td style="text-align:right;">
+
+11.273
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 8 : MCS12 ~ b\_0 + b\_1 TotalSatisfactionScore\_i
+
+``` r
+bivariateSOBRO8 = lm(MCS12 ~ HousingSatisfactionScore, data = SoBROData)
+summary(bivariateSOBRO8)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ HousingSatisfactionScore, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -35.856  -6.008   3.384   9.013  18.248 
+    ## 
+    ## Coefficients:
+    ##                          Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)               44.1657     4.3954  10.048   <2e-16 ***
+    ## HousingSatisfactionScore   0.3457     0.2501   1.382    0.169    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.5 on 176 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.01074,    Adjusted R-squared:  0.005117 
+    ## F-statistic:  1.91 on 1 and 176 DF,  p-value: 0.1687
+
+``` r
+bivariateSOBRO8 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+44.166
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+35.551
+
+</td>
+
+<td style="text-align:right;">
+
+52.781
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+0.346
+
+</td>
+
+<td style="text-align:right;">
+
+0.169
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.145
+
+</td>
+
+<td style="text-align:right;">
+
+0.836
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 9 : MCS12 ~ b\_0 + b\_1 Smoke\_i
+
+``` r
+bivariateSOBRO9 = lm(MCS12 ~ smoking_status, data = SoBROData)
+summary(bivariateSOBRO9)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ smoking_status, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -39.551  -5.237   3.648   8.704  18.963 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)       52.009      1.241  41.897   <2e-16 ***
+    ## smoking_status1   -3.027      1.726  -1.754   0.0812 .  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.31 on 170 degrees of freedom
+    ##   (8 observations deleted due to missingness)
+    ## Multiple R-squared:  0.01778,    Adjusted R-squared:  0.012 
+    ## F-statistic: 3.077 on 1 and 170 DF,  p-value: 0.08122
+
+``` r
+bivariateSOBRO9 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+52.009
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+49.576
+
+</td>
+
+<td style="text-align:right;">
+
+54.442
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+smoking\_status1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.027
+
+</td>
+
+<td style="text-align:right;">
+
+0.081
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.409
+
+</td>
+
+<td style="text-align:right;">
+
+0.355
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 10 : MCS12 ~ b\_0 + b\_1 ChronicDisease\_i
+
+``` r
+bivariateSOBRO10 = lm(MCS12 ~ chronic_disease, data = SoBROData)
+summary(bivariateSOBRO10)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ chronic_disease, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -36.570  -6.457   3.770   8.290  15.929 
+    ## 
+    ## Coefficients:
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)        52.468      1.370  38.294   <2e-16 ***
+    ## chronic_disease1   -3.690      1.745  -2.115   0.0359 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.38 on 178 degrees of freedom
+    ## Multiple R-squared:  0.02451,    Adjusted R-squared:  0.01902 
+    ## F-statistic: 4.472 on 1 and 178 DF,  p-value: 0.03586
+
+``` r
+bivariateSOBRO10 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+52.468
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+49.782
+
+</td>
+
+<td style="text-align:right;">
+
+55.153
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+chronic\_disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.690
+
+</td>
+
+<td style="text-align:right;">
+
+0.036
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.109
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.270
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 11 : MCS12 ~ b\_0 + b\_1 Income\_i
+
+``` r
+bivariateSOBRO11 = lm(MCS12 ~ Income_Group, data = SoBROData)
+summary(bivariateSOBRO11)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ Income_Group, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -36.517  -6.462   3.086   7.472  18.970 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)     48.975      1.287  38.056   <2e-16 ***
+    ## Income_Group2   -1.486      2.068  -0.718   0.4737    
+    ## Income_Group3    5.461      2.292   2.383   0.0184 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.22 on 156 degrees of freedom
+    ##   (21 observations deleted due to missingness)
+    ## Multiple R-squared:  0.05119,    Adjusted R-squared:  0.03902 
+    ## F-statistic: 4.208 on 2 and 156 DF,  p-value: 0.0166
+
+``` r
+bivariateSOBRO11 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+48.975
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+46.453
+
+</td>
+
+<td style="text-align:right;">
+
+51.498
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.486
+
+</td>
+
+<td style="text-align:right;">
+
+0.474
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.540
+
+</td>
+
+<td style="text-align:right;">
+
+2.568
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+5.461
+
+</td>
+
+<td style="text-align:right;">
+
+0.018
+
+</td>
+
+<td style="text-align:right;">
+
+0.969
+
+</td>
+
+<td style="text-align:right;">
+
+9.953
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 12 : MCS12 ~ b\_0 + b\_1 Race\_i
+
+``` r
+bivariateSOBRO12 = lm(MCS12 ~ Racial_Group, data = SoBROData)
+summary(bivariateSOBRO12) 
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ Racial_Group, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -38.674  -5.594   3.627   8.158  18.991 
+    ## 
+    ## Coefficients:
+    ##                                                     Estimate Std. Error
+    ## (Intercept)                                           51.132      1.538
+    ## Racial_GroupOther                                      1.384      2.808
+    ## Racial_GroupNon- Hispanic Black or African American   -2.178      1.928
+    ##                                                     t value Pr(>|t|)    
+    ## (Intercept)                                          33.240   <2e-16 ***
+    ## Racial_GroupOther                                     0.493    0.623    
+    ## Racial_GroupNon- Hispanic Black or African American  -1.129    0.260    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.51 on 175 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.01396,    Adjusted R-squared:  0.002693 
+    ## F-statistic: 1.239 on 2 and 175 DF,  p-value: 0.2922
+
+``` r
+bivariateSOBRO12 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+51.132
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+48.117
+
+</td>
+
+<td style="text-align:right;">
+
+54.147
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupOther
+
+</td>
+
+<td style="text-align:right;">
+
+1.384
+
+</td>
+
+<td style="text-align:right;">
+
+0.623
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.120
+
+</td>
+
+<td style="text-align:right;">
+
+6.889
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.178
+
+</td>
+
+<td style="text-align:right;">
+
+0.260
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.957
+
+</td>
+
+<td style="text-align:right;">
+
+1.602
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 13 : MCS12 ~ b\_0 + b\_1 Age\_i
+
+``` r
+bivariateSOBRO13 = lm(MCS12 ~ age, data = SoBROData)
+summary(bivariateSOBRO13)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ age, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -36.015  -5.800   2.976   8.219  17.080 
+    ## 
+    ## Coefficients:
+    ##             Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept) 55.94144    2.90094  19.284   <2e-16 ***
+    ## age         -0.12659    0.06002  -2.109   0.0364 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.41 on 176 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.02465,    Adjusted R-squared:  0.01911 
+    ## F-statistic: 4.448 on 1 and 176 DF,  p-value: 0.03635
+
+``` r
+bivariateSOBRO13 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+55.941
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+50.256
+
+</td>
+
+<td style="text-align:right;">
+
+61.627
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.127
+
+</td>
+
+<td style="text-align:right;">
+
+0.036
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.244
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.009
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 14 : MCS12 ~ b\_0 + b\_1 Gender\_i
+
+``` r
+bivariateSOBRO14 = lm(MCS12 ~ Gender_Coded, data = SoBROData)
+summary(bivariateSOBRO14)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ Gender_Coded, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -37.957  -5.685   3.154   9.217  17.529 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    49.6503     1.3789  36.006   <2e-16 ***
+    ## Gender_Coded1   0.7652     1.7768   0.431    0.667    
+    ## Gender_Coded2   4.1297     5.9310   0.696    0.487    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.54 on 177 degrees of freedom
+    ## Multiple R-squared:  0.003272,   Adjusted R-squared:  -0.007991 
+    ## F-statistic: 0.2905 on 2 and 177 DF,  p-value: 0.7482
+
+``` r
+bivariateSOBRO14 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+49.650
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+46.948
+
+</td>
+
+<td style="text-align:right;">
+
+52.353
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+0.765
+
+</td>
+
+<td style="text-align:right;">
+
+0.667
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.717
+
+</td>
+
+<td style="text-align:right;">
+
+4.248
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded2
+
+</td>
+
+<td style="text-align:right;">
+
+4.130
+
+</td>
+
+<td style="text-align:right;">
+
+0.487
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.495
+
+</td>
+
+<td style="text-align:right;">
+
+15.755
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 15 : PCS12 ~ b\_0 + b\_1 Gender\_i
+
+``` r
+bivariateSOBRO15 = lm(PCS12 ~ Gender_Coded, data = SoBROData)
+summary(bivariateSOBRO15)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ Gender_Coded, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -31.057  -6.069   3.801   7.847  19.923 
+    ## 
+    ## Coefficients:
+    ##               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)     48.730      1.262   38.60   <2e-16 ***
+    ## Gender_Coded1   -1.887      1.627   -1.16    0.248    
+    ## Gender_Coded2    5.753      5.430    1.06    0.291    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.56 on 177 degrees of freedom
+    ## Multiple R-squared:  0.01671,    Adjusted R-squared:  0.005604 
+    ## F-statistic: 1.504 on 2 and 177 DF,  p-value: 0.225
+
+``` r
+bivariateSOBRO15 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+48.730
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+46.255
+
+</td>
+
+<td style="text-align:right;">
+
+51.204
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.887
+
+</td>
+
+<td style="text-align:right;">
+
+0.248
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.075
+
+</td>
+
+<td style="text-align:right;">
+
+1.302
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded2
+
+</td>
+
+<td style="text-align:right;">
+
+5.753
+
+</td>
+
+<td style="text-align:right;">
+
+0.291
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.890
+
+</td>
+
+<td style="text-align:right;">
+
+16.397
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 16 : MCS12 ~ b\_0 + b\_1 Education\_i
+
+``` r
+bivariateSOBRO16 = lm(MCS12 ~ Education_Group, data = SoBROData)
+summary(bivariateSOBRO16)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ Education_Group, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -35.545  -6.086   3.003   8.215  17.384 
+    ## 
+    ## Coefficients:
+    ##                                           Estimate Std. Error t value
+    ## (Intercept)                                 45.886      1.789  25.645
+    ## Education_GroupHigh School/G.E.D.            4.004      2.281   1.756
+    ## Education_GroupPost High School Education    6.656      2.226   2.990
+    ##                                           Pr(>|t|)    
+    ## (Intercept)                                < 2e-16 ***
+    ## Education_GroupHigh School/G.E.D.          0.08093 .  
+    ## Education_GroupPost High School Education  0.00319 ** 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.32 on 174 degrees of freedom
+    ##   (3 observations deleted due to missingness)
+    ## Multiple R-squared:  0.04901,    Adjusted R-squared:  0.03808 
+    ## F-statistic: 4.484 on 2 and 174 DF,  p-value: 0.01262
+
+``` r
+bivariateSOBRO16 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+45.886
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+42.379
+
+</td>
+
+<td style="text-align:right;">
+
+49.393
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupHigh School/G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+4.004
+
+</td>
+
+<td style="text-align:right;">
+
+0.081
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.466
+
+</td>
+
+<td style="text-align:right;">
+
+8.475
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School Education
+
+</td>
+
+<td style="text-align:right;">
+
+6.656
+
+</td>
+
+<td style="text-align:right;">
+
+0.003
+
+</td>
+
+<td style="text-align:right;">
+
+2.293
+
+</td>
+
+<td style="text-align:right;">
+
+11.019
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 17 : MCS12 ~ b\_0 + b\_1 total\_PSS\_score\_i
+
+``` r
+bivariateSOBRO17 = lm(MCS12 ~ total_PSS_score, data = SoBROData)
+summary(bivariateSOBRO17)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ total_PSS_score, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -26.204  -5.373   1.045   5.351  20.065 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)      61.7388     1.2883   47.92   <2e-16 ***
+    ## total_PSS_score  -1.6522     0.1565  -10.55   <2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 9.048 on 177 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.3863, Adjusted R-squared:  0.3828 
+    ## F-statistic: 111.4 on 1 and 177 DF,  p-value: < 2.2e-16
+
+``` r
+bivariateSOBRO17 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+61.739
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+59.214
+
+</td>
+
+<td style="text-align:right;">
+
+64.264
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_PSS\_score
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.652
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.959
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.345
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+### Checking for multicollinearity
+
+``` r
+Correlation_Matrix = 
+SoBROData %>% 
+  select(HousingSatisfactionScore, total_PSS_score, age, MCS12, PCS12) 
+```
+
+``` r
+CM1 = cor(Correlation_Matrix, use = "complete.obs")
+round(CM1,2)
+```
+
+    ##                          HousingSatisfactionScore total_PSS_score   age
+    ## HousingSatisfactionScore                     1.00           -0.10 -0.12
+    ## total_PSS_score                             -0.10            1.00  0.20
+    ## age                                         -0.12            0.20  1.00
+    ## MCS12                                        0.11           -0.62 -0.17
+    ## PCS12                                        0.01           -0.24 -0.36
+    ##                          MCS12 PCS12
+    ## HousingSatisfactionScore  0.11  0.01
+    ## total_PSS_score          -0.62 -0.24
+    ## age                      -0.17 -0.36
+    ## MCS12                     1.00  0.14
+    ## PCS12                     0.14  1.00
+
+``` r
+corrplot(CM1, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-125-1.png" width="90%" />
+
+### Final Analysis (Regression Models)
+
+``` r
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + smoking_status, data = SoBROData)
+summary(linearregression1SOBRO)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ HousingSatisfactionScore + total_PSS_score + 
+    ##     age + Income_Group + Racial_Group + Gender_Coded + Education_Group + 
+    ##     chronic_disease + smoking_status, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -27.979  -4.956   1.700   5.611  20.146 
+    ## 
+    ## Coefficients:
+    ##                                                     Estimate Std. Error
+    ## (Intercept)                                         65.61718    6.64870
+    ## HousingSatisfactionScore                            -0.04702    0.24627
+    ## total_PSS_score                                     -0.38001    0.18928
+    ## age                                                 -0.21816    0.06102
+    ## Income_Group2                                       -0.11736    1.96258
+    ## Income_Group3                                       -2.12288    2.37423
+    ## Racial_GroupOther                                    1.12159    2.58846
+    ## Racial_GroupNon- Hispanic Black or African American -1.25980    1.75221
+    ## Gender_Coded1                                       -3.93216    1.74332
+    ## Gender_Coded2                                       -0.91236    5.68387
+    ## Education_GroupHigh School/G.E.D.                    4.86364    2.10395
+    ## Education_GroupPost High School Education            3.57515    2.44211
+    ## chronic_disease1                                    -4.43204    1.70098
+    ## smoking_status1                                     -3.32063    1.69116
+    ##                                                     t value Pr(>|t|)    
+    ## (Intercept)                                           9.869  < 2e-16 ***
+    ## HousingSatisfactionScore                             -0.191 0.848871    
+    ## total_PSS_score                                      -2.008 0.046705 *  
+    ## age                                                  -3.575 0.000489 ***
+    ## Income_Group2                                        -0.060 0.952406    
+    ## Income_Group3                                        -0.894 0.372864    
+    ## Racial_GroupOther                                     0.433 0.665494    
+    ## Racial_GroupNon- Hispanic Black or African American  -0.719 0.473416    
+    ## Gender_Coded1                                        -2.256 0.025732 *  
+    ## Gender_Coded2                                        -0.161 0.872717    
+    ## Education_GroupHigh School/G.E.D.                     2.312 0.022333 *  
+    ## Education_GroupPost High School Education             1.464 0.145565    
+    ## chronic_disease1                                     -2.606 0.010217 *  
+    ## smoking_status1                                      -1.964 0.051673 .  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 9.263 on 133 degrees of freedom
+    ##   (33 observations deleted due to missingness)
+    ## Multiple R-squared:  0.3082, Adjusted R-squared:  0.2405 
+    ## F-statistic: 4.557 on 13 and 133 DF,  p-value: 2.052e-06
+
+``` r
+linearregression1SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+65.617
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+52.586
+
+</td>
+
+<td style="text-align:right;">
+
+78.649
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.047
+
+</td>
+
+<td style="text-align:right;">
+
+0.849
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.530
+
+</td>
+
+<td style="text-align:right;">
+
+0.436
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_PSS\_score
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.380
+
+</td>
+
+<td style="text-align:right;">
+
+0.047
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.751
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.009
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.218
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.338
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.099
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.117
+
+</td>
+
+<td style="text-align:right;">
+
+0.952
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.964
+
+</td>
+
+<td style="text-align:right;">
+
+3.729
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.123
+
+</td>
+
+<td style="text-align:right;">
+
+0.373
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.776
+
+</td>
+
+<td style="text-align:right;">
+
+2.531
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupOther
+
+</td>
+
+<td style="text-align:right;">
+
+1.122
+
+</td>
+
+<td style="text-align:right;">
+
+0.665
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.952
+
+</td>
+
+<td style="text-align:right;">
+
+6.195
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.260
+
+</td>
+
+<td style="text-align:right;">
+
+0.473
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.694
+
+</td>
+
+<td style="text-align:right;">
+
+2.175
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.932
+
+</td>
+
+<td style="text-align:right;">
+
+0.026
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.349
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.515
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded2
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.912
+
+</td>
+
+<td style="text-align:right;">
+
+0.873
+
+</td>
+
+<td style="text-align:right;">
+
+\-12.053
+
+</td>
+
+<td style="text-align:right;">
+
+10.228
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupHigh School/G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+4.864
+
+</td>
+
+<td style="text-align:right;">
+
+0.022
+
+</td>
+
+<td style="text-align:right;">
+
+0.740
+
+</td>
+
+<td style="text-align:right;">
+
+8.987
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School
+Education
+
+</td>
+
+<td style="text-align:right;">
+
+3.575
+
+</td>
+
+<td style="text-align:right;">
+
+0.146
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.211
+
+</td>
+
+<td style="text-align:right;">
+
+8.362
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+chronic\_disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.432
+
+</td>
+
+<td style="text-align:right;">
+
+0.010
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.766
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.098
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+smoking\_status1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.321
+
+</td>
+
+<td style="text-align:right;">
+
+0.052
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.635
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.006
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
+
+``` r
+linearregression2SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + smoking_status, data = SoBROData)
+summary(linearregression2SOBRO)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ HousingSatisfactionScore + age + Income_Group + 
+    ##     Racial_Group + Gender_Coded + Education_Group + chronic_disease + 
+    ##     smoking_status, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -34.498  -6.962   2.787   7.225  17.181 
+    ## 
+    ## Coefficients:
+    ##                                                     Estimate Std. Error
+    ## (Intercept)                                         42.26217    7.55889
+    ## HousingSatisfactionScore                             0.63910    0.28806
+    ## age                                                 -0.06529    0.07279
+    ## Income_Group2                                       -2.16005    2.34081
+    ## Income_Group3                                        2.16378    2.81045
+    ## Racial_GroupOther                                   -0.88382    3.08690
+    ## Racial_GroupNon- Hispanic Black or African American -3.26014    2.08079
+    ## Gender_Coded1                                       -0.14892    2.07556
+    ## Gender_Coded2                                       -0.77257    6.80693
+    ## Education_GroupHigh School/G.E.D.                    4.31868    2.49185
+    ## Education_GroupPost High School Education            6.05754    2.84016
+    ## chronic_disease1                                    -2.35754    2.03015
+    ## smoking_status1                                     -1.55580    2.01190
+    ##                                                     t value Pr(>|t|)    
+    ## (Intercept)                                           5.591  1.2e-07 ***
+    ## HousingSatisfactionScore                              2.219   0.0282 *  
+    ## age                                                  -0.897   0.3713    
+    ## Income_Group2                                        -0.923   0.3578    
+    ## Income_Group3                                         0.770   0.4427    
+    ## Racial_GroupOther                                    -0.286   0.7751    
+    ## Racial_GroupNon- Hispanic Black or African American  -1.567   0.1195    
+    ## Gender_Coded1                                        -0.072   0.9429    
+    ## Gender_Coded2                                        -0.113   0.9098    
+    ## Education_GroupHigh School/G.E.D.                     1.733   0.0854 .  
+    ## Education_GroupPost High School Education             2.133   0.0347 *  
+    ## chronic_disease1                                     -1.161   0.2476    
+    ## smoking_status1                                      -0.773   0.4407    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.11 on 135 degrees of freedom
+    ##   (32 observations deleted due to missingness)
+    ## Multiple R-squared:  0.1385, Adjusted R-squared:  0.06194 
+    ## F-statistic: 1.809 on 12 and 135 DF,  p-value: 0.05249
+
+``` r
+linearregression2SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+42.262
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+27.447
+
+</td>
+
+<td style="text-align:right;">
+
+57.078
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+HousingSatisfactionScore
+
+</td>
+
+<td style="text-align:right;">
+
+0.639
+
+</td>
+
+<td style="text-align:right;">
+
+0.028
+
+</td>
+
+<td style="text-align:right;">
+
+0.075
+
+</td>
+
+<td style="text-align:right;">
+
+1.204
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.065
+
+</td>
+
+<td style="text-align:right;">
+
+0.371
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.208
+
+</td>
+
+<td style="text-align:right;">
+
+0.077
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group2
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.160
+
+</td>
+
+<td style="text-align:right;">
+
+0.358
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.748
+
+</td>
+
+<td style="text-align:right;">
+
+2.428
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Income\_Group3
+
+</td>
+
+<td style="text-align:right;">
+
+2.164
+
+</td>
+
+<td style="text-align:right;">
+
+0.443
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.345
+
+</td>
+
+<td style="text-align:right;">
+
+7.672
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupOther
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.884
+
+</td>
+
+<td style="text-align:right;">
+
+0.775
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.934
+
+</td>
+
+<td style="text-align:right;">
+
+5.167
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Racial\_GroupNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.260
+
+</td>
+
+<td style="text-align:right;">
+
+0.120
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.338
+
+</td>
+
+<td style="text-align:right;">
+
+0.818
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded1
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.149
+
+</td>
+
+<td style="text-align:right;">
+
+0.943
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.217
+
+</td>
+
+<td style="text-align:right;">
+
+3.919
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Gender\_Coded2
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.773
+
+</td>
+
+<td style="text-align:right;">
+
+0.910
+
+</td>
+
+<td style="text-align:right;">
+
+\-14.114
+
+</td>
+
+<td style="text-align:right;">
+
+12.569
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupHigh School/G.E.D.
+
+</td>
+
+<td style="text-align:right;">
+
+4.319
+
+</td>
+
+<td style="text-align:right;">
+
+0.085
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.565
+
+</td>
+
+<td style="text-align:right;">
+
+9.203
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Education\_GroupPost High School
+Education
+
+</td>
+
+<td style="text-align:right;">
+
+6.058
+
+</td>
+
+<td style="text-align:right;">
+
+0.035
+
+</td>
+
+<td style="text-align:right;">
+
+0.491
+
+</td>
+
+<td style="text-align:right;">
+
+11.624
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+chronic\_disease1
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.358
+
+</td>
+
+<td style="text-align:right;">
+
+0.248
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.337
+
+</td>
+
+<td style="text-align:right;">
+
+1.622
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+smoking\_status1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.556
+
+</td>
+
+<td style="text-align:right;">
+
+0.441
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.499
+
+</td>
+
+<td style="text-align:right;">
+
+2.388
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Housing satisfaction was not signficantly associated with self-reported mental health scores. Those who had completed less than high school for their education, had decreased mental health scores by 7.077 compared to those who graduated high school or received their G.E.D at a 5% level of signficance.
+
+``` r
+library(summarytools)
+```
+
+    ## Registered S3 method overwritten by 'pryr':
+    ##   method      from
+    ##   print.bytes Rcpp
+
+    ## 
+    ## Attaching package: 'summarytools'
+
+    ## The following object is masked from 'package:tibble':
+    ## 
+    ##     view
+
+``` r
+print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Age_Category, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Racial\_Group \* Age\_Category
+
+</h4>
+
+<strong>Data Frame</strong>: SoBROData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="20" align="center" class="st-protect-top-border">
+
+Age\_Category
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Racial\_Group</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+18-24
+
+</th>
+
+<th colspan="4" align="center">
+
+25-44
+
+</th>
+
+<th colspan="4" align="center">
+
+45-64
+
+</th>
+
+<th colspan="4" align="center">
+
+65+
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Hispanic or
+Latinx</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+7.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+17
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+30.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+26
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+46.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+14.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+56
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Non- Hispanic Black or African
+American</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+6.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+37
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+46
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+46.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+8.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+98
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+6.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+66
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+82
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+10.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+180
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Age_Category, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Race \* Age\_Category
+
+</h4>
+
+<strong>Data Frame</strong>: FinalBetancesData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="20" align="center" class="st-protect-top-border">
+
+Age\_Category
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Race</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+18-24
+
+</th>
+
+<th colspan="4" align="center">
+
+25-44
+
+</th>
+
+<th colspan="4" align="center">
+
+45-64
+
+</th>
+
+<th colspan="4" align="center">
+
+65+
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Hispanic or
+Latinx</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+5.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+14
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+16.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+28
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+32.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+38
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+43.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+2.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+87
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Non- Hispanic Black or African
+American</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+7.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+26.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+13
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+15.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+26
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+9.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+5.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+25
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+20.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+47
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+43
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+34.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+124
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Income_Group, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Racial\_Group \* Income\_Group
+
+</h4>
+
+<strong>Data Frame</strong>: SoBROData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="16" align="center" class="st-protect-top-border">
+
+Income\_Group
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Racial\_Group</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+1
+
+</th>
+
+<th colspan="4" align="center">
+
+2
+
+</th>
+
+<th colspan="4" align="center">
+
+3
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Hispanic or
+Latinx</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+23
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+15
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+26.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+16
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+28.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+3.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+56
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+33.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Non- Hispanic Black or African
+American</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+45
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+22
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+22.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+16
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+16.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+15
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+15.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+98
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+76
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+42.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+48
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+26.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+35
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+19.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+21
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+11.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+180
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Income_Group, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Race \* Income\_Group
+
+</h4>
+
+<strong>Data Frame</strong>: FinalBetancesData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="16" align="center" class="st-protect-top-border">
+
+Income\_Group
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Race</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+1
+
+</th>
+
+<th colspan="4" align="center">
+
+2
+
+</th>
+
+<th colspan="4" align="center">
+
+3
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Hispanic or
+Latinx</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+38
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+43.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+35
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+40.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+12
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+13.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+2.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+87
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Non- Hispanic Black or African
+American</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+34.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+13
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+11.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+3.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+26
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+53
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+42.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+53
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+42.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+15
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+2.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+124
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Education_Group, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Racial\_Group \* Education\_Group
+
+</h4>
+
+<strong>Data Frame</strong>: SoBROData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="16" align="center" class="st-protect-top-border">
+
+Education\_Group
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Racial\_Group</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+Less than \<br/\>High School
+
+</th>
+
+<th colspan="4" align="center">
+
+High School/\<br/\>G.E.D.
+
+</th>
+
+<th colspan="4" align="center">
+
+Post High \<br/\>School <br/>Education
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Hispanic or
+Latinx</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+18
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+32.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+17
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+30.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+21
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+56
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Non- Hispanic Black or African
+American</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+19.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+38
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+38.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+40
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+40.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+98
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+40
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+22.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+64
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+35.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+73
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+40.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+180
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Education_Group, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Race \* Education\_Group
+
+</h4>
+
+<strong>Data Frame</strong>: FinalBetancesData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="16" align="center" class="st-protect-top-border">
+
+Education\_Group
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Race</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+Less than \<br/\>High School
+
+</th>
+
+<th colspan="4" align="center">
+
+High School/\<br/\>G.E.D.
+
+</th>
+
+<th colspan="4" align="center">
+
+Post High \<br/\>School <br/>Education
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Hispanic or
+Latinx</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+46
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+52.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+31
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+35.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+11.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+87
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Non- Hispanic Black or African
+American</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+19.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+13
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+26.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+3.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+26
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+27.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+18.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+54
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+43.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+46
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+23
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+18.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+124
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = SoBROData$gender, y = SoBROData$Age_Category, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+gender \* Age\_Category
+
+</h4>
+
+<strong>Data Frame</strong>: SoBROData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="20" align="center" class="st-protect-top-border">
+
+Age\_Category
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>gender</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+18-24
+
+</th>
+
+<th colspan="4" align="center">
+
+25-44
+
+</th>
+
+<th colspan="4" align="center">
+
+45-64
+
+</th>
+
+<th colspan="4" align="center">
+
+65+
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Female</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+9.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+44
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+43
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+40.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+8.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+106
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Male</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+27.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+38
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+14.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+2.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+70
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other, please
+specify:</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+75.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+25.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+6.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+66
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+82
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+10.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+180
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = FinalBetancesData$Gender, y = FinalBetancesData$Age_Category, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Gender \* Age\_Category
+
+</h4>
+
+<strong>Data Frame</strong>: FinalBetancesData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="20" align="center" class="st-protect-top-border">
+
+Age\_Category
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Gender</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+18-24
+
+</th>
+
+<th colspan="4" align="center">
+
+25-44
+
+</th>
+
+<th colspan="4" align="center">
+
+45-64
+
+</th>
+
+<th colspan="4" align="center">
+
+65+
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Female</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+5.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+19.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+38
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+39.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+33
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+34.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+2.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+97
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Male</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+7.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+23.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+30.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+38.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+26
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Other, please
+specify:</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+5.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+25
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+20.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+47
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+43
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+34.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+1.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+124
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = SoBROData$Age_Category, y = SoBROData$smoking_status, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Age\_Category \* smoking\_status
+
+</h4>
+
+<strong>Data Frame</strong>: SoBROData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="12" align="center" class="st-protect-top-border">
+
+smoking\_status
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Age\_Category</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+0
+
+</th>
+
+<th colspan="4" align="center">
+
+1
+
+</th>
+
+<th colspan="4" align="center">
+
+\<NA\>
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">18-24</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+72.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+27.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">25-44</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+35
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+53.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+28
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+42.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+66
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">45-64</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+29
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+35.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+49
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+59.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+82
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">65+</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+47.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+47.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+5.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+83
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+46.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+89
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+49.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+180
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Smoke, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Age\_Category \* Smoke
+
+</h4>
+
+<strong>Data Frame</strong>: FinalBetancesData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="8" align="center" class="st-protect-top-border">
+
+Smoke
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Age\_Category</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+0
+
+</th>
+
+<th colspan="4" align="center">
+
+1
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">18-24</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+85.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+14.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">25-44</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+16
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+64.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+25
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">45-64</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+36
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+76.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+23.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+47
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">65+</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+38
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+88.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+11.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+43
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+97
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+78.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+27
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+21.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+124
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = SoBROData$Age_Category, y = SoBROData$chronic_disease, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Age\_Category \* chronic\_disease
+
+</h4>
+
+<strong>Data Frame</strong>: SoBROData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="8" align="center" class="st-protect-top-border">
+
+chronic\_disease
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Age\_Category</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+0
+
+</th>
+
+<th colspan="4" align="center">
+
+1
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">18-24</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">25-44</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+34
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+51.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+32
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+48.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+66
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">45-64</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+22
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+26.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+60
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+73.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+82
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">65+</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+12
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+63.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+19
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+50.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+69
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+38.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+111
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+61.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+180
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Chronic_Disease, prop = "r"),
+      method = "render")
+```
+
+<!--html_preserve-->
+
+<div class="container st-container">
+
+<h3>
+
+Cross-Tabulation, Row Proportions
+
+</h3>
+
+<h4>
+
+Age\_Category \* Chronic\_Disease
+
+</h4>
+
+<strong>Data Frame</strong>: FinalBetancesData
+<br/>
+
+<table class="table table-bordered st-table st-table-bordered st-cross-table ">
+
+<thead>
+
+<tr>
+
+<th>
+
+</th>
+
+<th colspan="8" align="center" class="st-protect-top-border">
+
+Chronic\_Disease
+
+</th>
+
+<th colspan="4">
+
+</th>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+<strong>Age\_Category</strong>
+
+</td>
+
+<th colspan="4" align="center">
+
+0
+
+</th>
+
+<th colspan="4" align="center">
+
+1
+
+</th>
+
+<th colspan="4" align="center">
+
+Total
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">18-24</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+57.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+42.9%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">25-44</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+20.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+20
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+80.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+25
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">45-64</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+23.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+36
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+76.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+47
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">65+</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+16.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+36
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+83.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+43
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">\<NA\></strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<strong align="center">Total</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+27
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+21.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+97
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+78.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+124
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<p>
+
+Generated by
+<a href='https://github.com/dcomtois/summarytools'>summarytools</a>
+0.9.4 (<a href='https://www.r-project.org/'>R</a> version
+3.6.1)<br/>2020-02-17
+
+</p>
+
+</div>
+
+<!--/html_preserve-->
+
+``` r
+FinalSobroData = 
+  SoBROData %>% 
+  select(age, Age_Category, gender, Gender_Coded, Education_Group, Income_Group, Racial_Group, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
+```
