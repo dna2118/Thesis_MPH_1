@@ -2351,7 +2351,7 @@ print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Chronic_D
 print(ctable(x = SoBROData$Racial_Group, y = SoBROData$delayed_rent, prop = "r"),
       method = "render")
 
-print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Chronic_Disease, prop = "r"),
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$DelayedRent, prop = "r"),
       method = "render")
 ```
 
