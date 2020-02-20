@@ -1165,6 +1165,62 @@ bivariate19 %>%
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
+##### Bivariate model 20 : PCS12 ~ b_0 + b_1 moved_in_last_5_years_i 
+```{r}
+bivariate20 = lm(PCS12 ~ moved_in_last_5_years, data = CodedData_VariablesofInterest)
+summary(bivariate20)
+
+bivariate20 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 21 : MCS12 ~ b_0 + b_1 moved_in_last_5_years_i 
+```{r}
+bivariate21 = lm(MCS12 ~ moved_in_last_5_years, data = CodedData_VariablesofInterest)
+summary(bivariate21)
+
+bivariate21 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 22 : PCS12 ~ b_0 + b_1 repairs_needed_i 
+```{r}
+bivariate22 = lm(PCS12 ~ repairs_needed, data = CodedData_VariablesofInterest)
+summary(bivariate22)
+
+bivariate22 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 23 : MCS12 ~ b_0 + b_1 repairs_needed_i 
+```{r}
+bivariate23 = lm(MCS12 ~ repairs_needed, data = CodedData_VariablesofInterest)
+summary(bivariate23)
+
+bivariate23 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
 ### Checking for multicollinearity
 ```{r}
 Correlation_Matrix = 
@@ -2333,6 +2389,91 @@ bivariateSOBRO19 %>%
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
 ```
+
+##### Bivariate model 20 : PCS12 ~ b_0 + b_1 supportive_housing_i 
+```{r}
+bivariateSOBRO20 = lm(PCS12 ~ supportive_housing, data = SoBROData)
+summary(bivariateSOBRO20)
+
+bivariateSOBRO20 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 21 : MCS12 ~ b_0 + b_1 supportive_housing_i 
+```{r}
+bivariateSOBRO21 = lm(MCS12 ~ supportive_housing, data = SoBROData)
+summary(bivariateSOBRO21)
+
+bivariateSOBRO21 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 22 : PCS12 ~ b_0 + b_1 moved_in_last_5_years_i 
+```{r}
+bivariateSOBRO22 = lm(PCS12 ~ moved_in_last_5_years, data = SoBROData)
+summary(bivariateSOBRO22)
+
+bivariateSOBRO22 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 23 : MCS12 ~ b_0 + b_1 moved_in_last_5_years_i 
+```{r}
+bivariateSOBRO23 = lm(MCS12 ~ moved_in_last_5_years, data = SoBROData)
+summary(bivariateSOBRO23)
+
+bivariateSOBRO23 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 24 : PCS12 ~ b_0 + b_1 repairs_needed_i 
+```{r}
+bivariateSOBRO24 = lm(PCS12 ~ repairs_needed, data = SoBROData)
+summary(bivariateSOBRO24)
+
+bivariateSOBRO24 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Bivariate model 25 : MCS12 ~ b_0 + b_1 repairs_needed_i 
+```{r}
+bivariateSOBRO25 = lm(MCS12 ~ repairs_needed, data = SoBROData)
+summary(bivariateSOBRO25)
+
+bivariateSOBRO25 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
 ### Checking for multicollinearity
 ```{r}
 Correlation_Matrix = 

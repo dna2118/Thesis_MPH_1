@@ -6446,6 +6446,610 @@ DelayedRent1
 
 </table>
 
+##### Bivariate model 20 : PCS12 ~ b\_0 + b\_1 moved\_in\_last\_5\_years\_i
+
+``` r
+bivariate20 = lm(PCS12 ~ moved_in_last_5_years, data = CodedData_VariablesofInterest)
+summary(bivariate20)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ moved_in_last_5_years, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -28.250 -10.609   1.182  11.658  20.788 
+    ## 
+    ## Coefficients:
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)            43.02276    1.23731  34.771   <2e-16 ***
+    ## moved_in_last_5_years1  0.08325    2.84968   0.029    0.977    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 12.31 on 120 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  7.111e-06,  Adjusted R-squared:  -0.008326 
+    ## F-statistic: 0.0008534 on 1 and 120 DF,  p-value: 0.9767
+
+``` r
+bivariate20 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+43.023
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+40.598
+
+</td>
+
+<td style="text-align:right;">
+
+45.448
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+moved\_in\_last\_5\_years1
+
+</td>
+
+<td style="text-align:right;">
+
+0.083
+
+</td>
+
+<td style="text-align:right;">
+
+0.977
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.502
+
+</td>
+
+<td style="text-align:right;">
+
+5.669
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 21 : MCS12 ~ b\_0 + b\_1 moved\_in\_last\_5\_years\_i
+
+``` r
+bivariate21 = lm(MCS12 ~ moved_in_last_5_years, data = CodedData_VariablesofInterest)
+summary(bivariate21)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ moved_in_last_5_years, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -30.190  -6.860   3.545   9.079  20.161 
+    ## 
+    ## Coefficients:
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)             49.7619     1.1919  41.750   <2e-16 ***
+    ## moved_in_last_5_years1   0.6279     2.7451   0.229    0.819    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.86 on 120 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.0004357,  Adjusted R-squared:  -0.007894 
+    ## F-statistic: 0.05231 on 1 and 120 DF,  p-value: 0.8195
+
+``` r
+bivariate21 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+49.762
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.426
+
+</td>
+
+<td style="text-align:right;">
+
+52.098
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+moved\_in\_last\_5\_years1
+
+</td>
+
+<td style="text-align:right;">
+
+0.628
+
+</td>
+
+<td style="text-align:right;">
+
+0.819
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.753
+
+</td>
+
+<td style="text-align:right;">
+
+6.008
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 22 : PCS12 ~ b\_0 + b\_1 repairs\_needed\_i
+
+``` r
+bivariate22 = lm(PCS12 ~ repairs_needed, data = CodedData_VariablesofInterest)
+summary(bivariate22)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ repairs_needed, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##      Min       1Q   Median       3Q      Max 
+    ## -28.3774 -10.4593   0.8196  11.5312  20.5774 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)       40.053      4.326   9.259 9.39e-16 ***
+    ## repairs_needed1    3.180      4.474   0.711    0.479    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 12.24 on 121 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.004159,   Adjusted R-squared:  -0.004071 
+    ## F-statistic: 0.5054 on 1 and 121 DF,  p-value: 0.4785
+
+``` r
+bivariate22 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+40.053
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+31.574
+
+</td>
+
+<td style="text-align:right;">
+
+48.532
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+repairs\_needed1
+
+</td>
+
+<td style="text-align:right;">
+
+3.180
+
+</td>
+
+<td style="text-align:right;">
+
+0.479
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.588
+
+</td>
+
+<td style="text-align:right;">
+
+11.949
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 23 : MCS12 ~ b\_0 + b\_1 repairs\_needed\_i
+
+``` r
+bivariate23 = lm(MCS12 ~ repairs_needed, data = CodedData_VariablesofInterest)
+summary(bivariate23)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ repairs_needed, data = CodedData_VariablesofInterest)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -30.175  -6.496   3.307   9.039  20.176 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)       51.484      4.174  12.333   <2e-16 ***
+    ## repairs_needed1   -1.737      4.317  -0.402    0.688    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.81 on 121 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.001336,   Adjusted R-squared:  -0.006917 
+    ## F-statistic: 0.1619 on 1 and 121 DF,  p-value: 0.6881
+
+``` r
+bivariate23 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+51.484
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+43.302
+
+</td>
+
+<td style="text-align:right;">
+
+59.666
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+repairs\_needed1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.737
+
+</td>
+
+<td style="text-align:right;">
+
+0.688
+
+</td>
+
+<td style="text-align:right;">
+
+\-10.199
+
+</td>
+
+<td style="text-align:right;">
+
+6.725
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
 ### Checking for multicollinearity
 
 ``` r
@@ -6477,7 +7081,7 @@ corrplot(CM1, type = "upper", order = "hclust",
          tl.col = "black", tl.srt = 45)
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-66-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-70-1.png" width="90%" />
 
 ### Final dataset
 
@@ -7820,7 +8424,7 @@ estimates_full %>%
   )
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-70-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-74-1.png" width="90%" />
 
 ### Data Cleaning and Recoding (SoBRO Data)
 
@@ -8470,7 +9074,7 @@ SoBROData %>%
   geom_jitter() +  facet_grid(. ~ gender)
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-88-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-92-1.png" width="90%" />
 
 ##### Overall Mentall Health Status (Outcome 2)
 
@@ -8599,7 +9203,7 @@ SoBROData %>%
   geom_jitter() +  facet_grid(. ~ gender)
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-90-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-94-1.png" width="90%" />
 
 #### Independent Variables
 
@@ -9118,7 +9722,7 @@ SoBROData %>%
       title = "Figure 1. Distribution of Age by Gender")
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-95-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-99-1.png" width="90%" />
 
 ``` r
 SoBROData %>% 
@@ -11030,7 +11634,7 @@ ggplot(aes(x=smoking_status, y=age)) +
       title = "Figure 4. Distribution of Age by Smoking Status")
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-108-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-112-1.png" width="90%" />
 
 ``` r
 SoBROData %>% 
@@ -11043,7 +11647,7 @@ SoBROData %>%
 theme(legend.position = "bottom")
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-109-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-113-1.png" width="90%" />
 
 ### Exploratory Analyses of Relationships between Variables
 
@@ -11062,7 +11666,7 @@ SoBROData%>%
       theme(legend.position = "right") 
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-110-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-114-1.png" width="90%" />
 
 ``` r
 SoBROData %>%  
@@ -11079,7 +11683,7 @@ SoBROData %>%
       theme(legend.position = "right")
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-111-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-115-1.png" width="90%" />
 
 ``` r
 SoBROData %>%  
@@ -11096,7 +11700,7 @@ SoBROData %>%
       theme(legend.position = "right") 
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-112-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-116-1.png" width="90%" />
 
 ``` r
 SoBROData %>%  
@@ -11113,7 +11717,7 @@ SoBROData %>%
       theme(legend.position = "right")
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-113-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-117-1.png" width="90%" />
 
 ``` r
 SoBROData %>%  
@@ -11130,7 +11734,7 @@ SoBROData %>%
       theme(legend.position = "right")
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-114-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-118-1.png" width="90%" />
 
 ### Initial bivariate analyses
 
@@ -14418,6 +15022,906 @@ delayed\_rent1
 
 </table>
 
+##### Bivariate model 20 : PCS12 ~ b\_0 + b\_1 supportive\_housing\_i
+
+``` r
+bivariateSOBRO20 = lm(PCS12 ~ supportive_housing, data = SoBROData)
+summary(bivariateSOBRO20)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ supportive_housing, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -29.652  -5.838   4.180   7.351  19.050 
+    ## 
+    ## Coefficients:
+    ##                     Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)          48.9506     0.9657  50.690   <2e-16 ***
+    ## supportive_housing1  -3.4954     1.6454  -2.124    0.035 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.49 on 178 degrees of freedom
+    ## Multiple R-squared:  0.02473,    Adjusted R-squared:  0.01925 
+    ## F-statistic: 4.513 on 1 and 178 DF,  p-value: 0.03502
+
+``` r
+bivariateSOBRO20 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+48.951
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+47.058
+
+</td>
+
+<td style="text-align:right;">
+
+50.843
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+supportive\_housing1
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.495
+
+</td>
+
+<td style="text-align:right;">
+
+0.035
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.720
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.270
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 21 : MCS12 ~ b\_0 + b\_1 supportive\_housing\_i
+
+``` r
+bivariateSOBRO21 = lm(MCS12 ~ supportive_housing, data = SoBROData)
+summary(bivariateSOBRO21)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ supportive_housing, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -39.710  -5.256   2.756   8.371  16.030 
+    ## 
+    ## Coefficients:
+    ##                     Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)           52.168      1.030  50.629  < 2e-16 ***
+    ## supportive_housing1   -5.734      1.756  -3.266  0.00131 ** 
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.19 on 178 degrees of freedom
+    ## Multiple R-squared:  0.05654,    Adjusted R-squared:  0.05124 
+    ## F-statistic: 10.67 on 1 and 178 DF,  p-value: 0.001308
+
+``` r
+bivariateSOBRO21 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+52.168
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+50.148
+
+</td>
+
+<td style="text-align:right;">
+
+54.187
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+supportive\_housing1
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.734
+
+</td>
+
+<td style="text-align:right;">
+
+0.001
+
+</td>
+
+<td style="text-align:right;">
+
+\-9.175
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.293
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 22 : PCS12 ~ b\_0 + b\_1 moved\_in\_last\_5\_years\_i
+
+``` r
+bivariateSOBRO22 = lm(PCS12 ~ moved_in_last_5_years, data = SoBROData)
+summary(bivariateSOBRO22)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ moved_in_last_5_years, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -26.408  -6.688   3.491   7.197  20.471 
+    ## 
+    ## Coefficients:
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)              44.080      1.294  34.062  < 2e-16 ***
+    ## moved_in_last_5_years1    5.640      1.605   3.514  0.00056 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.27 on 178 degrees of freedom
+    ## Multiple R-squared:  0.06487,    Adjusted R-squared:  0.05961 
+    ## F-statistic: 12.35 on 1 and 178 DF,  p-value: 0.00056
+
+``` r
+bivariateSOBRO22 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+44.08
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+41.544
+
+</td>
+
+<td style="text-align:right;">
+
+46.617
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+moved\_in\_last\_5\_years1
+
+</td>
+
+<td style="text-align:right;">
+
+5.64
+
+</td>
+
+<td style="text-align:right;">
+
+0.001
+
+</td>
+
+<td style="text-align:right;">
+
+2.494
+
+</td>
+
+<td style="text-align:right;">
+
+8.787
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 23 : MCS12 ~ b\_0 + b\_1 moved\_in\_last\_5\_years\_i
+
+``` r
+bivariateSOBRO23 = lm(MCS12 ~ moved_in_last_5_years, data = SoBROData)
+summary(bivariateSOBRO23)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ moved_in_last_5_years, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -38.342  -5.945   3.628   9.000  17.145 
+    ## 
+    ## Coefficients:
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)              49.064      1.448  33.884   <2e-16 ***
+    ## moved_in_last_5_years1    1.736      1.796   0.967    0.335    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.49 on 178 degrees of freedom
+    ## Multiple R-squared:  0.005222,   Adjusted R-squared:  -0.0003669 
+    ## F-statistic: 0.9343 on 1 and 178 DF,  p-value: 0.335
+
+``` r
+bivariateSOBRO23 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+49.064
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+46.226
+
+</td>
+
+<td style="text-align:right;">
+
+51.902
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+moved\_in\_last\_5\_years1
+
+</td>
+
+<td style="text-align:right;">
+
+1.736
+
+</td>
+
+<td style="text-align:right;">
+
+0.335
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.784
+
+</td>
+
+<td style="text-align:right;">
+
+5.256
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 24 : PCS12 ~ b\_0 + b\_1 repairs\_needed\_i
+
+``` r
+bivariateSOBRO24 = lm(PCS12 ~ repairs_needed, data = SoBROData)
+summary(bivariateSOBRO24)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = PCS12 ~ repairs_needed, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -31.005  -6.169   4.230   7.765  20.983 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)       48.678      1.191  40.856   <2e-16 ***
+    ## repairs_needed1   -1.660      1.591  -1.044    0.298    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 10.59 on 178 degrees of freedom
+    ## Multiple R-squared:  0.006081,   Adjusted R-squared:  0.0004975 
+    ## F-statistic: 1.089 on 1 and 178 DF,  p-value: 0.2981
+
+``` r
+bivariateSOBRO24 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+48.678
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+46.343
+
+</td>
+
+<td style="text-align:right;">
+
+51.013
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+repairs\_needed1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.660
+
+</td>
+
+<td style="text-align:right;">
+
+0.298
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.777
+
+</td>
+
+<td style="text-align:right;">
+
+1.458
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+##### Bivariate model 25 : MCS12 ~ b\_0 + b\_1 repairs\_needed\_i
+
+``` r
+bivariateSOBRO25 = lm(MCS12 ~ repairs_needed, data = SoBROData)
+summary(bivariateSOBRO25)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = MCS12 ~ repairs_needed, data = SoBROData)
+    ## 
+    ## Residuals:
+    ##     Min      1Q  Median      3Q     Max 
+    ## -37.460  -5.673   3.007   9.050  18.027 
+    ## 
+    ## Coefficients:
+    ##                 Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)      50.5443     1.2960  39.000   <2e-16 ***
+    ## repairs_needed1  -0.6266     1.7301  -0.362    0.718    
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 11.52 on 178 degrees of freedom
+    ## Multiple R-squared:  0.0007364,  Adjusted R-squared:  -0.004877 
+    ## F-statistic: 0.1312 on 1 and 178 DF,  p-value: 0.7176
+
+``` r
+bivariateSOBRO25 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+estimate
+
+</th>
+
+<th style="text-align:right;">
+
+p.value
+
+</th>
+
+<th style="text-align:right;">
+
+Low\_CI
+
+</th>
+
+<th style="text-align:right;">
+
+High\_CI
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+50.544
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+<td style="text-align:right;">
+
+48.004
+
+</td>
+
+<td style="text-align:right;">
+
+53.085
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+repairs\_needed1
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.627
+
+</td>
+
+<td style="text-align:right;">
+
+0.718
+
+</td>
+
+<td style="text-align:right;">
+
+\-4.018
+
+</td>
+
+<td style="text-align:right;">
+
+2.764
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
 ### Checking for multicollinearity
 
 ``` r
@@ -14449,7 +15953,7 @@ corrplot(CM1, type = "upper", order = "hclust",
          tl.col = "black", tl.srt = 45)
 ```
 
-<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-136-1.png" width="90%" />
+<img src="Thesis-Data-Analysis_files/figure-gfm/unnamed-chunk-146-1.png" width="90%" />
 
 ### Final Analysis (Regression Models)
 
