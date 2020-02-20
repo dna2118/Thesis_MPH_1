@@ -61,11 +61,11 @@ SurveyData =
 ```{r}
 VariablesofInterest = 
   SurveyData %>% 
-  select(age, Gender, Race, pss_5, pss_6, pss_8_108, pss_8_109, pss_10, sf36_1, sf36_4, 
+  select(age, Gender, Race, pss_5, pss_6, pss_8, pss_9, pss_10, sf36_1, sf36_4, 
         sf36_6, sf36_14, sf36_15, sf36_18, sf36_19, sf36_22, sf36_26, sf36_27, sf36_28,
-        sf36_32, Education, Income, DelayedRent, repairs_needed, asthma, anxiety, lungd,
-        depression, heartdisease, cancer, diabetes,hypertension, products_used,
-        neg_health_building, micerats, cockroaches, mildew, homesat, buildsat,
+        sf36_32, Education, Income, moved_in_last_5_years, DelayedRent, repairs_needed,
+        asthma, anxiety, lungd, depression, heartdisease, cancer, diabetes,hypertension,       
+        products_used, neg_health_building, micerats, cockroaches, mildew, homesat, buildsat,
         neighborhoodsat, propmansat, sumtempsat, wintempsat) %>% 
   
   rename(Smoke = products_used) %>% 
@@ -111,8 +111,8 @@ CodedData_VariablesofInterest =
   mutate(
     pss_5_coded = pss_5,
     pss_6_coded = pss_6,
-    pss_8_coded = pss_8_108,
-    pss_9_coded = pss_8_109,
+    pss_8_coded = pss_8,
+    pss_9_coded = pss_9,
     pss_10_coded = pss_10, 
     gh1 = sf36_1,
     pf02 = sf36_4,  
@@ -485,6 +485,8 @@ CodedData_VariablesofInterest =
     micerats = factor(micerats,levels = c("0","1")),
     mildew = factor(mildew,levels = c("0","1")),
     cockroaches = factor(cockroaches,levels = c("0","1")),
+    repairs_needed = factor(repairs_needed,levels = c("0","1")),
+    moved_in_last_5_years = factor(moved_in_last_5_years,levels = c("0","1")),
     Chronic_Disease = factor(Chronic_Disease,levels = c("0","1")),
     Education = factor(Education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree"))
   )
@@ -696,6 +698,34 @@ CodedData_VariablesofInterest %>%
                          "1" = "Yes")
   ) %>% 
   knitr::kable(col.names=c("Have Experienced Rent Burden", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(repairs_needed) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  mutate(
+    repairs_needed = recode(repairs_needed, 
+                         "0" = "No",
+                         "1" = "Yes")
+  ) %>% 
+  knitr::kable(col.names=c("Repairs Needed", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+CodedData_VariablesofInterest %>% 
+  group_by(moved_in_last_5_years) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/124*100) %>% 
+  mutate(
+    moved_in_last_5_years = recode(moved_in_last_5_years, 
+                         "0" = "No",
+                         "1" = "Yes")
+  ) %>% 
+  knitr::kable(col.names=c("Moved in Last 5 Years", "n", "Percent(%)"), digits = 2)
 ```
 
 ### 2x2 Tables and Visualizations
@@ -1153,7 +1183,7 @@ corrplot(CM1, type = "upper", order = "hclust",
 ```{r}
 FinalBetancesData = 
   CodedData_VariablesofInterest %>% 
-  select(Age, Age_Category, Gender, Gender_Coded, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, DelayedRent) 
+  select(Age, Age_Category, Gender, Gender_Coded, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, DelayedRent, moved_in_last_5_years, repairs_needed) 
 
 FinalBetancesData %>% 
     rename(
@@ -1165,7 +1195,7 @@ FinalBetancesData %>%
 ### Final Analysis (Regression Models)
 
 ```{r}
-linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
 summary(linearregression1)
 
 linearregression1 %>% 
@@ -1181,7 +1211,7 @@ linearregression1 %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
 
 ```{r}
-linearregression2 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+linearregression2 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
 summary(linearregression2)
 
 linearregression2 %>% 
@@ -1605,6 +1635,9 @@ SoBROData =
     cockroach = factor(cockroach,levels = c("0","1")),
     chronic_disease = factor(chronic_disease,levels = c("0","1")),
     hiv = factor(hiv,levels = c("0","1")),
+    supportive_housing = factor(supportive_housing ,levels = c("0","1")),
+    repairs_needed = factor(repairs_needed,levels = c("0","1")),
+    moved_in_last_5_years = factor(moved_in_last_5_years,levels = c("0","1")),
     education = factor(education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree")))
 ```
 
@@ -1733,7 +1766,7 @@ SoBROData %>%
   group_by(smoking_status) %>% 
   summarize(n=n()) %>% 
   mutate(
-    percent = n/124*100) %>% 
+    percent = n/180*100) %>% 
   mutate(
     smoking_status = recode(smoking_status,
                    "0" = "Non-smoker(s)",
@@ -1746,7 +1779,7 @@ SoBROData %>%
   group_by(Racial_Group) %>% 
   summarize(n=n()) %>%
    mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   knitr::kable(col.names=c("Race/Ethnicity", "n", "Percent(%)"), digits = 2)
 ```
 
@@ -1755,7 +1788,7 @@ SoBROData %>%
   group_by(Age_Category) %>% 
   summarize(n=n()) %>%
   mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   knitr::kable(col.names=c("Age Group", "n", "Percent(%)"), digits = 2)
 ```
 
@@ -1764,10 +1797,9 @@ SoBROData %>%
   group_by(gender) %>% 
   summarize(n=n()) %>%
   mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   knitr::kable(col.names=c("Gender", "n", "Percent(%)"), digits = 2)
 ```
-
 
 ```{r}
 SoBROData %>% 
@@ -1791,7 +1823,7 @@ SoBROData %>%
   group_by(PSS_Category) %>% 
   summarize(n=n()) %>%
    mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   knitr::kable(col.names=c("Perceived Stress Score", "n", "Percent(%)"), digits = 2)
 
 ```
@@ -1801,7 +1833,7 @@ SoBROData %>%
   group_by(income) %>% 
   summarize(n=n()) %>%
   mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   knitr::kable(col.names=c("Income Category", "n", "Percent(%)"), digits = 2)
 ```
 
@@ -1810,7 +1842,7 @@ SoBROData %>%
   group_by(education) %>% 
   summarize(n=n()) %>%
   mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   knitr::kable(col.names=c("Education Completed", "n", "Percent(%)"), digits = 2)
 ```
 
@@ -1820,13 +1852,52 @@ SoBROData %>%
   group_by(delayed_rent) %>% 
   summarize(n=n()) %>%
   mutate(
-  percent = n/124*100) %>% 
+  percent = n/180*100) %>% 
   mutate(
     delayed_rent = recode(delayed_rent, 
                          "0" = "No",
                          "1" = "Yes")
   ) %>% 
   knitr::kable(col.names=c("Have Experienced Rent Burden", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(repairs_needed) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/180*100) %>% 
+  mutate(
+    repairs_needed = recode(repairs_needed, 
+                         "0" = "No",
+                         "1" = "Yes")) %>% 
+  knitr::kable(col.names=c("Repairs Needed", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(supportive_housing) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/180*100) %>% 
+  mutate(
+    supportive_housing = recode(supportive_housing, 
+                         "0" = "No",
+                         "1" = "Yes")) %>% 
+  knitr::kable(col.names=c("Living in Supportive Housing", "n", "Percent(%)"), digits = 2)
+```
+
+```{r}
+SoBROData %>% 
+  group_by(moved_in_last_5_years) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/180*100) %>% 
+  mutate(
+    moved_in_last_5_years = recode(moved_in_last_5_years, 
+                         "0" = "No",
+                         "1" = "Yes")) %>% 
+  knitr::kable(col.names=c("Moved within the Last 5 years", "n", "Percent(%)"), digits = 2)
 ```
 
 ### 2x2 Tables and Visualizations
@@ -2279,7 +2350,7 @@ corrplot(CM1, type = "upper", order = "hclust",
 ### Final Analysis (Regression Models)
 
 ```{r}
-linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + smoking_status + delayed_rent, data = SoBROData)
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression1SOBRO)
 
 linearregression1SOBRO %>% 
@@ -2295,7 +2366,7 @@ linearregression1SOBRO %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
 
 ```{r}
-linearregression2SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + smoking_status + delayed_rent, data = SoBROData)
+linearregression2SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression2SOBRO)
 
 linearregression2SOBRO %>% 
