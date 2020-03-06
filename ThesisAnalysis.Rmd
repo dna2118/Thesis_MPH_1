@@ -387,11 +387,8 @@ CodedData_VariablesofInterest %>%
                     Age_Category >= 45  ~ '45-64',
                     Age_Category >= 25 ~ '25-44',
                     Age_Category >= 18 ~ '18-24'),
-    Gender_Coded = Gender, 
-    Gender_Coded = recode(Gender_Coded, 
-                          "Male" = "0",
-                          "Female" = "1",
-                          `Other, please specify:` = "Null"),
+    Gender = recode(Gender, 
+                          `Other, please specify:` = "Other"),
     AptSat_Coded = homesat, 
     AptSat_Coded = recode(AptSat_Coded,
                           "Very Dissatisfied" = "1",
@@ -469,8 +466,9 @@ CodedData_VariablesofInterest =
   CodedData_VariablesofInterest %>% 
   mutate(
     Education = as.factor(Education),
-    Gender_Coded = as.factor(Gender_Coded),
+    Gender = as.factor(Gender),
     Race = as.factor(Race),
+    Chronic_Disease = as.factor(Chronic_Disease), 
     Age = as.numeric(Age),
     Income = factor(Income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
     Smoke = factor(Smoke, levels = c("0", "1")),
@@ -1084,7 +1082,7 @@ bivariate13 %>%
 
 ##### Bivariate model 14 : MCS12 ~ b_0 + b_1 Gender_i 
 ```{r}
-bivariate14 = lm(MCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
+bivariate14 = lm(MCS12 ~ relevel(Gender, ref = "Other"), data = CodedData_VariablesofInterest) 
 summary(bivariate14)
 
 bivariate14 %>% 
@@ -1098,7 +1096,7 @@ bivariate14 %>%
 
 ##### Bivariate model 15 : PCS12 ~ b_0 + b_1 Gender_i 
 ```{r}
-bivariate15 = lm(PCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
+bivariate15 = lm(PCS12 ~ relevel(Gender, ref = "Other"), data = CodedData_VariablesofInterest)
 summary(bivariate15)
 
 bivariate15 %>% 
@@ -1239,19 +1237,25 @@ corrplot(CM1, type = "upper", order = "hclust",
 ```{r}
 FinalBetancesData = 
   CodedData_VariablesofInterest %>% 
-  select(Age, Age_Category, Gender, Gender_Coded, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, DelayedRent, moved_in_last_5_years, repairs_needed) 
+  select(Age, Age_Category, Gender, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, DelayedRent, moved_in_last_5_years, repairs_needed) 
 
-FinalBetancesData %>% 
-    rename(
+FinalBetancesData = 
+  FinalBetancesData %>% 
+  rename(
     Smoking_Status = Smoke,
-    Age_Group = Age_Category 
-  )
+    Age_Group = Age_Category)
+
+FinalBetancesData = 
+  FinalBetancesData %>% 
+  mutate(
+  Gender = relevel(Gender,"Other"),
+  Race = relevel(Race, "Other"))
 ```
 
 ### Final Analysis (Regression Models)
 
 ```{r}
-linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Income_Group + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Gender + Race + Income_Group + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + Smoking_Status + repairs_needed, data= FinalBetancesData)
 summary(linearregression1)
 
 linearregression1 %>% 
@@ -1266,7 +1270,7 @@ linearregression1 %>%
 
 Housing Conditions and Quality
 ```{r}
-linearregression2 = lm(PCS12 ~ HousingSatisfactionScore +  Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
+linearregression2 = lm(PCS12 ~ HousingSatisfactionScore +  Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
 summary(linearregression2)
 
 linearregression2 %>% 
@@ -1281,7 +1285,7 @@ linearregression2 %>%
 
 Housing Affordability
 ```{r}
-linearregression3 = lm(PCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+linearregression3 = lm(PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
 summary(linearregression3)
 
 linearregression3 %>% 
@@ -1296,7 +1300,7 @@ linearregression3 %>%
 
 Residential Stability
 ```{r}
-linearregression4 = lm(PCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
+linearregression4 = lm(PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
 summary(linearregression4)
 
 linearregression4 %>% 
@@ -1311,7 +1315,7 @@ linearregression4 %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
 
 ```{r}
-linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
 summary(linearregression5)
 
 linearregression5 %>% 
@@ -1325,7 +1329,7 @@ linearregression5 %>%
 
 Housing Conditions and Quality
 ```{r}
-linearregression6 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
+linearregression6 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
 summary(linearregression6)
 
 linearregression6 %>% 
@@ -1340,7 +1344,7 @@ linearregression6 %>%
 
 Housing Affordability
 ```{r}
-linearregression7 = lm(MCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+linearregression7 = lm(MCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
 summary(linearregression7)
 
 linearregression7 %>% 
@@ -1355,7 +1359,7 @@ linearregression7 %>%
 
 Residential Stability
 ```{r}
-linearregression8 = lm(MCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
+linearregression8 = lm(MCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
 summary(linearregression4)
 
 linearregression8 %>% 
@@ -1419,7 +1423,9 @@ SoBROData =
                       "Other, specify:" = "Other"), 
         delayed_rent = recode(delayed_rent, 
                              "Yes" = "1",
-                             "No" = "0"))
+                             "No" = "0"),
+        gender = recode(gender, 
+                        `Other, please specify:` = "Other"))
 ```
 
 ##### Below, I scored the Perceived Stress Scale (PSS-4) and the SF-12. The PSS coding instructions were as follows: code `0` - never, `1` - almost never, `2` - sometimes, `3` - fairly often, `4` - very often & reverse your scores for questions 4, 5, 7, and 8. On these 4 questions, change the scores to: 0 = 4, 1 = 3, 2 = 2, 3 = 1, 4 = 0. 
@@ -1694,11 +1700,8 @@ SoBROData %>%
                     Age_Category >= 45  ~ '45-64',
                     Age_Category >= 25 ~ '25-44',
                     Age_Category >= 18 ~ '18-24'),
-    Gender_Coded = gender, 
-    Gender_Coded = recode(Gender_Coded, 
-                          "Male" = "0",
-                          "Female" = "1",
-                          `Other, please specify:` = "2"),
+    Gender = recode(gender, 
+                          `Other, please specify:` = "Other"),
     AptSat_Coded = aptsat, 
     AptSat_Coded = recode(AptSat_Coded,
                           "Very Dissatisfied" = "1",
@@ -1765,7 +1768,7 @@ SoBROData =
   SoBROData %>% 
   mutate(
     education = as.factor(education),
-    Gender_Coded = as.factor(Gender_Coded),
+    gender = as.factor(gender),
     race = as.factor(race),
     age = as.numeric(age),
     PSS_Category = factor(PSS_Category, levels = c("Low Stress", "Moderate Stress", "High Stress")),
@@ -1849,8 +1852,8 @@ SoBROData =
 SoBROData = 
   SoBROData %>% 
   mutate(
-  Racial_Group = race,
-  Racial_Group = recode(Racial_Group,
+  Race = race,
+  Race = recode(Race,
                 "Native American/ Alaskan Native" = "Other",
                 "Non- Hispanic Black or African American,Hispanic or Latino,Asian or Pacific Islander,Other" = "Other",
                 "Non- Hispanic Black or African American,Hispanic or Latino" = "Other",
@@ -1863,8 +1866,10 @@ SoBROData =
                 
                 "Non- Hispanic Black or African American,Hispanic or Latino,Asian or Pacific Islander,Other, specify:" = "Other",
 "Non- Hispanic Black or African American,Hispanic or Latino,Other, specify:" = "Other"
-                ))
-
+                ),
+    Race = relevel(Race,"Other"),
+    Gender = gender,
+    Gender = relevel(Gender,"Other"))
 ```
 
 ### Univariable/Descriptive Analyses
@@ -1882,10 +1887,10 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(PCS12, Age_Category, gender) %>% 
+  group_by(PCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = PCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ gender)
+  geom_jitter() +  facet_grid(. ~ Gender)
 ```
 
 ##### Overall Mentall Health Status (Outcome 2)
@@ -1898,10 +1903,10 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(MCS12, Age_Category, gender) %>% 
+  group_by(MCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = MCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ gender)
+  geom_jitter() +  facet_grid(. ~ Gender)
 ```
 
 #### Independent Variables
@@ -1920,7 +1925,7 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(Racial_Group) %>% 
+  group_by(Race) %>% 
   summarize(n=n()) %>%
    mutate(
   percent = n/180*100) %>% 
@@ -1938,7 +1943,7 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(gender) %>% 
+  group_by(Gender) %>% 
   summarize(n=n()) %>%
   mutate(
   percent = n/180*100) %>% 
@@ -1947,8 +1952,8 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(age, gender) %>% 
-  ggplot(aes(x=gender, y=age)) + geom_violin() +
+  group_by(age, Gender) %>% 
+  ggplot(aes(x=Gender, y=age)) + geom_violin() +
   labs(x = "Gender",
       y = "Age",
       title = "Figure 1. Distribution of Age by Gender")
@@ -1956,8 +1961,8 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  select(gender, age) %>% 
-  group_by(gender) %>% 
+  select(Gender, age) %>% 
+  group_by(Gender) %>% 
   drop_na() %>% 
   summarize(Mean = mean(age)) %>% 
   knitr::kable(col.names=c("Gender", "Mean Age"), digits = 2)
@@ -2061,20 +2066,20 @@ SoBROData %>%
 ### 2x2 Tables and Visualizations
 ```{r}
 SoBROData %>% 
-  group_by(Age_Category, gender) %>% 
+  group_by(Age_Category, Gender) %>% 
   summarize(n=n()) %>%
   pivot_wider(
-    names_from = gender,
+    names_from = Gender,
     values_from = n) %>% 
   knitr::kable(col.names = c("Age Group","Female (n)", "Male (n)", "Other (n)"))
 ```
 
 ```{r}
 SoBROData %>%
-  group_by(Age_Category, Racial_Group) %>% 
+  group_by(Age_Category, Race) %>% 
   summarize(n=n()) %>%
   pivot_wider(
-    names_from = Racial_Group,
+    names_from = Race,
     values_from = n
   ) %>% 
   knitr::kable(col.names = c("Age Group", "Hispanic or Latinx (n)", "Other (n)", "Black/African American (n)", "NA"))
@@ -2082,14 +2087,14 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>%
-  group_by(Racial_Group, smoking_status) %>% 
+  group_by(Race, smoking_status) %>% 
   summarize(n=n()) %>%
   mutate(
     smoking_status = recode(smoking_status,
                    "0" = "Non-smoker(s)",
                    "1" = "Smoker(s)")) %>% 
   pivot_wider(
-    names_from = Racial_Group,
+    names_from = Race,
     values_from = n) %>% 
   knitr::kable(col.names = c("Smoking Status", "Hispanic or Latinx (n)", "Other (n)", "Black/African American (n)", "N/A"))
 ```
@@ -2242,7 +2247,7 @@ bivariateSOBRO2 %>%
 ```
 ##### Bivariate model 3 : PCS12 ~ b_0 + b_1 Race_i 
 ```{r}
-bivariateSOBRO3 = lm(PCS12 ~ Racial_Group, data = SoBROData)
+bivariateSOBRO3 = lm(PCS12 ~ Race, data = SoBROData)
 
 bivariateSOBRO3 %>% 
   broom::tidy() %>% 
@@ -2381,7 +2386,7 @@ bivariateSOBRO11 %>%
 
 ##### Bivariate model 12 : MCS12 ~ b_0 + b_1 Race_i 
 ```{r}
-bivariateSOBRO12 = lm(MCS12 ~ Racial_Group, data = SoBROData)
+bivariateSOBRO12 = lm(MCS12 ~ Race, data = SoBROData)
 summary(bivariateSOBRO12) 
 
 bivariateSOBRO12 %>% 
@@ -2409,7 +2414,7 @@ bivariateSOBRO13 %>%
 
 ##### Bivariate model 14 : MCS12 ~ b_0 + b_1 Gender_i 
 ```{r}
-bivariateSOBRO14 = lm(MCS12 ~ Gender_Coded, data = SoBROData)
+bivariateSOBRO14 = lm(MCS12 ~ Gender, data = SoBROData)
 summary(bivariateSOBRO14)
 
 bivariateSOBRO14 %>% 
@@ -2423,7 +2428,7 @@ bivariateSOBRO14 %>%
 
 ##### Bivariate model 15 : PCS12 ~ b_0 + b_1 Gender_i 
 ```{r}
-bivariateSOBRO15 = lm(PCS12 ~ Gender_Coded, data = SoBROData)
+bivariateSOBRO15 = lm(PCS12 ~ Gender, data = SoBROData)
 summary(bivariateSOBRO15)
 
 bivariateSOBRO15 %>% 
@@ -2591,7 +2596,7 @@ corrplot(CM1, type = "upper", order = "hclust",
 
 ### Final Analysis (Regression Models)
 ```{r}
-linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression1SOBRO)
 
 linearregression1SOBRO %>% 
@@ -2605,7 +2610,7 @@ linearregression1SOBRO %>%
 
 Housing Conditions and Quality
 ```{r}
-linearregression2SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
+linearregression2SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
 summary(linearregression2SOBRO)
 
 linearregression2SOBRO %>% 
@@ -2620,7 +2625,7 @@ linearregression2SOBRO %>%
 
 Housing Affordability
 ```{r}
-linearregression3SOBRO = lm(PCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + delayed_rent + hiv, data = SoBROData)
+linearregression3SOBRO = lm(PCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + delayed_rent + hiv, data = SoBROData)
 summary(linearregression3SOBRO)
 
 linearregression3SOBRO %>% 
@@ -2634,7 +2639,7 @@ linearregression3SOBRO %>%
 
 Residential Stability
 ```{r}
-linearregression4SOBRO = lm(PCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + moved_in_last_5_years + hiv, data = SoBROData)
+linearregression4SOBRO = lm(PCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + moved_in_last_5_years + hiv, data = SoBROData)
 summary(linearregression4SOBRO)
 
 linearregression4SOBRO %>% 
@@ -2649,7 +2654,7 @@ linearregression4SOBRO %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
 
 ```{r}
-linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression5SOBRO)
 
 linearregression5SOBRO %>% 
@@ -2663,7 +2668,7 @@ linearregression5SOBRO %>%
 
 Housing Conditions and Quality
 ```{r}
-linearregression6SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
+linearregression6SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
 summary(linearregression6SOBRO)
 
 linearregression6SOBRO %>% 
@@ -2678,7 +2683,7 @@ linearregression6SOBRO %>%
 
 Housing Affordability
 ```{r}
-linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + delayed_rent + supportive_housing + hiv, data = SoBROData)
+linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + delayed_rent + supportive_housing + hiv, data = SoBROData)
 summary(linearregression7SOBRO)
 
 linearregression7SOBRO %>% 
@@ -2692,7 +2697,7 @@ linearregression7SOBRO %>%
 
 Residential Stability
 ```{r}
-linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + moved_in_last_5_years + supportive_housing + hiv, data = SoBROData)
+linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease + moved_in_last_5_years + supportive_housing + hiv, data = SoBROData)
 summary(linearregression8SOBRO)
 
 linearregression8SOBRO %>% 
@@ -2708,43 +2713,43 @@ linearregression8SOBRO %>%
 ```{r}
 library(summarytools)
 
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Age_Category, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$Age_Category, prop = "r"),
       method = "render")
 
-print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Age_Category, prop = "r"),
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Age_Group, prop = "r"),
       method = "render")
 
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Income_Group, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$Income_Group, prop = "r"),
       method = "render")
 
 print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Income_Group, prop = "r"),
       method = "render")
 
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Education_Group, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$Education_Group, prop = "r"),
       method = "render")
 
 print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Education_Group, prop = "r"),
       method = "render")
 
-print(ctable(x = SoBROData$gender, y = SoBROData$Age_Category, prop = "r"),
+print(ctable(x = SoBROData$Gender, y = SoBROData$Age_Category, prop = "r"),
       method = "render")
 
-print(ctable(x = FinalBetancesData$Gender, y = FinalBetancesData$Age_Category, prop = "r"),
+print(ctable(x = FinalBetancesData$Gender, y = FinalBetancesData$Age_Group, prop = "r"),
       method = "render")
 
 print(ctable(x = SoBROData$Age_Category, y = SoBROData$smoking_status, prop = "r"),
       method = "render")
 
-print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Smoke, prop = "r"),
+print(ctable(x = FinalBetancesData$Age_Group, y = FinalBetancesData$Smoking_Status, prop = "r"),
       method = "render")
 
 print(ctable(x = SoBROData$Age_Category, y = SoBROData$chronic_disease, prop = "r"),
       method = "render")
 
-print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Chronic_Disease, prop = "r"),
+print(ctable(x = FinalBetancesData$Age_Group, y = FinalBetancesData$Chronic_Disease, prop = "r"),
       method = "render")
 
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$delayed_rent, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$delayed_rent, prop = "r"),
       method = "render")
 
 print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$DelayedRent, prop = "r"),
@@ -2754,7 +2759,7 @@ print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$DelayedRent, prop
 ```{r}
 FinalSobroData = 
   SoBROData %>% 
-  select(age, Age_Category, gender, Gender_Coded, Education_Group, Income_Group, Racial_Group, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
+  select(age, Age_Category, Gender, Education_Group, Income_Group, Race, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
 ```
 
 ```{r}

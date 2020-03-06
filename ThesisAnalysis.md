@@ -376,11 +376,8 @@ CodedData_VariablesofInterest %>%
                     Age_Category >= 45  ~ '45-64',
                     Age_Category >= 25 ~ '25-44',
                     Age_Category >= 18 ~ '18-24'),
-    Gender_Coded = Gender, 
-    Gender_Coded = recode(Gender_Coded, 
-                          "Male" = "0",
-                          "Female" = "1",
-                          `Other, please specify:` = "Null"),
+    Gender = recode(Gender, 
+                          `Other, please specify:` = "Other"),
     AptSat_Coded = homesat, 
     AptSat_Coded = recode(AptSat_Coded,
                           "Very Dissatisfied" = "1",
@@ -458,8 +455,9 @@ CodedData_VariablesofInterest =
   CodedData_VariablesofInterest %>% 
   mutate(
     Education = as.factor(Education),
-    Gender_Coded = as.factor(Gender_Coded),
+    Gender = as.factor(Gender),
     Race = as.factor(Race),
+    Chronic_Disease = as.factor(Chronic_Disease), 
     Age = as.numeric(Age),
     Income = factor(Income, levels = c("1", "2", "3", "4", "5", "6","7","8","9","10")),
     Smoke = factor(Smoke, levels = c("0", "1")),
@@ -1294,7 +1292,7 @@ Male
 
 <td style="text-align:left;">
 
-Other, please specify:
+Other
 
 </td>
 
@@ -1416,7 +1414,7 @@ Male
 
 <td style="text-align:left;">
 
-Other, please specify:
+Other
 
 </td>
 
@@ -5458,23 +5456,27 @@ Age
 ##### Bivariate model 14 : MCS12 ~ b\_0 + b\_1 Gender\_i
 
 ``` r
-bivariate14 = lm(MCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
+bivariate14 = lm(MCS12 ~ relevel(Gender, ref = "Other"), data = CodedData_VariablesofInterest) 
 summary(bivariate14)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = MCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
+    ## lm(formula = MCS12 ~ relevel(Gender, ref = "Other"), data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -30.152  -6.118   2.727   8.643  18.992 
     ## 
     ## Coefficients:
-    ##                  Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)        52.224      2.313  22.581   <2e-16 ***
-    ## Gender_Coded1      -3.044      2.607  -1.168    0.245    
-    ## Gender_CodedNull    1.425     12.017   0.119    0.906    
+    ##                                      Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept)                            53.648     11.792   4.549  1.3e-05
+    ## relevel(Gender, ref = "Other")Female   -4.469     11.854  -0.377    0.707
+    ## relevel(Gender, ref = "Other")Male     -1.425     12.017  -0.119    0.906
+    ##                                         
+    ## (Intercept)                          ***
+    ## relevel(Gender, ref = "Other")Female    
+    ## relevel(Gender, ref = "Other")Male      
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -5545,7 +5547,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-52.224
+53.648
 
 </td>
 
@@ -5557,13 +5559,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-47.691
+30.535
 
 </td>
 
 <td style="text-align:right;">
 
-56.757
+76.761
 
 </td>
 
@@ -5573,31 +5575,31 @@ High\_CI
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+relevel(Gender, ref = “Other”)Female
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.044
+\-4.469
 
 </td>
 
 <td style="text-align:right;">
 
-0.245
+0.707
 
 </td>
 
 <td style="text-align:right;">
 
-\-8.154
+\-27.702
 
 </td>
 
 <td style="text-align:right;">
 
-2.066
+18.764
 
 </td>
 
@@ -5607,13 +5609,14 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+relevel(Gender, ref =
+“Other”)Male
 
 </td>
 
 <td style="text-align:right;">
 
-1.425
+\-1.425
 
 </td>
 
@@ -5625,13 +5628,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-22.129
+\-24.978
 
 </td>
 
 <td style="text-align:right;">
 
-24.978
+22.129
 
 </td>
 
@@ -5644,23 +5647,27 @@ Gender\_CodedNull
 ##### Bivariate model 15 : PCS12 ~ b\_0 + b\_1 Gender\_i
 
 ``` r
-bivariate15 = lm(PCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
+bivariate15 = lm(PCS12 ~ relevel(Gender, ref = "Other"), data = CodedData_VariablesofInterest)
 summary(bivariate15)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ Gender_Coded, data = CodedData_VariablesofInterest)
+    ## lm(formula = PCS12 ~ relevel(Gender, ref = "Other"), data = CodedData_VariablesofInterest)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
     ## -27.9833 -10.0653   0.8839  11.2198  20.1398 
     ## 
     ## Coefficients:
-    ##                  Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)        44.189      2.402  18.397   <2e-16 ***
-    ## Gender_Coded1      -1.349      2.708  -0.498    0.619    
-    ## Gender_CodedNull  -13.416     12.481  -1.075    0.285    
+    ##                                      Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept)                             30.77      12.25   2.513   0.0133
+    ## relevel(Gender, ref = "Other")Female    12.07      12.31   0.980   0.3290
+    ## relevel(Gender, ref = "Other")Male      13.42      12.48   1.075   0.2846
+    ##                                       
+    ## (Intercept)                          *
+    ## relevel(Gender, ref = "Other")Female  
+    ## relevel(Gender, ref = "Other")Male    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -5731,25 +5738,25 @@ High\_CI
 
 <td style="text-align:right;">
 
-44.189
+30.773
 
 </td>
 
 <td style="text-align:right;">
 
-0.000
+0.013
 
 </td>
 
 <td style="text-align:right;">
 
-39.481
+6.768
 
 </td>
 
 <td style="text-align:right;">
 
-48.897
+54.779
 
 </td>
 
@@ -5759,31 +5766,31 @@ High\_CI
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+relevel(Gender, ref = “Other”)Female
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.349
+12.066
 
 </td>
 
 <td style="text-align:right;">
 
-0.619
+0.329
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.657
+\-12.064
 
 </td>
 
 <td style="text-align:right;">
 
-3.958
+36.197
 
 </td>
 
@@ -5793,13 +5800,14 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+relevel(Gender, ref =
+“Other”)Male
 
 </td>
 
 <td style="text-align:right;">
 
-\-13.416
+13.416
 
 </td>
 
@@ -5811,13 +5819,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-37.879
+\-11.048
 
 </td>
 
 <td style="text-align:right;">
 
-11.048
+37.879
 
 </td>
 
@@ -7113,86 +7121,81 @@ corrplot(CM1, type = "upper", order = "hclust",
 ``` r
 FinalBetancesData = 
   CodedData_VariablesofInterest %>% 
-  select(Age, Age_Category, Gender, Gender_Coded, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, DelayedRent, moved_in_last_5_years, repairs_needed) 
+  select(Age, Age_Category, Gender, Education_Group, Income_Group, Race, Smoke, Chronic_Disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, DelayedRent, moved_in_last_5_years, repairs_needed) 
 
-FinalBetancesData %>% 
-    rename(
+FinalBetancesData = 
+  FinalBetancesData %>% 
+  rename(
     Smoking_Status = Smoke,
-    Age_Group = Age_Category 
-  )
-```
+    Age_Group = Age_Category)
 
-    ## # A tibble: 124 x 16
-    ##      Age Age_Group Gender Gender_Coded Education_Group Income_Group Race 
-    ##    <dbl> <chr>     <chr>  <fct>        <fct>           <fct>        <fct>
-    ##  1    72 65+       Female 1            High School/G.… 1            Hisp…
-    ##  2    51 45-64     Female 1            High School/G.… 1            Hisp…
-    ##  3    47 45-64     Female 1            Less than High… 1            Non-…
-    ##  4    59 45-64     Other… Null         High School/G.… 1            Non-…
-    ##  5    28 25-44     Female 1            High School/G.… 1            Non-…
-    ##  6    49 45-64     Female 1            Less than High… 3            Hisp…
-    ##  7    NA <NA>      Female 1            Less than High… 1            Hisp…
-    ##  8    36 25-44     Female 1            High School/G.… 1            Hisp…
-    ##  9    49 45-64     Female 1            Less than High… <NA>         Hisp…
-    ## 10    61 45-64     Male   0            Post High Scho… 2            Hisp…
-    ## # … with 114 more rows, and 9 more variables: Smoking_Status <fct>,
-    ## #   Chronic_Disease <fct>, HousingSatisfactionScore <dbl>, MCS12 <dbl>,
-    ## #   PCS12 <dbl>, total_PSS_score <dbl>, DelayedRent <fct>,
-    ## #   moved_in_last_5_years <fct>, repairs_needed <fct>
+FinalBetancesData = 
+  FinalBetancesData %>% 
+  mutate(
+  Gender = relevel(Gender,"Other"),
+  Race = relevel(Race, "Other"))
+```
 
 ### Final Analysis (Regression Models)
 
 ``` r
-linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Income_Group + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Gender + Race + Income_Group + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + Smoking_Status + repairs_needed, data= FinalBetancesData)
 summary(linearregression1)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ HousingSatisfactionScore + Age + Income_Group + 
-    ##     Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + 
-    ##     moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+    ## lm(formula = PCS12 ~ HousingSatisfactionScore + Age + Gender + 
+    ##     Race + Income_Group + Education_Group + Chronic_Disease + 
+    ##     DelayedRent + moved_in_last_5_years + Smoking_Status + repairs_needed, 
+    ##     data = FinalBetancesData)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -24.4679  -7.2067   0.4021   8.0919  27.7935 
+    ## -22.7809  -7.5329   0.2048   8.4520  27.4201 
     ## 
     ## Coefficients:
-    ##                                           Estimate Std. Error t value
-    ## (Intercept)                               54.26349    8.43164   6.436
-    ## HousingSatisfactionScore                   0.28006    0.32961   0.850
-    ## Age                                       -0.31808    0.06719  -4.734
-    ## Income_Group2                              4.75026    2.30653   2.059
-    ## Income_Group3                              3.87523    3.57740   1.083
-    ## Gender_Coded1                              0.78009    2.72681   0.286
-    ## Gender_CodedNull                          -6.59235   11.54584  -0.571
-    ## Education_GroupHigh School/G.E.D.          4.36428    2.63543   1.656
-    ## Education_GroupPost High School Education  4.63686    3.15475   1.470
-    ## Chronic_Disease1                          -3.82385    2.61873  -1.460
-    ## DelayedRent1                              -3.03685    2.68570  -1.131
-    ## moved_in_last_5_years1                    -4.29703    2.90226  -1.481
-    ## repairs_needed1                            0.44478    4.55244   0.098
-    ##                                           Pr(>|t|)    
-    ## (Intercept)                               4.41e-09 ***
-    ## HousingSatisfactionScore                    0.3976    
-    ## Age                                       7.35e-06 ***
-    ## Income_Group2                               0.0421 *  
-    ## Income_Group3                               0.2813    
-    ## Gender_Coded1                               0.7754    
-    ## Gender_CodedNull                            0.5693    
-    ## Education_GroupHigh School/G.E.D.           0.1009    
-    ## Education_GroupPost High School Education   0.1448    
-    ## Chronic_Disease1                            0.1474    
-    ## DelayedRent1                                0.2609    
-    ## moved_in_last_5_years1                      0.1419    
-    ## repairs_needed1                             0.9224    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 47.14350   15.12832   3.116
+    ## HousingSatisfactionScore                     0.30180    0.33944   0.889
+    ## Age                                         -0.33288    0.06955  -4.786
+    ## GenderFemale                                 7.12921   11.55982   0.617
+    ## GenderMale                                   6.39003   11.97014   0.534
+    ## RaceHispanic or Latinx                       2.00198    4.08140   0.491
+    ## RaceNon- Hispanic Black or African American  0.96969    4.47699   0.217
+    ## Income_Group2                                4.76152    2.36800   2.011
+    ## Income_Group3                                3.52217    3.71437   0.948
+    ## Education_GroupHigh School/G.E.D.            4.05356    2.72465   1.488
+    ## Education_GroupPost High School Education    5.34454    3.39502   1.574
+    ## Chronic_Disease1                            -3.78260    2.69922  -1.401
+    ## DelayedRent1                                -2.48023    2.80659  -0.884
+    ## moved_in_last_5_years1                      -4.10357    2.94876  -1.392
+    ## Smoking_Status1                             -1.98786    2.74187  -0.725
+    ## repairs_needed1                              0.28400    4.63468   0.061
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                  0.00242 ** 
+    ## HousingSatisfactionScore                     0.37617    
+    ## Age                                         6.16e-06 ***
+    ## GenderFemale                                 0.53888    
+    ## GenderMale                                   0.59469    
+    ## RaceHispanic or Latinx                       0.62489    
+    ## RaceNon- Hispanic Black or African American  0.82898    
+    ## Income_Group2                                0.04715 *  
+    ## Income_Group3                                0.34538    
+    ## Education_GroupHigh School/G.E.D.            0.14010    
+    ## Education_GroupPost High School Education    0.11872    
+    ## Chronic_Disease1                             0.16433    
+    ## DelayedRent1                                 0.37906    
+    ## moved_in_last_5_years1                       0.16725    
+    ## Smoking_Status1                              0.47022    
+    ## repairs_needed1                              0.95127    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 10.89 on 99 degrees of freedom
+    ## Residual standard error: 11 on 96 degrees of freedom
     ##   (12 observations deleted due to missingness)
-    ## Multiple R-squared:  0.3105, Adjusted R-squared:  0.227 
-    ## F-statistic: 3.716 on 12 and 99 DF,  p-value: 0.0001228
+    ## Multiple R-squared:  0.3174, Adjusted R-squared:  0.2108 
+    ## F-statistic: 2.976 on 15 and 96 DF,  p-value: 0.0006348
 
 ``` r
 linearregression1 %>% 
@@ -7256,25 +7259,25 @@ High\_CI
 
 <td style="text-align:right;">
 
-54.263
+47.143
 
 </td>
 
 <td style="text-align:right;">
 
-0.000
+0.002
 
 </td>
 
 <td style="text-align:right;">
 
-37.737
+17.492
 
 </td>
 
 <td style="text-align:right;">
 
-70.790
+76.795
 
 </td>
 
@@ -7290,25 +7293,25 @@ HousingSatisfactionScore
 
 <td style="text-align:right;">
 
-0.280
+0.302
 
 </td>
 
 <td style="text-align:right;">
 
-0.398
+0.376
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.366
+\-0.364
 
 </td>
 
 <td style="text-align:right;">
 
-0.926
+0.967
 
 </td>
 
@@ -7324,7 +7327,7 @@ Age
 
 <td style="text-align:right;">
 
-\-0.318
+\-0.333
 
 </td>
 
@@ -7336,13 +7339,149 @@ Age
 
 <td style="text-align:right;">
 
-\-0.450
+\-0.469
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.186
+\-0.197
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderFemale
+
+</td>
+
+<td style="text-align:right;">
+
+7.129
+
+</td>
+
+<td style="text-align:right;">
+
+0.539
+
+</td>
+
+<td style="text-align:right;">
+
+\-15.528
+
+</td>
+
+<td style="text-align:right;">
+
+29.786
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+6.390
+
+</td>
+
+<td style="text-align:right;">
+
+0.595
+
+</td>
+
+<td style="text-align:right;">
+
+\-17.071
+
+</td>
+
+<td style="text-align:right;">
+
+29.851
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceHispanic or Latinx
+
+</td>
+
+<td style="text-align:right;">
+
+2.002
+
+</td>
+
+<td style="text-align:right;">
+
+0.625
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.998
+
+</td>
+
+<td style="text-align:right;">
+
+10.002
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+RaceNon- Hispanic Black or African American
+
+</td>
+
+<td style="text-align:right;">
+
+0.970
+
+</td>
+
+<td style="text-align:right;">
+
+0.829
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.805
+
+</td>
+
+<td style="text-align:right;">
+
+9.745
 
 </td>
 
@@ -7358,25 +7497,25 @@ Income\_Group2
 
 <td style="text-align:right;">
 
-4.750
+4.762
 
 </td>
 
 <td style="text-align:right;">
 
-0.042
+0.047
 
 </td>
 
 <td style="text-align:right;">
 
-0.229
+0.120
 
 </td>
 
 <td style="text-align:right;">
 
-9.271
+9.403
 
 </td>
 
@@ -7392,93 +7531,25 @@ Income\_Group3
 
 <td style="text-align:right;">
 
-3.875
+3.522
 
 </td>
 
 <td style="text-align:right;">
 
-0.281
+0.345
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.136
+\-3.758
 
 </td>
 
 <td style="text-align:right;">
 
-10.887
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Gender\_Coded1
-
-</td>
-
-<td style="text-align:right;">
-
-0.780
-
-</td>
-
-<td style="text-align:right;">
-
-0.775
-
-</td>
-
-<td style="text-align:right;">
-
-\-4.564
-
-</td>
-
-<td style="text-align:right;">
-
-6.125
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Gender\_CodedNull
-
-</td>
-
-<td style="text-align:right;">
-
-\-6.592
-
-</td>
-
-<td style="text-align:right;">
-
-0.569
-
-</td>
-
-<td style="text-align:right;">
-
-\-29.222
-
-</td>
-
-<td style="text-align:right;">
-
-16.037
+10.802
 
 </td>
 
@@ -7494,25 +7565,25 @@ Education\_GroupHigh School/G.E.D.
 
 <td style="text-align:right;">
 
-4.364
+4.054
 
 </td>
 
 <td style="text-align:right;">
 
-0.101
+0.140
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.801
+\-1.287
 
 </td>
 
 <td style="text-align:right;">
 
-9.530
+9.394
 
 </td>
 
@@ -7528,25 +7599,25 @@ Education\_GroupPost High School Education
 
 <td style="text-align:right;">
 
-4.637
+5.345
 
 </td>
 
 <td style="text-align:right;">
 
-0.145
+0.119
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.546
+\-1.310
 
 </td>
 
 <td style="text-align:right;">
 
-10.820
+11.999
 
 </td>
 
@@ -7562,25 +7633,25 @@ Chronic\_Disease1
 
 <td style="text-align:right;">
 
-\-3.824
+\-3.783
 
 </td>
 
 <td style="text-align:right;">
 
-0.147
+0.164
 
 </td>
 
 <td style="text-align:right;">
 
-\-8.957
+\-9.073
 
 </td>
 
 <td style="text-align:right;">
 
-1.309
+1.508
 
 </td>
 
@@ -7596,25 +7667,25 @@ DelayedRent1
 
 <td style="text-align:right;">
 
-\-3.037
+\-2.480
 
 </td>
 
 <td style="text-align:right;">
 
-0.261
+0.379
 
 </td>
 
 <td style="text-align:right;">
 
-\-8.301
+\-7.981
 
 </td>
 
 <td style="text-align:right;">
 
-2.227
+3.021
 
 </td>
 
@@ -7630,25 +7701,59 @@ moved\_in\_last\_5\_years1
 
 <td style="text-align:right;">
 
-\-4.297
+\-4.104
 
 </td>
 
 <td style="text-align:right;">
 
-0.142
+0.167
 
 </td>
 
 <td style="text-align:right;">
 
-\-9.985
+\-9.883
 
 </td>
 
 <td style="text-align:right;">
 
-1.391
+1.676
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Smoking\_Status1
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.988
+
+</td>
+
+<td style="text-align:right;">
+
+0.470
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.362
+
+</td>
+
+<td style="text-align:right;">
+
+3.386
 
 </td>
 
@@ -7664,19 +7769,19 @@ repairs\_needed1
 
 <td style="text-align:right;">
 
-0.445
+0.284
 
 </td>
 
 <td style="text-align:right;">
 
-0.922
+0.951
 
 </td>
 
 <td style="text-align:right;">
 
-\-8.478
+\-8.800
 
 </td>
 
@@ -7696,15 +7801,15 @@ Housing Conditions and
 Quality
 
 ``` r
-linearregression2 = lm(PCS12 ~ HousingSatisfactionScore +  Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
+linearregression2 = lm(PCS12 ~ HousingSatisfactionScore +  Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
 summary(linearregression2)
 ```
 
     ## 
     ## Call:
     ## lm(formula = PCS12 ~ HousingSatisfactionScore + Age + Income_Group + 
-    ##     Race + Gender_Coded + Education_Group + Chronic_Disease + 
-    ##     repairs_needed, data = FinalBetancesData)
+    ##     Race + Gender + Education_Group + Chronic_Disease + repairs_needed, 
+    ##     data = FinalBetancesData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
@@ -7712,29 +7817,29 @@ summary(linearregression2)
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 49.94292    7.81263   6.393
+    ## (Intercept)                                 39.20183   14.24816   2.751
     ## HousingSatisfactionScore                     0.48603    0.31439   1.546
     ## Age                                         -0.31184    0.06436  -4.845
     ## Income_Group2                                4.09115    2.29095   1.786
     ## Income_Group3                                4.37413    3.39637   1.288
-    ## RaceNon- Hispanic Black or African American -1.00594    2.78771  -0.361
-    ## RaceOther                                   -3.12716    3.90881  -0.800
-    ## Gender_Coded1                               -0.15032    2.69314  -0.056
-    ## Gender_CodedNull                            -7.61393   11.74266  -0.648
+    ## RaceHispanic or Latinx                       3.12716    3.90881   0.800
+    ## RaceNon- Hispanic Black or African American  2.12122    4.33847   0.489
+    ## GenderFemale                                 7.46361   11.38101   0.656
+    ## GenderMale                                   7.61393   11.74266   0.648
     ## Education_GroupHigh School/G.E.D.            2.74748    2.49349   1.102
     ## Education_GroupPost High School Education    3.53508    3.14305   1.125
     ## Chronic_Disease1                            -3.42398    2.55015  -1.343
     ## repairs_needed1                              1.72082    4.18462   0.411
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                 4.71e-09 ***
+    ## (Intercept)                                    0.007 ** 
     ## HousingSatisfactionScore                       0.125    
     ## Age                                         4.44e-06 ***
     ## Income_Group2                                  0.077 .  
     ## Income_Group3                                  0.201    
-    ## RaceNon- Hispanic Black or African American    0.719    
-    ## RaceOther                                      0.426    
-    ## Gender_Coded1                                  0.956    
-    ## Gender_CodedNull                               0.518    
+    ## RaceHispanic or Latinx                         0.426    
+    ## RaceNon- Hispanic Black or African American    0.626    
+    ## GenderFemale                                   0.513    
+    ## GenderMale                                     0.518    
     ## Education_GroupHigh School/G.E.D.              0.273    
     ## Education_GroupPost High School Education      0.263    
     ## Chronic_Disease1                               0.182    
@@ -7809,25 +7914,25 @@ High\_CI
 
 <td style="text-align:right;">
 
-49.943
+39.202
 
 </td>
 
 <td style="text-align:right;">
 
-0.000
+0.007
 
 </td>
 
 <td style="text-align:right;">
 
-34.630
+11.275
 
 </td>
 
 <td style="text-align:right;">
 
-65.256
+67.128
 
 </td>
 
@@ -7973,47 +8078,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.006
-
-</td>
-
-<td style="text-align:right;">
-
-0.719
-
-</td>
-
-<td style="text-align:right;">
-
-\-6.470
-
-</td>
-
-<td style="text-align:right;">
-
-4.458
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-\-3.127
+3.127
 
 </td>
 
@@ -8025,13 +8096,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-10.788
+\-4.534
 
 </td>
 
 <td style="text-align:right;">
 
-4.534
+10.788
 
 </td>
 
@@ -8041,31 +8112,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.150
+2.121
 
 </td>
 
 <td style="text-align:right;">
 
-0.956
+0.626
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.429
+\-6.382
 
 </td>
 
 <td style="text-align:right;">
 
-5.128
+10.625
 
 </td>
 
@@ -8075,13 +8146,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-7.614
+7.464
+
+</td>
+
+<td style="text-align:right;">
+
+0.513
+
+</td>
+
+<td style="text-align:right;">
+
+\-14.843
+
+</td>
+
+<td style="text-align:right;">
+
+29.770
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+7.614
 
 </td>
 
@@ -8093,13 +8198,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-30.630
+\-15.402
 
 </td>
 
 <td style="text-align:right;">
 
-15.402
+30.630
 
 </td>
 
@@ -8249,14 +8354,14 @@ Housing
 Affordability
 
 ``` r
-linearregression3 = lm(PCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+linearregression3 = lm(PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
 summary(linearregression3)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ Age + Income_Group + Race + Gender_Coded + 
-    ##     Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+    ## lm(formula = PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + 
+    ##     Chronic_Disease + DelayedRent, data = FinalBetancesData)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
@@ -8264,31 +8369,31 @@ summary(linearregression3)
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                  58.4219     5.5672  10.494
+    ## (Intercept)                                  52.1659    13.1448   3.969
     ## Age                                          -0.2946     0.0653  -4.511
     ## Income_Group2                                 5.0662     2.3264   2.178
     ## Income_Group3                                 4.0449     3.5183   1.150
-    ## RaceNon- Hispanic Black or African American  -1.6522     2.9009  -0.570
-    ## RaceOther                                    -1.8809     3.9243  -0.479
-    ## Gender_Coded1                                 0.9914     2.7300   0.363
-    ## Gender_CodedNull                             -4.3750    11.8020  -0.371
+    ## RaceHispanic or Latinx                        1.8809     3.9243   0.479
+    ## RaceNon- Hispanic Black or African American   0.2287     4.3285   0.053
+    ## GenderFemale                                  5.3664    11.4430   0.469
+    ## GenderMale                                    4.3750    11.8020   0.371
     ## Education_GroupHigh School/G.E.D.             3.4861     2.5605   1.361
     ## Education_GroupPost High School Education     3.7982     3.1343   1.212
     ## Chronic_Disease1                             -4.4449     2.6133  -1.701
     ## DelayedRent1                                 -3.2823     2.5952  -1.265
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                  < 2e-16 ***
+    ## (Intercept)                                 0.000135 ***
     ## Age                                         1.75e-05 ***
-    ## Income_Group2                                 0.0318 *  
-    ## Income_Group3                                 0.2530    
-    ## RaceNon- Hispanic Black or African American   0.5702    
-    ## RaceOther                                     0.6328    
-    ## Gender_Coded1                                 0.7173    
-    ## Gender_CodedNull                              0.7116    
-    ## Education_GroupHigh School/G.E.D.             0.1764    
-    ## Education_GroupPost High School Education     0.2284    
-    ## Chronic_Disease1                              0.0920 .  
-    ## DelayedRent1                                  0.2089    
+    ## Income_Group2                               0.031752 *  
+    ## Income_Group3                               0.252995    
+    ## RaceHispanic or Latinx                      0.632760    
+    ## RaceNon- Hispanic Black or African American 0.957965    
+    ## GenderFemale                                0.640106    
+    ## GenderMale                                  0.711637    
+    ## Education_GroupHigh School/G.E.D.           0.176392    
+    ## Education_GroupPost High School Education   0.228400    
+    ## Chronic_Disease1                            0.092047 .  
+    ## DelayedRent1                                0.208863    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -8359,7 +8464,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-58.422
+52.166
 
 </td>
 
@@ -8371,13 +8476,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-47.510
+26.402
 
 </td>
 
 <td style="text-align:right;">
 
-69.334
+77.930
 
 </td>
 
@@ -8489,47 +8594,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.652
-
-</td>
-
-<td style="text-align:right;">
-
-0.570
-
-</td>
-
-<td style="text-align:right;">
-
-\-7.338
-
-</td>
-
-<td style="text-align:right;">
-
-4.034
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-\-1.881
+1.881
 
 </td>
 
@@ -8541,13 +8612,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-9.573
+\-5.811
 
 </td>
 
 <td style="text-align:right;">
 
-5.811
+9.573
 
 </td>
 
@@ -8557,31 +8628,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-0.991
+0.229
 
 </td>
 
 <td style="text-align:right;">
 
-0.717
+0.958
 
 </td>
 
 <td style="text-align:right;">
 
-\-4.359
+\-8.255
 
 </td>
 
 <td style="text-align:right;">
 
-6.342
+8.712
 
 </td>
 
@@ -8591,13 +8662,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-4.375
+5.366
+
+</td>
+
+<td style="text-align:right;">
+
+0.640
+
+</td>
+
+<td style="text-align:right;">
+
+\-17.062
+
+</td>
+
+<td style="text-align:right;">
+
+27.795
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+4.375
 
 </td>
 
@@ -8609,13 +8714,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-27.507
+\-18.757
 
 </td>
 
 <td style="text-align:right;">
 
-18.757
+27.507
 
 </td>
 
@@ -8765,15 +8870,14 @@ Residential
 Stability
 
 ``` r
-linearregression4 = lm(PCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
+linearregression4 = lm(PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
 summary(linearregression4)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ Age + Income_Group + Race + Gender_Coded + 
-    ##     Education_Group + Chronic_Disease + moved_in_last_5_years, 
-    ##     data = FinalBetancesData)
+    ## lm(formula = PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + 
+    ##     Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
@@ -8781,31 +8885,31 @@ summary(linearregression4)
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 60.02349    5.28201  11.364
+    ## (Intercept)                                 48.37044   12.80733   3.777
     ## Age                                         -0.29324    0.06213  -4.720
     ## Income_Group2                                4.16204    2.28116   1.825
     ## Income_Group3                                5.12169    3.52030   1.455
-    ## RaceNon- Hispanic Black or African American -0.92967    2.80756  -0.331
-    ## RaceOther                                   -2.30582    3.89043  -0.593
-    ## Gender_Coded1                               -0.86240    2.65565  -0.325
-    ## Gender_CodedNull                            -9.34723   11.79598  -0.792
+    ## RaceHispanic or Latinx                       2.30582    3.89043   0.593
+    ## RaceNon- Hispanic Black or African American  1.37615    4.31547   0.319
+    ## GenderFemale                                 8.48483   11.44052   0.742
+    ## GenderMale                                   9.34723   11.79598   0.792
     ## Education_GroupHigh School/G.E.D.            2.29023    2.48310   0.922
     ## Education_GroupPost High School Education    3.60470    3.16474   1.139
     ## Chronic_Disease1                            -3.96236    2.52696  -1.568
     ## moved_in_last_5_years1                      -3.66215    2.83980  -1.290
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                  < 2e-16 ***
+    ## (Intercept)                                 0.000265 ***
     ## Age                                         7.39e-06 ***
-    ## Income_Group2                                 0.0709 .  
-    ## Income_Group3                                 0.1487    
-    ## RaceNon- Hispanic Black or African American   0.7412    
-    ## RaceOther                                     0.5547    
-    ## Gender_Coded1                                 0.7460    
-    ## Gender_CodedNull                              0.4299    
-    ## Education_GroupHigh School/G.E.D.             0.3585    
-    ## Education_GroupPost High School Education     0.2573    
-    ## Chronic_Disease1                              0.1199    
-    ## moved_in_last_5_years1                        0.2001    
+    ## Income_Group2                               0.070943 .  
+    ## Income_Group3                               0.148708    
+    ## RaceHispanic or Latinx                      0.554675    
+    ## RaceNon- Hispanic Black or African American 0.750452    
+    ## GenderFemale                                0.459972    
+    ## GenderMale                                  0.429926    
+    ## Education_GroupHigh School/G.E.D.           0.358495    
+    ## Education_GroupPost High School Education   0.257312    
+    ## Chronic_Disease1                            0.119911    
+    ## moved_in_last_5_years1                      0.200056    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -8876,7 +8980,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-60.023
+48.370
 
 </td>
 
@@ -8888,13 +8992,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-49.671
+23.268
 
 </td>
 
 <td style="text-align:right;">
 
-70.376
+73.473
 
 </td>
 
@@ -9006,47 +9110,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.930
-
-</td>
-
-<td style="text-align:right;">
-
-0.741
-
-</td>
-
-<td style="text-align:right;">
-
-\-6.432
-
-</td>
-
-<td style="text-align:right;">
-
-4.573
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-\-2.306
+2.306
 
 </td>
 
@@ -9058,13 +9128,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-9.931
+\-5.319
 
 </td>
 
 <td style="text-align:right;">
 
-5.319
+9.931
 
 </td>
 
@@ -9074,31 +9144,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.862
+1.376
 
 </td>
 
 <td style="text-align:right;">
 
-0.746
+0.750
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.067
+\-7.082
 
 </td>
 
 <td style="text-align:right;">
 
-4.343
+9.834
 
 </td>
 
@@ -9108,13 +9178,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-9.347
+8.485
+
+</td>
+
+<td style="text-align:right;">
+
+0.460
+
+</td>
+
+<td style="text-align:right;">
+
+\-13.939
+
+</td>
+
+<td style="text-align:right;">
+
+30.908
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+9.347
 
 </td>
 
@@ -9126,13 +9230,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-32.467
+\-13.773
 
 </td>
 
 <td style="text-align:right;">
 
-13.773
+32.467
 
 </td>
 
@@ -9282,15 +9386,15 @@ moved\_in\_last\_5\_years1
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance.
 
 ``` r
-linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
 summary(linearregression5)
 ```
 
     ## 
     ## Call:
     ## lm(formula = MCS12 ~ HousingSatisfactionScore + Age + Income_Group + 
-    ##     Race + Gender_Coded + Education_Group + Chronic_Disease + 
-    ##     DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+    ##     Race + Gender + Education_Group + Chronic_Disease + DelayedRent + 
+    ##     moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
@@ -9298,37 +9402,37 @@ summary(linearregression5)
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 41.97075    8.66504   4.844
+    ## (Intercept)                                 50.36019   15.25632   3.301
     ## HousingSatisfactionScore                     0.98563    0.34305   2.873
     ## Age                                         -0.05180    0.06934  -0.747
     ## Income_Group2                                0.24365    2.39032   0.102
     ## Income_Group3                                1.51059    3.75016   0.403
-    ## RaceNon- Hispanic Black or African American  0.23979    2.99015   0.080
-    ## RaceOther                                   -0.76431    4.07204  -0.188
-    ## Gender_Coded1                                0.10270    2.89628   0.035
-    ## Gender_CodedNull                             9.15375   12.09909   0.757
+    ## RaceHispanic or Latinx                       0.76431    4.07204   0.188
+    ## RaceNon- Hispanic Black or African American  1.00410    4.49157   0.224
+    ## GenderFemale                                -9.05105   11.68533  -0.775
+    ## GenderMale                                  -9.15375   12.09909  -0.757
     ## Education_GroupHigh School/G.E.D.            3.14597    2.71075   1.161
     ## Education_GroupPost High School Education    0.64614    3.43286   0.188
     ## Chronic_Disease1                            -8.83513    2.70160  -3.270
     ## DelayedRent1                                -3.48490    2.83311  -1.230
     ## moved_in_last_5_years1                       1.49982    2.97897   0.503
     ## repairs_needed1                              0.71529    4.68303   0.153
-    ##                                             Pr(>|t|)    
-    ## (Intercept)                                 4.82e-06 ***
-    ## HousingSatisfactionScore                     0.00499 ** 
-    ## Age                                          0.45686    
-    ## Income_Group2                                0.91902    
-    ## Income_Group3                                0.68798    
-    ## RaceNon- Hispanic Black or African American  0.93625    
-    ## RaceOther                                    0.85151    
-    ## Gender_Coded1                                0.97179    
-    ## Gender_CodedNull                             0.45114    
-    ## Education_GroupHigh School/G.E.D.            0.24867    
-    ## Education_GroupPost High School Education    0.85110    
-    ## Chronic_Disease1                             0.00149 ** 
-    ## DelayedRent1                                 0.22165    
-    ## moved_in_last_5_years1                       0.61578    
-    ## repairs_needed1                              0.87892    
+    ##                                             Pr(>|t|)   
+    ## (Intercept)                                  0.00135 **
+    ## HousingSatisfactionScore                     0.00499 **
+    ## Age                                          0.45686   
+    ## Income_Group2                                0.91902   
+    ## Income_Group3                                0.68798   
+    ## RaceHispanic or Latinx                       0.85151   
+    ## RaceNon- Hispanic Black or African American  0.82358   
+    ## GenderFemale                                 0.44048   
+    ## GenderMale                                   0.45114   
+    ## Education_GroupHigh School/G.E.D.            0.24867   
+    ## Education_GroupPost High School Education    0.85110   
+    ## Chronic_Disease1                             0.00149 **
+    ## DelayedRent1                                 0.22165   
+    ## moved_in_last_5_years1                       0.61578   
+    ## repairs_needed1                              0.87892   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -9399,25 +9503,25 @@ High\_CI
 
 <td style="text-align:right;">
 
-41.971
+50.360
 
 </td>
 
 <td style="text-align:right;">
 
-0.000
+0.001
 
 </td>
 
 <td style="text-align:right;">
 
-24.987
+20.458
 
 </td>
 
 <td style="text-align:right;">
 
-58.954
+80.263
 
 </td>
 
@@ -9563,47 +9667,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-0.240
-
-</td>
-
-<td style="text-align:right;">
-
-0.936
-
-</td>
-
-<td style="text-align:right;">
-
-\-5.621
-
-</td>
-
-<td style="text-align:right;">
-
-6.100
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-\-0.764
+0.764
 
 </td>
 
@@ -9615,13 +9685,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-8.745
+\-7.217
 
 </td>
 
 <td style="text-align:right;">
 
-7.217
+8.745
 
 </td>
 
@@ -9631,31 +9701,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-0.103
+1.004
 
 </td>
 
 <td style="text-align:right;">
 
-0.972
+0.824
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.574
+\-7.799
 
 </td>
 
 <td style="text-align:right;">
 
-5.779
+9.808
 
 </td>
 
@@ -9665,13 +9735,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-9.154
+\-9.051
+
+</td>
+
+<td style="text-align:right;">
+
+0.440
+
+</td>
+
+<td style="text-align:right;">
+
+\-31.954
+
+</td>
+
+<td style="text-align:right;">
+
+13.852
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+\-9.154
 
 </td>
 
@@ -9683,13 +9787,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-14.560
+\-32.868
 
 </td>
 
 <td style="text-align:right;">
 
-32.868
+14.560
 
 </td>
 
@@ -9907,15 +10011,15 @@ Housing Conditions and
 Quality
 
 ``` r
-linearregression6 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
+linearregression6 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
 summary(linearregression6)
 ```
 
     ## 
     ## Call:
     ## lm(formula = MCS12 ~ HousingSatisfactionScore + Age + Income_Group + 
-    ##     Race + Gender_Coded + Education_Group + Chronic_Disease + 
-    ##     repairs_needed, data = FinalBetancesData)
+    ##     Race + Gender + Education_Group + Chronic_Disease + repairs_needed, 
+    ##     data = FinalBetancesData)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
@@ -9923,29 +10027,29 @@ summary(linearregression6)
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 41.28817    7.83175   5.272
+    ## (Intercept)                                 47.10539   14.28304   3.298
     ## HousingSatisfactionScore                     0.98927    0.31516   3.139
     ## Age                                         -0.02026    0.06452  -0.314
     ## Income_Group2                               -0.09839    2.29656  -0.043
     ## Income_Group3                                2.64158    3.40469   0.776
-    ## RaceNon- Hispanic Black or African American -0.87807    2.79454  -0.314
-    ## RaceOther                                   -1.28285    3.91838  -0.327
-    ## Gender_Coded1                               -0.49604    2.69974  -0.184
-    ## Gender_CodedNull                             7.10008   11.77141   0.603
+    ## RaceHispanic or Latinx                       1.28285    3.91838   0.327
+    ## RaceNon- Hispanic Black or African American  0.40478    4.34909   0.093
+    ## GenderFemale                                -7.59612   11.40887  -0.666
+    ## GenderMale                                  -7.10008   11.77141  -0.603
     ## Education_GroupHigh School/G.E.D.            2.81971    2.49959   1.128
     ## Education_GroupPost High School Education    1.26951    3.15074   0.403
     ## Chronic_Disease1                            -8.91111    2.55639  -3.486
     ## repairs_needed1                             -0.42507    4.19487  -0.101
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                 7.37e-07 ***
+    ## (Intercept)                                  0.00133 ** 
     ## HousingSatisfactionScore                     0.00221 ** 
     ## Age                                          0.75418    
     ## Income_Group2                                0.96591    
     ## Income_Group3                                0.43959    
-    ## RaceNon- Hispanic Black or African American  0.75399    
-    ## RaceOther                                    0.74403    
-    ## Gender_Coded1                                0.85458    
-    ## Gender_CodedNull                             0.54771    
+    ## RaceHispanic or Latinx                       0.74403    
+    ## RaceNon- Hispanic Black or African American  0.92603    
+    ## GenderFemale                                 0.50701    
+    ## GenderMale                                   0.54771    
     ## Education_GroupHigh School/G.E.D.            0.26189    
     ## Education_GroupPost High School Education    0.68783    
     ## Chronic_Disease1                             0.00072 ***
@@ -10020,25 +10124,25 @@ High\_CI
 
 <td style="text-align:right;">
 
-41.288
+47.105
 
 </td>
 
 <td style="text-align:right;">
 
-0.000
+0.001
 
 </td>
 
 <td style="text-align:right;">
 
-25.938
+19.111
 
 </td>
 
 <td style="text-align:right;">
 
-56.638
+75.100
 
 </td>
 
@@ -10184,47 +10288,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.878
-
-</td>
-
-<td style="text-align:right;">
-
-0.754
-
-</td>
-
-<td style="text-align:right;">
-
-\-6.355
-
-</td>
-
-<td style="text-align:right;">
-
-4.599
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-\-1.283
+1.283
 
 </td>
 
@@ -10236,13 +10306,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-8.963
+\-6.397
 
 </td>
 
 <td style="text-align:right;">
 
-6.397
+8.963
 
 </td>
 
@@ -10252,31 +10322,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.496
+0.405
 
 </td>
 
 <td style="text-align:right;">
 
-0.855
+0.926
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.788
+\-8.119
 
 </td>
 
 <td style="text-align:right;">
 
-4.795
+8.929
 
 </td>
 
@@ -10286,13 +10356,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-7.100
+\-7.596
+
+</td>
+
+<td style="text-align:right;">
+
+0.507
+
+</td>
+
+<td style="text-align:right;">
+
+\-29.957
+
+</td>
+
+<td style="text-align:right;">
+
+14.765
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.100
 
 </td>
 
@@ -10304,13 +10408,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-15.972
+\-30.172
 
 </td>
 
 <td style="text-align:right;">
 
-30.172
+15.972
 
 </td>
 
@@ -10460,14 +10564,14 @@ Housing
 Affordability
 
 ``` r
-linearregression7 = lm(MCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+linearregression7 = lm(MCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
 summary(linearregression7)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = MCS12 ~ Age + Income_Group + Race + Gender_Coded + 
-    ##     Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+    ## lm(formula = MCS12 ~ Age + Income_Group + Race + Gender + Education_Group + 
+    ##     Chronic_Disease + DelayedRent, data = FinalBetancesData)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
@@ -10475,27 +10579,27 @@ summary(linearregression7)
     ## 
     ## Coefficients:
     ##                                              Estimate Std. Error t value
-    ## (Intercept)                                 58.641668   5.791819  10.125
+    ## (Intercept)                                 68.769838  13.675083   5.029
     ## Age                                         -0.006884   0.067939  -0.101
     ## Income_Group2                                0.863704   2.420213   0.357
     ## Income_Group3                                3.017893   3.660252   0.825
-    ## RaceNon- Hispanic Black or African American  0.020711   3.017924   0.007
-    ## RaceOther                                    1.259346   4.082628   0.308
-    ## Gender_Coded1                               -0.672805   2.840163  -0.237
-    ## Gender_CodedNull                             8.868824  12.278166   0.722
+    ## RaceHispanic or Latinx                      -1.259346   4.082628  -0.308
+    ## RaceNon- Hispanic Black or African American -1.238634   4.503091  -0.275
+    ## GenderFemale                                -9.541629  11.904703  -0.802
+    ## GenderMale                                  -8.868824  12.278166  -0.722
     ## Education_GroupHigh School/G.E.D.            2.013884   2.663839   0.756
     ## Education_GroupPost High School Education   -0.778624   3.260713  -0.239
     ## Chronic_Disease1                            -9.985160   2.718770  -3.673
     ## DelayedRent1                                -5.505424   2.699890  -2.039
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                  < 2e-16 ***
+    ## (Intercept)                                 2.15e-06 ***
     ## Age                                         0.919491    
     ## Income_Group2                               0.721933    
     ## Income_Group3                               0.411596    
-    ## RaceNon- Hispanic Black or African American 0.994538    
-    ## RaceOther                                   0.758364    
-    ## Gender_Coded1                               0.813222    
-    ## Gender_CodedNull                            0.471764    
+    ## RaceHispanic or Latinx                      0.758364    
+    ## RaceNon- Hispanic Black or African American 0.783830    
+    ## GenderFemale                                0.424723    
+    ## GenderMale                                  0.471764    
     ## Education_GroupHigh School/G.E.D.           0.451404    
     ## Education_GroupPost High School Education   0.811753    
     ## Chronic_Disease1                            0.000386 ***
@@ -10570,7 +10674,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-58.642
+68.770
 
 </td>
 
@@ -10582,13 +10686,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-47.290
+41.967
 
 </td>
 
 <td style="text-align:right;">
 
-69.994
+95.573
 
 </td>
 
@@ -10700,47 +10804,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-0.021
-
-</td>
-
-<td style="text-align:right;">
-
-0.995
-
-</td>
-
-<td style="text-align:right;">
-
-\-5.894
-
-</td>
-
-<td style="text-align:right;">
-
-5.936
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-1.259
+\-1.259
 
 </td>
 
@@ -10752,13 +10822,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-6.743
+\-9.261
 
 </td>
 
 <td style="text-align:right;">
 
-9.261
+6.743
 
 </td>
 
@@ -10768,31 +10838,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.673
+\-1.239
 
 </td>
 
 <td style="text-align:right;">
 
-0.813
+0.784
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.240
+\-10.065
 
 </td>
 
 <td style="text-align:right;">
 
-4.894
+7.587
 
 </td>
 
@@ -10802,13 +10872,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-8.869
+\-9.542
+
+</td>
+
+<td style="text-align:right;">
+
+0.425
+
+</td>
+
+<td style="text-align:right;">
+
+\-32.875
+
+</td>
+
+<td style="text-align:right;">
+
+13.792
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+\-8.869
 
 </td>
 
@@ -10820,13 +10924,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-15.196
+\-32.934
 
 </td>
 
 <td style="text-align:right;">
 
-32.934
+15.196
 
 </td>
 
@@ -10976,15 +11080,14 @@ Residential
 Stability
 
 ``` r
-linearregression8 = lm(MCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
+linearregression8 = lm(MCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
 summary(linearregression4)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ Age + Income_Group + Race + Gender_Coded + 
-    ##     Education_Group + Chronic_Disease + moved_in_last_5_years, 
-    ##     data = FinalBetancesData)
+    ## lm(formula = PCS12 ~ Age + Income_Group + Race + Gender + Education_Group + 
+    ##     Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
@@ -10992,31 +11095,31 @@ summary(linearregression4)
     ## 
     ## Coefficients:
     ##                                             Estimate Std. Error t value
-    ## (Intercept)                                 60.02349    5.28201  11.364
+    ## (Intercept)                                 48.37044   12.80733   3.777
     ## Age                                         -0.29324    0.06213  -4.720
     ## Income_Group2                                4.16204    2.28116   1.825
     ## Income_Group3                                5.12169    3.52030   1.455
-    ## RaceNon- Hispanic Black or African American -0.92967    2.80756  -0.331
-    ## RaceOther                                   -2.30582    3.89043  -0.593
-    ## Gender_Coded1                               -0.86240    2.65565  -0.325
-    ## Gender_CodedNull                            -9.34723   11.79598  -0.792
+    ## RaceHispanic or Latinx                       2.30582    3.89043   0.593
+    ## RaceNon- Hispanic Black or African American  1.37615    4.31547   0.319
+    ## GenderFemale                                 8.48483   11.44052   0.742
+    ## GenderMale                                   9.34723   11.79598   0.792
     ## Education_GroupHigh School/G.E.D.            2.29023    2.48310   0.922
     ## Education_GroupPost High School Education    3.60470    3.16474   1.139
     ## Chronic_Disease1                            -3.96236    2.52696  -1.568
     ## moved_in_last_5_years1                      -3.66215    2.83980  -1.290
     ##                                             Pr(>|t|)    
-    ## (Intercept)                                  < 2e-16 ***
+    ## (Intercept)                                 0.000265 ***
     ## Age                                         7.39e-06 ***
-    ## Income_Group2                                 0.0709 .  
-    ## Income_Group3                                 0.1487    
-    ## RaceNon- Hispanic Black or African American   0.7412    
-    ## RaceOther                                     0.5547    
-    ## Gender_Coded1                                 0.7460    
-    ## Gender_CodedNull                              0.4299    
-    ## Education_GroupHigh School/G.E.D.             0.3585    
-    ## Education_GroupPost High School Education     0.2573    
-    ## Chronic_Disease1                              0.1199    
-    ## moved_in_last_5_years1                        0.2001    
+    ## Income_Group2                               0.070943 .  
+    ## Income_Group3                               0.148708    
+    ## RaceHispanic or Latinx                      0.554675    
+    ## RaceNon- Hispanic Black or African American 0.750452    
+    ## GenderFemale                                0.459972    
+    ## GenderMale                                  0.429926    
+    ## Education_GroupHigh School/G.E.D.           0.358495    
+    ## Education_GroupPost High School Education   0.257312    
+    ## Chronic_Disease1                            0.119911    
+    ## moved_in_last_5_years1                      0.200056    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -11087,7 +11190,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-55.703
+62.118
 
 </td>
 
@@ -11099,13 +11202,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-44.895
+35.913
 
 </td>
 
 <td style="text-align:right;">
 
-66.510
+88.323
 
 </td>
 
@@ -11217,47 +11320,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-RaceNon- Hispanic Black or African American
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.513
-
-</td>
-
-<td style="text-align:right;">
-
-0.607
-
-</td>
-
-<td style="text-align:right;">
-
-\-7.258
-
-</td>
-
-<td style="text-align:right;">
-
-4.231
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-RaceOther
-
-</td>
-
-<td style="text-align:right;">
-
-0.302
+\-0.302
 
 </td>
 
@@ -11269,13 +11338,13 @@ RaceOther
 
 <td style="text-align:right;">
 
-\-7.658
+\-8.263
 
 </td>
 
 <td style="text-align:right;">
 
-8.263
+7.658
 
 </td>
 
@@ -11285,31 +11354,31 @@ RaceOther
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.321
+\-1.816
 
 </td>
 
 <td style="text-align:right;">
 
-0.635
+0.688
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.754
+\-10.646
 
 </td>
 
 <td style="text-align:right;">
 
-4.113
+7.014
 
 </td>
 
@@ -11319,13 +11388,47 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_CodedNull
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-6.113
+\-7.433
+
+</td>
+
+<td style="text-align:right;">
+
+0.535
+
+</td>
+
+<td style="text-align:right;">
+
+\-30.842
+
+</td>
+
+<td style="text-align:right;">
+
+15.975
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+GenderMale
+
+</td>
+
+<td style="text-align:right;">
+
+\-6.113
 
 </td>
 
@@ -11337,13 +11440,13 @@ Gender\_CodedNull
 
 <td style="text-align:right;">
 
-\-18.023
+\-30.248
 
 </td>
 
 <td style="text-align:right;">
 
-30.248
+18.023
 
 </td>
 
@@ -11555,7 +11658,9 @@ SoBROData =
                       "Other, specify:" = "Other"), 
         delayed_rent = recode(delayed_rent, 
                              "Yes" = "1",
-                             "No" = "0"))
+                             "No" = "0"),
+        gender = recode(gender, 
+                        `Other, please specify:` = "Other"))
 ```
 
 ##### Below, I scored the Perceived Stress Scale (PSS-4) and the SF-12. The PSS coding instructions were as follows: code `0` - never, `1` - almost never, `2` - sometimes, `3` - fairly often, `4` - very often & reverse your scores for questions 4, 5, 7, and 8. On these 4 questions, change the scores to: 0 = 4, 1 = 3, 2 = 2, 3 = 1, 4 = 0.
@@ -11844,11 +11949,8 @@ SoBROData %>%
                     Age_Category >= 45  ~ '45-64',
                     Age_Category >= 25 ~ '25-44',
                     Age_Category >= 18 ~ '18-24'),
-    Gender_Coded = gender, 
-    Gender_Coded = recode(Gender_Coded, 
-                          "Male" = "0",
-                          "Female" = "1",
-                          `Other, please specify:` = "2"),
+    Gender = recode(gender, 
+                          `Other, please specify:` = "Other"),
     AptSat_Coded = aptsat, 
     AptSat_Coded = recode(AptSat_Coded,
                           "Very Dissatisfied" = "1",
@@ -11915,7 +12017,7 @@ SoBROData =
   SoBROData %>% 
   mutate(
     education = as.factor(education),
-    Gender_Coded = as.factor(Gender_Coded),
+    gender = as.factor(gender),
     race = as.factor(race),
     age = as.numeric(age),
     PSS_Category = factor(PSS_Category, levels = c("Low Stress", "Moderate Stress", "High Stress")),
@@ -12012,8 +12114,8 @@ SoBROData =
 SoBROData = 
   SoBROData %>% 
   mutate(
-  Racial_Group = race,
-  Racial_Group = recode(Racial_Group,
+  Race = race,
+  Race = recode(Race,
                 "Native American/ Alaskan Native" = "Other",
                 "Non- Hispanic Black or African American,Hispanic or Latino,Asian or Pacific Islander,Other" = "Other",
                 "Non- Hispanic Black or African American,Hispanic or Latino" = "Other",
@@ -12026,7 +12128,10 @@ SoBROData =
                 
                 "Non- Hispanic Black or African American,Hispanic or Latino,Asian or Pacific Islander,Other, specify:" = "Other",
 "Non- Hispanic Black or African American,Hispanic or Latino,Other, specify:" = "Other"
-                ))
+                ),
+    Race = relevel(Race,"Other"),
+    Gender = gender,
+    Gender = relevel(Gender,"Other"))
 ```
 
 ### Univariable/Descriptive Analyses
@@ -12156,10 +12261,10 @@ Max. :68.00
 
 ``` r
 SoBROData %>% 
-  group_by(PCS12, Age_Category, gender) %>% 
+  group_by(PCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = PCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ gender)
+  geom_jitter() +  facet_grid(. ~ Gender)
 ```
 
 <img src="ThesisAnalysis_files/figure-gfm/unnamed-chunk-98-1.png" width="90%" />
@@ -12285,10 +12390,10 @@ Max. :67.95
 
 ``` r
 SoBROData %>% 
-  group_by(MCS12, Age_Category, gender) %>% 
+  group_by(MCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = MCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ gender)
+  geom_jitter() +  facet_grid(. ~ Gender)
 ```
 
 <img src="ThesisAnalysis_files/figure-gfm/unnamed-chunk-100-1.png" width="90%" />
@@ -12410,7 +12515,7 @@ NA
 
 ``` r
 SoBROData %>% 
-  group_by(Racial_Group) %>% 
+  group_by(Race) %>% 
   summarize(n=n()) %>%
    mutate(
   percent = n/180*100) %>% 
@@ -12451,28 +12556,6 @@ Percent(%)
 
 <td style="text-align:left;">
 
-Hispanic or Latinx
-
-</td>
-
-<td style="text-align:right;">
-
-56
-
-</td>
-
-<td style="text-align:right;">
-
-31.11
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 Other
 
 </td>
@@ -12486,6 +12569,28 @@ Other
 <td style="text-align:right;">
 
 13.33
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Hispanic or Latinx
+
+</td>
+
+<td style="text-align:right;">
+
+56
+
+</td>
+
+<td style="text-align:right;">
+
+31.11
 
 </td>
 
@@ -12694,7 +12799,7 @@ NA
 
 ``` r
 SoBROData %>% 
-  group_by(gender) %>% 
+  group_by(Gender) %>% 
   summarize(n=n()) %>%
   mutate(
   percent = n/180*100) %>% 
@@ -12730,6 +12835,28 @@ Percent(%)
 </thead>
 
 <tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Other
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+2.22
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -12775,36 +12902,14 @@ Male
 
 </tr>
 
-<tr>
-
-<td style="text-align:left;">
-
-Other, please specify:
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-2.22
-
-</td>
-
-</tr>
-
 </tbody>
 
 </table>
 
 ``` r
 SoBROData %>% 
-  group_by(age, gender) %>% 
-  ggplot(aes(x=gender, y=age)) + geom_violin() +
+  group_by(age, Gender) %>% 
+  ggplot(aes(x=Gender, y=age)) + geom_violin() +
   labs(x = "Gender",
       y = "Age",
       title = "Figure 1. Distribution of Age by Gender")
@@ -12814,8 +12919,8 @@ SoBROData %>%
 
 ``` r
 SoBROData %>% 
-  select(gender, age) %>% 
-  group_by(gender) %>% 
+  select(Gender, age) %>% 
+  group_by(Gender) %>% 
   drop_na() %>% 
   summarize(Mean = mean(age)) %>% 
   knitr::kable(col.names=c("Gender", "Mean Age"), digits = 2)
@@ -12849,6 +12954,22 @@ Mean Age
 
 <td style="text-align:left;">
 
+Other
+
+</td>
+
+<td style="text-align:right;">
+
+35.75
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
 Female
 
 </td>
@@ -12872,22 +12993,6 @@ Male
 <td style="text-align:right;">
 
 50.22
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Other, please specify:
-
-</td>
-
-<td style="text-align:right;">
-
-35.75
 
 </td>
 
@@ -14036,10 +14141,10 @@ Yes
 
 ``` r
 SoBROData %>% 
-  group_by(Age_Category, gender) %>% 
+  group_by(Age_Category, Gender) %>% 
   summarize(n=n()) %>%
   pivot_wider(
-    names_from = gender,
+    names_from = Gender,
     values_from = n) %>% 
   knitr::kable(col.names = c("Age Group","Female (n)", "Male (n)", "Other (n)"))
 ```
@@ -14226,10 +14331,10 @@ NA
 
 ``` r
 SoBROData %>%
-  group_by(Age_Category, Racial_Group) %>% 
+  group_by(Age_Category, Race) %>% 
   summarize(n=n()) %>%
   pivot_wider(
-    names_from = Racial_Group,
+    names_from = Race,
     values_from = n
   ) %>% 
   knitr::kable(col.names = c("Age Group", "Hispanic or Latinx (n)", "Other (n)", "Black/African American (n)", "NA"))
@@ -14287,13 +14392,13 @@ NA
 
 <td style="text-align:right;">
 
-4
+1
 
 </td>
 
 <td style="text-align:right;">
 
-1
+4
 
 </td>
 
@@ -14321,13 +14426,13 @@ NA
 
 <td style="text-align:right;">
 
-17
+10
 
 </td>
 
 <td style="text-align:right;">
 
-10
+17
 
 </td>
 
@@ -14355,13 +14460,13 @@ NA
 
 <td style="text-align:right;">
 
-26
+10
 
 </td>
 
 <td style="text-align:right;">
 
-10
+26
 
 </td>
 
@@ -14389,13 +14494,13 @@ NA
 
 <td style="text-align:right;">
 
-8
+3
 
 </td>
 
 <td style="text-align:right;">
 
-3
+8
 
 </td>
 
@@ -14423,13 +14528,13 @@ NA
 
 <td style="text-align:right;">
 
-1
+NA
 
 </td>
 
 <td style="text-align:right;">
 
-NA
+1
 
 </td>
 
@@ -14453,14 +14558,14 @@ NA
 
 ``` r
 SoBROData %>%
-  group_by(Racial_Group, smoking_status) %>% 
+  group_by(Race, smoking_status) %>% 
   summarize(n=n()) %>%
   mutate(
     smoking_status = recode(smoking_status,
                    "0" = "Non-smoker(s)",
                    "1" = "Smoker(s)")) %>% 
   pivot_wider(
-    names_from = Racial_Group,
+    names_from = Race,
     values_from = n) %>% 
   knitr::kable(col.names = c("Smoking Status", "Hispanic or Latinx (n)", "Other (n)", "Black/African American (n)", "N/A"))
 ```
@@ -14517,13 +14622,13 @@ Non-smoker(s)
 
 <td style="text-align:right;">
 
-26
+9
 
 </td>
 
 <td style="text-align:right;">
 
-9
+26
 
 </td>
 
@@ -14551,13 +14656,13 @@ Smoker(s)
 
 <td style="text-align:right;">
 
-28
+15
 
 </td>
 
 <td style="text-align:right;">
 
-15
+28
 
 </td>
 
@@ -14585,13 +14690,13 @@ NA
 
 <td style="text-align:right;">
 
-2
+NA
 
 </td>
 
 <td style="text-align:right;">
 
-NA
+2
 
 </td>
 
@@ -15223,7 +15328,7 @@ age
 ##### Bivariate model 3 : PCS12 ~ b\_0 + b\_1 Race\_i
 
 ``` r
-bivariateSOBRO3 = lm(PCS12 ~ Racial_Group, data = SoBROData)
+bivariateSOBRO3 = lm(PCS12 ~ Race, data = SoBROData)
 
 bivariateSOBRO3 %>% 
   broom::tidy() %>% 
@@ -15286,7 +15391,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-45.954
+49.393
 
 </td>
 
@@ -15298,13 +15403,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-43.175
+45.148
 
 </td>
 
 <td style="text-align:right;">
 
-48.732
+53.637
 
 </td>
 
@@ -15314,13 +15419,13 @@ High\_CI
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-3.439
+\-3.439
 
 </td>
 
@@ -15332,13 +15437,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-1.634
+\-8.512
 
 </td>
 
 <td style="text-align:right;">
 
-8.512
+1.634
 
 </td>
 
@@ -15348,31 +15453,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-2.257
+\-1.182
 
 </td>
 
 <td style="text-align:right;">
 
-0.206
+0.625
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.227
+\-5.918
 
 </td>
 
 <td style="text-align:right;">
 
-5.740
+3.554
 
 </td>
 
@@ -16851,27 +16956,27 @@ Income\_Group3
 ##### Bivariate model 12 : MCS12 ~ b\_0 + b\_1 Race\_i
 
 ``` r
-bivariateSOBRO12 = lm(MCS12 ~ Racial_Group, data = SoBROData)
+bivariateSOBRO12 = lm(MCS12 ~ Race, data = SoBROData)
 summary(bivariateSOBRO12) 
 ```
 
     ## 
     ## Call:
-    ## lm(formula = MCS12 ~ Racial_Group, data = SoBROData)
+    ## lm(formula = MCS12 ~ Race, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -38.674  -5.594   3.627   8.158  18.991 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                           51.132      1.538
-    ## Racial_GroupOther                                      1.384      2.808
-    ## Racial_GroupNon- Hispanic Black or African American   -2.178      1.928
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                          33.240   <2e-16 ***
-    ## Racial_GroupOther                                     0.493    0.623    
-    ## Racial_GroupNon- Hispanic Black or African American  -1.129    0.260    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                   52.516      2.350  22.350
+    ## RaceHispanic or Latinx                        -1.384      2.808  -0.493
+    ## RaceNon- Hispanic Black or African American   -3.562      2.622  -1.359
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                   <2e-16 ***
+    ## RaceHispanic or Latinx                         0.623    
+    ## RaceNon- Hispanic Black or African American    0.176    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -16942,7 +17047,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-51.132
+52.516
 
 </td>
 
@@ -16954,13 +17059,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-48.117
+47.911
 
 </td>
 
 <td style="text-align:right;">
 
-54.147
+57.122
 
 </td>
 
@@ -16970,13 +17075,13 @@ High\_CI
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-1.384
+\-1.384
 
 </td>
 
@@ -16988,13 +17093,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-4.120
+\-6.889
 
 </td>
 
 <td style="text-align:right;">
 
-6.889
+4.120
 
 </td>
 
@@ -17004,31 +17109,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.178
+\-3.562
 
 </td>
 
 <td style="text-align:right;">
 
-0.260
+0.176
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.957
+\-8.701
 
 </td>
 
 <td style="text-align:right;">
 
-1.602
+1.577
 
 </td>
 
@@ -17192,23 +17297,23 @@ age
 ##### Bivariate model 14 : MCS12 ~ b\_0 + b\_1 Gender\_i
 
 ``` r
-bivariateSOBRO14 = lm(MCS12 ~ Gender_Coded, data = SoBROData)
+bivariateSOBRO14 = lm(MCS12 ~ Gender, data = SoBROData)
 summary(bivariateSOBRO14)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = MCS12 ~ Gender_Coded, data = SoBROData)
+    ## lm(formula = MCS12 ~ Gender, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -37.957  -5.685   3.154   9.217  17.529 
     ## 
     ## Coefficients:
-    ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)    49.6503     1.3789  36.006   <2e-16 ***
-    ## Gender_Coded1   0.7652     1.7768   0.431    0.667    
-    ## Gender_Coded2   4.1297     5.9310   0.696    0.487    
+    ##              Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    53.780      5.768   9.323   <2e-16 ***
+    ## GenderFemale   -3.365      5.876  -0.573    0.568    
+    ## GenderMale     -4.130      5.931  -0.696    0.487    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -17278,7 +17383,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-49.650
+53.780
 
 </td>
 
@@ -17290,13 +17395,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-46.948
+42.474
 
 </td>
 
 <td style="text-align:right;">
 
-52.353
+65.086
 
 </td>
 
@@ -17306,31 +17411,31 @@ High\_CI
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-0.765
+\-3.365
 
 </td>
 
 <td style="text-align:right;">
 
-0.667
+0.568
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.717
+\-14.882
 
 </td>
 
 <td style="text-align:right;">
 
-4.248
+8.153
 
 </td>
 
@@ -17340,13 +17445,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-4.130
+\-4.130
 
 </td>
 
@@ -17358,13 +17463,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-7.495
+\-15.755
 
 </td>
 
 <td style="text-align:right;">
 
-15.755
+7.495
 
 </td>
 
@@ -17377,23 +17482,23 @@ Gender\_Coded2
 ##### Bivariate model 15 : PCS12 ~ b\_0 + b\_1 Gender\_i
 
 ``` r
-bivariateSOBRO15 = lm(PCS12 ~ Gender_Coded, data = SoBROData)
+bivariateSOBRO15 = lm(PCS12 ~ Gender, data = SoBROData)
 summary(bivariateSOBRO15)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ Gender_Coded, data = SoBROData)
+    ## lm(formula = PCS12 ~ Gender, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -31.057  -6.069   3.801   7.847  19.923 
     ## 
     ## Coefficients:
-    ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)     48.730      1.262   38.60   <2e-16 ***
-    ## Gender_Coded1   -1.887      1.627   -1.16    0.248    
-    ## Gender_Coded2    5.753      5.430    1.06    0.291    
+    ##              Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    54.483      5.281   10.32   <2e-16 ***
+    ## GenderFemale   -7.640      5.380   -1.42    0.157    
+    ## GenderMale     -5.753      5.430   -1.06    0.291    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -17463,7 +17568,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-48.730
+54.483
 
 </td>
 
@@ -17475,13 +17580,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-46.255
+44.132
 
 </td>
 
 <td style="text-align:right;">
 
-51.204
+64.835
 
 </td>
 
@@ -17491,31 +17596,31 @@ High\_CI
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.887
+\-7.640
 
 </td>
 
 <td style="text-align:right;">
 
-0.248
+0.157
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.075
+\-18.185
 
 </td>
 
 <td style="text-align:right;">
 
-1.302
+2.905
 
 </td>
 
@@ -17525,13 +17630,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-5.753
+\-5.753
 
 </td>
 
@@ -17543,13 +17648,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-4.890
+\-16.397
 
 </td>
 
 <td style="text-align:right;">
 
-16.397
+4.890
 
 </td>
 
@@ -19138,58 +19243,58 @@ corrplot(CM1, type = "upper", order = "hclust",
 ### Final Analysis (Regression Models)
 
 ``` r
-linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression1SOBRO)
 ```
 
     ## 
     ## Call:
     ## lm(formula = PCS12 ~ HousingSatisfactionScore + age + Income_Group + 
-    ##     Racial_Group + Gender_Coded + Education_Group + chronic_disease + 
-    ##     delayed_rent + supportive_housing + moved_in_last_5_years + 
-    ##     repairs_needed + hiv, data = SoBROData)
+    ##     Race + Gender + Education_Group + chronic_disease + delayed_rent + 
+    ##     supportive_housing + moved_in_last_5_years + repairs_needed + 
+    ##     hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -29.655  -5.325   1.913   5.737  17.978 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         60.08088    6.91466
-    ## HousingSatisfactionScore                            -0.14717    0.26075
-    ## age                                                 -0.20152    0.06986
-    ## Income_Group2                                        0.03194    2.03555
-    ## Income_Group3                                       -0.88274    2.50089
-    ## Racial_GroupOther                                    0.21598    2.74872
-    ## Racial_GroupNon- Hispanic Black or African American -0.34431    1.87241
-    ## Gender_Coded1                                       -2.04242    1.87947
-    ## Gender_Coded2                                        2.61318    5.99784
-    ## Education_GroupHigh School/G.E.D.                    3.84155    2.19322
-    ## Education_GroupPost High School Education            4.26647    2.45872
-    ## chronic_disease1                                    -4.89654    1.76853
-    ## delayed_rent1                                       -0.61737    1.80724
-    ## supportive_housing1                                  0.97935    2.15074
-    ## moved_in_last_5_years1                               3.11814    1.90829
-    ## repairs_needed1                                     -1.94419    1.83570
-    ## hiv1                                                -2.49002    2.48305
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                           8.689 1.29e-14 ***
-    ## HousingSatisfactionScore                             -0.564  0.57343    
-    ## age                                                  -2.885  0.00458 ** 
-    ## Income_Group2                                         0.016  0.98750    
-    ## Income_Group3                                        -0.353  0.72468    
-    ## Racial_GroupOther                                     0.079  0.93749    
-    ## Racial_GroupNon- Hispanic Black or African American  -0.184  0.85439    
-    ## Gender_Coded1                                        -1.087  0.27917    
-    ## Gender_Coded2                                         0.436  0.66378    
-    ## Education_GroupHigh School/G.E.D.                     1.752  0.08219 .  
-    ## Education_GroupPost High School Education             1.735  0.08505 .  
-    ## chronic_disease1                                     -2.769  0.00644 ** 
-    ## delayed_rent1                                        -0.342  0.73319    
-    ## supportive_housing1                                   0.455  0.64961    
-    ## moved_in_last_5_years1                                1.634  0.10466    
-    ## repairs_needed1                                      -1.059  0.29150    
-    ## hiv1                                                 -1.003  0.31780    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 62.91004    9.26630   6.789
+    ## HousingSatisfactionScore                    -0.14717    0.26075  -0.564
+    ## age                                         -0.20152    0.06986  -2.885
+    ## Income_Group2                                0.03194    2.03555   0.016
+    ## Income_Group3                               -0.88274    2.50089  -0.353
+    ## RaceHispanic or Latinx                      -0.21598    2.74872  -0.079
+    ## RaceNon- Hispanic Black or African American -0.56029    2.56670  -0.218
+    ## GenderFemale                                -4.65560    5.82080  -0.800
+    ## GenderMale                                  -2.61318    5.99784  -0.436
+    ## Education_GroupHigh School/G.E.D.            3.84155    2.19322   1.752
+    ## Education_GroupPost High School Education    4.26647    2.45872   1.735
+    ## chronic_disease1                            -4.89654    1.76853  -2.769
+    ## delayed_rent1                               -0.61737    1.80724  -0.342
+    ## supportive_housing1                          0.97935    2.15074   0.455
+    ## moved_in_last_5_years1                       3.11814    1.90829   1.634
+    ## repairs_needed1                             -1.94419    1.83570  -1.059
+    ## hiv1                                        -2.49002    2.48305  -1.003
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 3.55e-10 ***
+    ## HousingSatisfactionScore                     0.57343    
+    ## age                                          0.00458 ** 
+    ## Income_Group2                                0.98750    
+    ## Income_Group3                                0.72468    
+    ## RaceHispanic or Latinx                       0.93749    
+    ## RaceNon- Hispanic Black or African American  0.82754    
+    ## GenderFemale                                 0.42526    
+    ## GenderMale                                   0.66378    
+    ## Education_GroupHigh School/G.E.D.            0.08219 .  
+    ## Education_GroupPost High School Education    0.08505 .  
+    ## chronic_disease1                             0.00644 ** 
+    ## delayed_rent1                                0.73319    
+    ## supportive_housing1                          0.64961    
+    ## moved_in_last_5_years1                       0.10466    
+    ## repairs_needed1                              0.29150    
+    ## hiv1                                         0.31780    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -19260,7 +19365,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-60.081
+62.910
 
 </td>
 
@@ -19272,13 +19377,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-46.528
+44.748
 
 </td>
 
 <td style="text-align:right;">
 
-73.634
+81.072
 
 </td>
 
@@ -19424,13 +19529,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-0.216
+\-0.216
 
 </td>
 
@@ -19442,13 +19547,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-5.172
+\-5.603
 
 </td>
 
 <td style="text-align:right;">
 
-5.603
+5.172
 
 </td>
 
@@ -19458,31 +19563,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.344
+\-0.560
 
 </td>
 
 <td style="text-align:right;">
 
-0.854
+0.828
 
 </td>
 
 <td style="text-align:right;">
 
-\-4.014
+\-5.591
 
 </td>
 
 <td style="text-align:right;">
 
-3.326
+4.470
 
 </td>
 
@@ -19492,31 +19597,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.042
+\-4.656
 
 </td>
 
 <td style="text-align:right;">
 
-0.279
+0.425
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.726
+\-16.064
 
 </td>
 
 <td style="text-align:right;">
 
-1.641
+6.753
 
 </td>
 
@@ -19526,13 +19631,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-2.613
+\-2.613
 
 </td>
 
@@ -19544,13 +19649,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-9.143
+\-14.369
 
 </td>
 
 <td style="text-align:right;">
 
-14.369
+9.143
 
 </td>
 
@@ -19836,51 +19941,51 @@ Housing Conditions and
 Quality
 
 ``` r
-linearregression2SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
+linearregression2SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
 summary(linearregression2SOBRO)
 ```
 
     ## 
     ## Call:
     ## lm(formula = PCS12 ~ HousingSatisfactionScore + age + Income_Group + 
-    ##     Racial_Group + Gender_Coded + Education_Group + chronic_disease + 
-    ##     repairs_needed + hiv, data = SoBROData)
+    ##     Race + Gender + Education_Group + chronic_disease + repairs_needed + 
+    ##     hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -30.338  -5.248   2.077   5.971  17.676 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         61.56898    6.56449
-    ## HousingSatisfactionScore                            -0.04334    0.24469
-    ## age                                                 -0.23233    0.06179
-    ## Income_Group2                                        0.24759    1.95977
-    ## Income_Group3                                       -0.92444    2.34174
-    ## Racial_GroupOther                                    0.87890    2.63813
-    ## Racial_GroupNon- Hispanic Black or African American -0.14490    1.76446
-    ## Gender_Coded1                                       -2.83518    1.73310
-    ## Gender_Coded2                                        1.71779    5.87937
-    ## Education_GroupHigh School/G.E.D.                    4.59282    2.08297
-    ## Education_GroupPost High School Education            4.36751    2.36792
-    ## chronic_disease1                                    -4.86053    1.71690
-    ## repairs_needed1                                     -1.87887    1.71221
-    ## hiv1                                                -1.80021    2.21657
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                           9.379  < 2e-16 ***
-    ## HousingSatisfactionScore                             -0.177 0.859676    
-    ## age                                                  -3.760 0.000249 ***
-    ## Income_Group2                                         0.126 0.899647    
-    ## Income_Group3                                        -0.395 0.693617    
-    ## Racial_GroupOther                                     0.333 0.739517    
-    ## Racial_GroupNon- Hispanic Black or African American  -0.082 0.934670    
-    ## Gender_Coded1                                        -1.636 0.104105    
-    ## Gender_Coded2                                         0.292 0.770588    
-    ## Education_GroupHigh School/G.E.D.                     2.205 0.029090 *  
-    ## Education_GroupPost High School Education             1.844 0.067231 .  
-    ## chronic_disease1                                     -2.831 0.005324 ** 
-    ## repairs_needed1                                      -1.097 0.274378    
-    ## hiv1                                                 -0.812 0.418077    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 64.16567    8.97905   7.146
+    ## HousingSatisfactionScore                    -0.04334    0.24469  -0.177
+    ## age                                         -0.23233    0.06179  -3.760
+    ## Income_Group2                                0.24759    1.95977   0.126
+    ## Income_Group3                               -0.92444    2.34174  -0.395
+    ## RaceHispanic or Latinx                      -0.87890    2.63813  -0.333
+    ## RaceNon- Hispanic Black or African American -1.02380    2.48879  -0.411
+    ## GenderFemale                                -4.55297    5.74498  -0.793
+    ## GenderMale                                  -1.71779    5.87937  -0.292
+    ## Education_GroupHigh School/G.E.D.            4.59282    2.08297   2.205
+    ## Education_GroupPost High School Education    4.36751    2.36792   1.844
+    ## chronic_disease1                            -4.86053    1.71690  -2.831
+    ## repairs_needed1                             -1.87887    1.71221  -1.097
+    ## hiv1                                        -1.80021    2.21657  -0.812
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 4.49e-11 ***
+    ## HousingSatisfactionScore                    0.859676    
+    ## age                                         0.000249 ***
+    ## Income_Group2                               0.899647    
+    ## Income_Group3                               0.693617    
+    ## RaceHispanic or Latinx                      0.739517    
+    ## RaceNon- Hispanic Black or African American 0.681435    
+    ## GenderFemale                                0.429403    
+    ## GenderMale                                  0.770588    
+    ## Education_GroupHigh School/G.E.D.           0.029090 *  
+    ## Education_GroupPost High School Education   0.067231 .  
+    ## chronic_disease1                            0.005324 ** 
+    ## repairs_needed1                             0.274378    
+    ## hiv1                                        0.418077    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -19951,7 +20056,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-61.569
+64.166
 
 </td>
 
@@ -19963,13 +20068,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-48.703
+46.567
 
 </td>
 
 <td style="text-align:right;">
 
-74.435
+81.765
 
 </td>
 
@@ -20115,13 +20220,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-0.879
+\-0.879
 
 </td>
 
@@ -20133,13 +20238,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-4.292
+\-6.050
 
 </td>
 
 <td style="text-align:right;">
 
-6.050
+4.292
 
 </td>
 
@@ -20149,31 +20254,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.145
+\-1.024
 
 </td>
 
 <td style="text-align:right;">
 
-0.935
+0.681
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.603
+\-5.902
 
 </td>
 
 <td style="text-align:right;">
 
-3.313
+3.854
 
 </td>
 
@@ -20183,31 +20288,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.835
+\-4.553
 
 </td>
 
 <td style="text-align:right;">
 
-0.104
+0.429
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.232
+\-15.813
 
 </td>
 
 <td style="text-align:right;">
 
-0.562
+6.707
 
 </td>
 
@@ -20217,13 +20322,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-1.718
+\-1.718
 
 </td>
 
@@ -20235,13 +20340,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-9.806
+\-13.241
 
 </td>
 
 <td style="text-align:right;">
 
-13.241
+9.806
 
 </td>
 
@@ -20425,48 +20530,48 @@ Housing
 Affordability
 
 ``` r
-linearregression3SOBRO = lm(PCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + delayed_rent + hiv, data = SoBROData)
+linearregression3SOBRO = lm(PCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + delayed_rent + hiv, data = SoBROData)
 summary(linearregression3SOBRO)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + 
-    ##     Education_Group + chronic_disease + delayed_rent + hiv, data = SoBROData)
+    ## lm(formula = PCS12 ~ age + Income_Group + Race + Gender + Education_Group + 
+    ##     chronic_disease + delayed_rent + hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -30.108  -5.900   1.942   6.030  16.444 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         59.68282    4.11760
-    ## age                                                 -0.21639    0.06311
-    ## Income_Group2                                        0.59908    1.95028
-    ## Income_Group3                                       -0.72187    2.38870
-    ## Racial_GroupOther                                    1.36698    2.66976
-    ## Racial_GroupNon- Hispanic Black or African American -0.20841    1.80988
-    ## Gender_Coded1                                       -3.07556    1.75884
-    ## Gender_Coded2                                        0.98250    5.89674
-    ## Education_GroupHigh School/G.E.D.                    4.16921    2.16953
-    ## Education_GroupPost High School Education            3.62042    2.41724
-    ## chronic_disease1                                    -4.90691    1.73142
-    ## delayed_rent1                                       -0.61642    1.75586
-    ## hiv1                                                -2.27918    2.32602
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                          14.495  < 2e-16 ***
-    ## age                                                  -3.429 0.000803 ***
-    ## Income_Group2                                         0.307 0.759177    
-    ## Income_Group3                                        -0.302 0.762960    
-    ## Racial_GroupOther                                     0.512 0.609465    
-    ## Racial_GroupNon- Hispanic Black or African American  -0.115 0.908497    
-    ## Gender_Coded1                                        -1.749 0.082612 .  
-    ## Gender_Coded2                                         0.167 0.867918    
-    ## Education_GroupHigh School/G.E.D.                     1.922 0.056734 .  
-    ## Education_GroupPost High School Education             1.498 0.136516    
-    ## chronic_disease1                                     -2.834 0.005297 ** 
-    ## delayed_rent1                                        -0.351 0.726084    
-    ## hiv1                                                 -0.980 0.328894    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 62.03230    6.94320   8.934
+    ## age                                         -0.21639    0.06311  -3.429
+    ## Income_Group2                                0.59908    1.95028   0.307
+    ## Income_Group3                               -0.72187    2.38870  -0.302
+    ## RaceHispanic or Latinx                      -1.36698    2.66976  -0.512
+    ## RaceNon- Hispanic Black or African American -1.57539    2.48119  -0.635
+    ## GenderFemale                                -4.05806    5.77407  -0.703
+    ## GenderMale                                  -0.98250    5.89674  -0.167
+    ## Education_GroupHigh School/G.E.D.            4.16921    2.16953   1.922
+    ## Education_GroupPost High School Education    3.62042    2.41724   1.498
+    ## chronic_disease1                            -4.90691    1.73142  -2.834
+    ## delayed_rent1                               -0.61642    1.75586  -0.351
+    ## hiv1                                        -2.27918    2.32602  -0.980
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 2.56e-15 ***
+    ## age                                         0.000803 ***
+    ## Income_Group2                               0.759177    
+    ## Income_Group3                               0.762960    
+    ## RaceHispanic or Latinx                      0.609465    
+    ## RaceNon- Hispanic Black or African American 0.526540    
+    ## GenderFemale                                0.483376    
+    ## GenderMale                                  0.867918    
+    ## Education_GroupHigh School/G.E.D.           0.056734 .  
+    ## Education_GroupPost High School Education   0.136516    
+    ## chronic_disease1                            0.005297 ** 
+    ## delayed_rent1                               0.726084    
+    ## hiv1                                        0.328894    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -20537,7 +20642,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-59.683
+62.032
 
 </td>
 
@@ -20549,13 +20654,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-51.612
+48.424
 
 </td>
 
 <td style="text-align:right;">
 
-67.753
+75.641
 
 </td>
 
@@ -20667,13 +20772,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-1.367
+\-1.367
 
 </td>
 
@@ -20685,13 +20790,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-3.866
+\-6.600
 
 </td>
 
 <td style="text-align:right;">
 
-6.600
+3.866
 
 </td>
 
@@ -20701,31 +20806,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.208
+\-1.575
 
 </td>
 
 <td style="text-align:right;">
 
-0.908
+0.527
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.756
+\-6.439
 
 </td>
 
 <td style="text-align:right;">
 
-3.339
+3.288
 
 </td>
 
@@ -20735,31 +20840,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.076
+\-4.058
 
 </td>
 
 <td style="text-align:right;">
 
-0.083
+0.483
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.523
+\-15.375
 
 </td>
 
 <td style="text-align:right;">
 
-0.372
+7.259
 
 </td>
 
@@ -20769,13 +20874,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-0.983
+\-0.983
 
 </td>
 
@@ -20787,13 +20892,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-10.575
+\-12.540
 
 </td>
 
 <td style="text-align:right;">
 
-12.540
+10.575
 
 </td>
 
@@ -20977,49 +21082,48 @@ Residential
 Stability
 
 ``` r
-linearregression4SOBRO = lm(PCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + moved_in_last_5_years + hiv, data = SoBROData)
+linearregression4SOBRO = lm(PCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + moved_in_last_5_years + hiv, data = SoBROData)
 summary(linearregression4SOBRO)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = PCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + 
-    ##     Education_Group + chronic_disease + moved_in_last_5_years + 
-    ##     hiv, data = SoBROData)
+    ## lm(formula = PCS12 ~ age + Income_Group + Race + Gender + Education_Group + 
+    ##     chronic_disease + moved_in_last_5_years + hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -28.272  -4.645   2.404   5.787  16.841 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         55.84668    4.38354
-    ## age                                                 -0.18004    0.06306
-    ## Income_Group2                                        0.65313    1.87299
-    ## Income_Group3                                       -0.33368    2.24533
-    ## Racial_GroupOther                                    0.39692    2.57696
-    ## Racial_GroupNon- Hispanic Black or African American -0.91555    1.72035
-    ## Gender_Coded1                                       -2.52317    1.71907
-    ## Gender_Coded2                                        1.18998    5.74002
-    ## Education_GroupHigh School/G.E.D.                    4.25355    2.01389
-    ## Education_GroupPost High School Education            4.14960    2.27717
-    ## chronic_disease1                                    -5.29006    1.65856
-    ## moved_in_last_5_years1                               3.18792    1.72820
-    ## hiv1                                                -2.02402    2.16719
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                          12.740  < 2e-16 ***
-    ## age                                                  -2.855  0.00494 ** 
-    ## Income_Group2                                         0.349  0.72782    
-    ## Income_Group3                                        -0.149  0.88207    
-    ## Racial_GroupOther                                     0.154  0.87780    
-    ## Racial_GroupNon- Hispanic Black or African American  -0.532  0.59542    
-    ## Gender_Coded1                                        -1.468  0.14437    
-    ## Gender_Coded2                                         0.207  0.83606    
-    ## Education_GroupHigh School/G.E.D.                     2.112  0.03642 *  
-    ## Education_GroupPost High School Education             1.822  0.07050 .  
-    ## chronic_disease1                                     -3.190  0.00175 ** 
-    ## moved_in_last_5_years1                                1.845  0.06716 .  
-    ## hiv1                                                 -0.934  0.35191    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 57.43358    7.08917   8.102
+    ## age                                         -0.18004    0.06306  -2.855
+    ## Income_Group2                                0.65313    1.87299   0.349
+    ## Income_Group3                               -0.33368    2.24533  -0.149
+    ## RaceHispanic or Latinx                      -0.39692    2.57696  -0.154
+    ## RaceNon- Hispanic Black or African American -1.31247    2.38006  -0.551
+    ## GenderFemale                                -3.71314    5.61771  -0.661
+    ## GenderMale                                  -1.18998    5.74002  -0.207
+    ## Education_GroupHigh School/G.E.D.            4.25355    2.01389   2.112
+    ## Education_GroupPost High School Education    4.14960    2.27717   1.822
+    ## chronic_disease1                            -5.29006    1.65856  -3.190
+    ## moved_in_last_5_years1                       3.18792    1.72820   1.845
+    ## hiv1                                        -2.02402    2.16719  -0.934
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 2.18e-13 ***
+    ## age                                          0.00494 ** 
+    ## Income_Group2                                0.72782    
+    ## Income_Group3                                0.88207    
+    ## RaceHispanic or Latinx                       0.87780    
+    ## RaceNon- Hispanic Black or African American  0.58219    
+    ## GenderFemale                                 0.50969    
+    ## GenderMale                                   0.83606    
+    ## Education_GroupHigh School/G.E.D.            0.03642 *  
+    ## Education_GroupPost High School Education    0.07050 .  
+    ## chronic_disease1                             0.00175 ** 
+    ## moved_in_last_5_years1                       0.06716 .  
+    ## hiv1                                         0.35191    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -21090,7 +21194,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-55.847
+57.434
 
 </td>
 
@@ -21102,13 +21206,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-47.255
+43.539
 
 </td>
 
 <td style="text-align:right;">
 
-64.438
+71.328
 
 </td>
 
@@ -21220,13 +21324,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-0.397
+\-0.397
 
 </td>
 
@@ -21238,13 +21342,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-4.654
+\-5.448
 
 </td>
 
 <td style="text-align:right;">
 
-5.448
+4.654
 
 </td>
 
@@ -21254,31 +21358,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.916
+\-1.312
 
 </td>
 
 <td style="text-align:right;">
 
-0.595
+0.582
 
 </td>
 
 <td style="text-align:right;">
 
-\-4.287
+\-5.977
 
 </td>
 
 <td style="text-align:right;">
 
-2.456
+3.352
 
 </td>
 
@@ -21288,31 +21392,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.523
+\-3.713
 
 </td>
 
 <td style="text-align:right;">
 
-0.144
+0.510
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.893
+\-14.724
 
 </td>
 
 <td style="text-align:right;">
 
-0.846
+7.298
 
 </td>
 
@@ -21322,13 +21426,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-1.190
+\-1.190
 
 </td>
 
@@ -21340,13 +21444,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-10.060
+\-12.440
 
 </td>
 
 <td style="text-align:right;">
 
-12.440
+10.060
 
 </td>
 
@@ -21530,56 +21634,55 @@ hiv1
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
 
 ``` r
-linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression5SOBRO)
 ```
 
     ## 
     ## Call:
     ## lm(formula = MCS12 ~ HousingSatisfactionScore + age + Income_Group + 
-    ##     Racial_Group + Gender_Coded + Education_Group + chronic_disease + 
-    ##     delayed_rent + moved_in_last_5_years + repairs_needed + hiv, 
-    ##     data = SoBROData)
+    ##     Race + Gender + Education_Group + chronic_disease + delayed_rent + 
+    ##     moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -34.680  -7.209   2.930   7.490  17.669 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         39.25394    7.95587
-    ## HousingSatisfactionScore                             0.63273    0.29963
-    ## age                                                 -0.02101    0.07872
-    ## Income_Group2                                       -2.34832    2.33470
-    ## Income_Group3                                        3.05344    2.83477
-    ## Racial_GroupOther                                   -0.57183    3.18521
-    ## Racial_GroupNon- Hispanic Black or African American -2.89942    2.14536
-    ## Gender_Coded1                                        0.26569    2.09593
-    ## Gender_Coded2                                       -0.30833    6.92088
-    ## Education_GroupHigh School/G.E.D.                    3.75867    2.54063
-    ## Education_GroupPost High School Education            6.18247    2.84409
-    ## chronic_disease1                                    -3.29822    2.04412
-    ## delayed_rent1                                       -1.01631    2.08885
-    ## moved_in_last_5_years1                               0.15888    2.20069
-    ## repairs_needed1                                      0.32758    2.12615
-    ## hiv1                                                 0.48215    2.70482
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                           4.934 2.38e-06 ***
-    ## HousingSatisfactionScore                              2.112   0.0366 *  
-    ## age                                                  -0.267   0.7900    
-    ## Income_Group2                                        -1.006   0.3163    
-    ## Income_Group3                                         1.077   0.2834    
-    ## Racial_GroupOther                                    -0.180   0.8578    
-    ## Racial_GroupNon- Hispanic Black or African American  -1.351   0.1789    
-    ## Gender_Coded1                                         0.127   0.8993    
-    ## Gender_Coded2                                        -0.045   0.9645    
-    ## Education_GroupHigh School/G.E.D.                     1.479   0.1414    
-    ## Education_GroupPost High School Education             2.174   0.0315 *  
-    ## chronic_disease1                                     -1.614   0.1090    
-    ## delayed_rent1                                        -0.487   0.6274    
-    ## moved_in_last_5_years1                                0.072   0.9426    
-    ## repairs_needed1                                       0.154   0.8778    
-    ## hiv1                                                  0.178   0.8588    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 38.37377   10.73291   3.575
+    ## HousingSatisfactionScore                     0.63273    0.29963   2.112
+    ## age                                         -0.02101    0.07872  -0.267
+    ## Income_Group2                               -2.34832    2.33470  -1.006
+    ## Income_Group3                                3.05344    2.83477   1.077
+    ## RaceHispanic or Latinx                       0.57183    3.18521   0.180
+    ## RaceNon- Hispanic Black or African American -2.32760    2.95796  -0.787
+    ## GenderFemale                                 0.57402    6.74504   0.085
+    ## GenderMale                                   0.30833    6.92088   0.045
+    ## Education_GroupHigh School/G.E.D.            3.75867    2.54063   1.479
+    ## Education_GroupPost High School Education    6.18247    2.84409   2.174
+    ## chronic_disease1                            -3.29822    2.04412  -1.614
+    ## delayed_rent1                               -1.01631    2.08885  -0.487
+    ## moved_in_last_5_years1                       0.15888    2.20069   0.072
+    ## repairs_needed1                              0.32758    2.12615   0.154
+    ## hiv1                                         0.48215    2.70482   0.178
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 0.000489 ***
+    ## HousingSatisfactionScore                    0.036598 *  
+    ## age                                         0.790011    
+    ## Income_Group2                               0.316337    
+    ## Income_Group3                               0.283383    
+    ## RaceHispanic or Latinx                      0.857801    
+    ## RaceNon- Hispanic Black or African American 0.432755    
+    ## GenderFemale                                0.932308    
+    ## GenderMale                                  0.964532    
+    ## Education_GroupHigh School/G.E.D.           0.141409    
+    ## Education_GroupPost High School Education   0.031504 *  
+    ## chronic_disease1                            0.109020    
+    ## delayed_rent1                               0.627391    
+    ## moved_in_last_5_years1                      0.942555    
+    ## repairs_needed1                             0.877789    
+    ## hiv1                                        0.858795    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -21650,7 +21753,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-39.254
+38.374
 
 </td>
 
@@ -21662,13 +21765,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-23.660
+17.337
 
 </td>
 
 <td style="text-align:right;">
 
-54.847
+59.410
 
 </td>
 
@@ -21814,13 +21917,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.572
+0.572
 
 </td>
 
@@ -21832,13 +21935,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-6.815
+\-5.671
 
 </td>
 
 <td style="text-align:right;">
 
-5.671
+6.815
 
 </td>
 
@@ -21848,31 +21951,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.899
+\-2.328
 
 </td>
 
 <td style="text-align:right;">
 
-0.179
+0.433
 
 </td>
 
 <td style="text-align:right;">
 
-\-7.104
+\-8.125
 
 </td>
 
 <td style="text-align:right;">
 
-1.305
+3.470
 
 </td>
 
@@ -21882,31 +21985,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-0.266
+0.574
 
 </td>
 
 <td style="text-align:right;">
 
-0.899
+0.932
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.842
+\-12.646
 
 </td>
 
 <td style="text-align:right;">
 
-4.374
+13.794
 
 </td>
 
@@ -21916,13 +22019,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.308
+0.308
 
 </td>
 
@@ -21934,13 +22037,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-13.873
+\-13.257
 
 </td>
 
 <td style="text-align:right;">
 
-13.257
+13.873
 
 </td>
 
@@ -22192,51 +22295,51 @@ Housing Conditions and
 Quality
 
 ``` r
-linearregression6SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
+linearregression6SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
 summary(linearregression6SOBRO)
 ```
 
     ## 
     ## Call:
     ## lm(formula = MCS12 ~ HousingSatisfactionScore + age + Income_Group + 
-    ##     Racial_Group + Gender_Coded + Education_Group + chronic_disease + 
-    ##     repairs_needed + hiv, data = SoBROData)
+    ##     Race + Gender + Education_Group + chronic_disease + repairs_needed + 
+    ##     hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -34.850  -7.025   2.716   7.595  16.936 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         41.28321    7.66204
-    ## HousingSatisfactionScore                             0.62400    0.28560
-    ## age                                                 -0.05709    0.07212
-    ## Income_Group2                                       -2.63058    2.28744
-    ## Income_Group3                                        2.66435    2.73327
-    ## Racial_GroupOther                                   -1.40239    3.07921
-    ## Racial_GroupNon- Hispanic Black or African American -3.70151    2.05948
-    ## Gender_Coded1                                        0.41958    2.02286
-    ## Gender_Coded2                                       -0.27331    6.86237
-    ## Education_GroupHigh School/G.E.D.                    4.44647    2.43123
-    ## Education_GroupPost High School Education            6.48782    2.76383
-    ## chronic_disease1                                    -3.14672    2.00396
-    ## repairs_needed1                                     -0.16560    1.99848
-    ## hiv1                                                 1.58198    2.58717
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                           5.388 2.94e-07 ***
-    ## HousingSatisfactionScore                              2.185   0.0306 *  
-    ## age                                                  -0.792   0.4299    
-    ## Income_Group2                                        -1.150   0.2521    
-    ## Income_Group3                                         0.975   0.3313    
-    ## Racial_GroupOther                                    -0.455   0.6495    
-    ## Racial_GroupNon- Hispanic Black or African American  -1.797   0.0744 .  
-    ## Gender_Coded1                                         0.207   0.8360    
-    ## Gender_Coded2                                        -0.040   0.9683    
-    ## Education_GroupHigh School/G.E.D.                     1.829   0.0695 .  
-    ## Education_GroupPost High School Education             2.347   0.0203 *  
-    ## chronic_disease1                                     -1.570   0.1186    
-    ## repairs_needed1                                      -0.083   0.9341    
-    ## hiv1                                                  0.611   0.5419    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 39.60751   10.48031   3.779
+    ## HousingSatisfactionScore                     0.62400    0.28560   2.185
+    ## age                                         -0.05709    0.07212  -0.792
+    ## Income_Group2                               -2.63058    2.28744  -1.150
+    ## Income_Group3                                2.66435    2.73327   0.975
+    ## RaceHispanic or Latinx                       1.40239    3.07921   0.455
+    ## RaceNon- Hispanic Black or African American -2.29912    2.90491  -0.791
+    ## GenderFemale                                 0.69289    6.70552   0.103
+    ## GenderMale                                   0.27331    6.86237   0.040
+    ## Education_GroupHigh School/G.E.D.            4.44647    2.43123   1.829
+    ## Education_GroupPost High School Education    6.48782    2.76383   2.347
+    ## chronic_disease1                            -3.14672    2.00396  -1.570
+    ## repairs_needed1                             -0.16560    1.99848  -0.083
+    ## hiv1                                         1.58198    2.58717   0.611
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 0.000232 ***
+    ## HousingSatisfactionScore                    0.030562 *  
+    ## age                                         0.429889    
+    ## Income_Group2                               0.252100    
+    ## Income_Group3                               0.331350    
+    ## RaceHispanic or Latinx                      0.649500    
+    ## RaceNon- Hispanic Black or African American 0.430014    
+    ## GenderFemale                                0.917848    
+    ## GenderMale                                  0.968288    
+    ## Education_GroupHigh School/G.E.D.           0.069543 .  
+    ## Education_GroupPost High School Education   0.020306 *  
+    ## chronic_disease1                            0.118614    
+    ## repairs_needed1                             0.934080    
+    ## hiv1                                        0.541879    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -22307,7 +22410,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-41.283
+39.608
 
 </td>
 
@@ -22319,13 +22422,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-26.266
+19.066
 
 </td>
 
 <td style="text-align:right;">
 
-56.301
+60.149
 
 </td>
 
@@ -22471,13 +22574,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.402
+1.402
 
 </td>
 
@@ -22489,13 +22592,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-7.438
+\-4.633
 
 </td>
 
 <td style="text-align:right;">
 
-4.633
+7.438
 
 </td>
 
@@ -22505,31 +22608,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.702
+\-2.299
 
 </td>
 
 <td style="text-align:right;">
 
-0.074
+0.430
 
 </td>
 
 <td style="text-align:right;">
 
-\-7.738
+\-7.993
 
 </td>
 
 <td style="text-align:right;">
 
-0.335
+3.394
 
 </td>
 
@@ -22539,31 +22642,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-0.420
+0.693
 
 </td>
 
 <td style="text-align:right;">
 
-0.836
+0.918
 
 </td>
 
 <td style="text-align:right;">
 
-\-3.545
+\-12.450
 
 </td>
 
 <td style="text-align:right;">
 
-4.384
+13.836
 
 </td>
 
@@ -22573,13 +22676,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.273
+0.273
 
 </td>
 
@@ -22591,13 +22694,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-13.724
+\-13.177
 
 </td>
 
 <td style="text-align:right;">
 
-13.177
+13.724
 
 </td>
 
@@ -22781,51 +22884,51 @@ Housing
 Affordability
 
 ``` r
-linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + delayed_rent + supportive_housing + hiv, data = SoBROData)
+linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + delayed_rent + supportive_housing + hiv, data = SoBROData)
 summary(linearregression7SOBRO)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + 
-    ##     Education_Group + chronic_disease + delayed_rent + supportive_housing + 
-    ##     hiv, data = SoBROData)
+    ## lm(formula = MCS12 ~ age + Income_Group + Race + Gender + Education_Group + 
+    ##     chronic_disease + delayed_rent + supportive_housing + hiv, 
+    ##     data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -37.531  -6.423   2.045   7.411  18.852 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         52.94349    4.77150
-    ## age                                                 -0.01989    0.07513
-    ## Income_Group2                                       -3.63511    2.26788
-    ## Income_Group3                                        1.07096    2.80955
-    ## Racial_GroupOther                                    0.44441    3.08433
-    ## Racial_GroupNon- Hispanic Black or African American -1.78409    2.11287
-    ## Gender_Coded1                                       -1.30528    2.12016
-    ## Gender_Coded2                                       -1.58716    6.84586
-    ## Education_GroupHigh School/G.E.D.                    3.14410    2.50633
-    ## Education_GroupPost High School Education            5.15928    2.79750
-    ## chronic_disease1                                    -2.30444    2.00280
-    ## delayed_rent1                                       -1.30210    2.03225
-    ## supportive_housing1                                 -4.39585    2.45374
-    ## hiv1                                                 2.11595    2.85569
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                          11.096   <2e-16 ***
-    ## age                                                  -0.265   0.7916    
-    ## Income_Group2                                        -1.603   0.1113    
-    ## Income_Group3                                         0.381   0.7037    
-    ## Racial_GroupOther                                     0.144   0.8856    
-    ## Racial_GroupNon- Hispanic Black or African American  -0.844   0.3999    
-    ## Gender_Coded1                                        -0.616   0.5392    
-    ## Gender_Coded2                                        -0.232   0.8170    
-    ## Education_GroupHigh School/G.E.D.                     1.254   0.2118    
-    ## Education_GroupPost High School Education             1.844   0.0673 .  
-    ## chronic_disease1                                     -1.151   0.2519    
-    ## delayed_rent1                                        -0.641   0.5228    
-    ## supportive_housing1                                  -1.791   0.0755 .  
-    ## hiv1                                                  0.741   0.4600    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 51.80074    8.02530   6.455
+    ## age                                         -0.01989    0.07513  -0.265
+    ## Income_Group2                               -3.63511    2.26788  -1.603
+    ## Income_Group3                                1.07096    2.80955   0.381
+    ## RaceHispanic or Latinx                      -0.44441    3.08433  -0.144
+    ## RaceNon- Hispanic Black or African American -2.22850    2.87884  -0.774
+    ## GenderFemale                                 0.28188    6.67065   0.042
+    ## GenderMale                                   1.58716    6.84586   0.232
+    ## Education_GroupHigh School/G.E.D.            3.14410    2.50633   1.254
+    ## Education_GroupPost High School Education    5.15928    2.79750   1.844
+    ## chronic_disease1                            -2.30444    2.00280  -1.151
+    ## delayed_rent1                               -1.30210    2.03225  -0.641
+    ## supportive_housing1                         -4.39585    2.45374  -1.791
+    ## hiv1                                         2.11595    2.85569   0.741
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                  1.8e-09 ***
+    ## age                                           0.7916    
+    ## Income_Group2                                 0.1113    
+    ## Income_Group3                                 0.7037    
+    ## RaceHispanic or Latinx                        0.8856    
+    ## RaceNon- Hispanic Black or African American   0.4402    
+    ## GenderFemale                                  0.9664    
+    ## GenderMale                                    0.8170    
+    ## Education_GroupHigh School/G.E.D.             0.2118    
+    ## Education_GroupPost High School Education     0.0673 .  
+    ## chronic_disease1                              0.2519    
+    ## delayed_rent1                                 0.5228    
+    ## supportive_housing1                           0.0755 .  
+    ## hiv1                                          0.4600    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -22896,7 +22999,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-52.943
+51.801
 
 </td>
 
@@ -22908,13 +23011,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-43.591
+36.071
 
 </td>
 
 <td style="text-align:right;">
 
-62.296
+67.530
 
 </td>
 
@@ -23026,13 +23129,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-0.444
+\-0.444
 
 </td>
 
@@ -23044,13 +23147,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-5.601
+\-6.490
 
 </td>
 
 <td style="text-align:right;">
 
-6.490
+5.601
 
 </td>
 
@@ -23060,31 +23163,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.784
+\-2.229
 
 </td>
 
 <td style="text-align:right;">
 
-0.400
+0.440
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.925
+\-7.871
 
 </td>
 
 <td style="text-align:right;">
 
-2.357
+3.414
 
 </td>
 
@@ -23094,31 +23197,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.305
+0.282
 
 </td>
 
 <td style="text-align:right;">
 
-0.539
+0.966
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.461
+\-12.793
 
 </td>
 
 <td style="text-align:right;">
 
-2.850
+13.356
 
 </td>
 
@@ -23128,13 +23231,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.587
+1.587
 
 </td>
 
@@ -23146,13 +23249,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-15.005
+\-11.831
 
 </td>
 
 <td style="text-align:right;">
 
-11.831
+15.005
 
 </td>
 
@@ -23370,51 +23473,51 @@ Residential
 Stability
 
 ``` r
-linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + moved_in_last_5_years + supportive_housing + hiv, data = SoBROData)
+linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease + moved_in_last_5_years + supportive_housing + hiv, data = SoBROData)
 summary(linearregression8SOBRO)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + 
-    ##     Education_Group + chronic_disease + moved_in_last_5_years + 
-    ##     supportive_housing + hiv, data = SoBROData)
+    ## lm(formula = MCS12 ~ age + Income_Group + Race + Gender + Education_Group + 
+    ##     chronic_disease + moved_in_last_5_years + supportive_housing + 
+    ##     hiv, data = SoBROData)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
     ## -37.127  -5.864   2.916   6.917  18.459 
     ## 
     ## Coefficients:
-    ##                                                     Estimate Std. Error
-    ## (Intercept)                                         51.82508    5.21698
-    ## age                                                 -0.01368    0.07764
-    ## Income_Group2                                       -3.58864    2.24271
-    ## Income_Group3                                        1.03627    2.72074
-    ## Racial_GroupOther                                   -0.05591    3.06446
-    ## Racial_GroupNon- Hispanic Black or African American -2.84578    2.06708
-    ## Gender_Coded1                                       -0.94047    2.12300
-    ## Gender_Coded2                                       -1.73805    6.85778
-    ## Education_GroupHigh School/G.E.D.                    3.00540    2.39594
-    ## Education_GroupPost High School Education            4.94315    2.71559
-    ## chronic_disease1                                    -2.69863    1.97372
-    ## moved_in_last_5_years1                               2.20657    2.05778
-    ## supportive_housing1                                 -4.37872    2.43178
-    ## hiv1                                                 2.73968    2.74410
-    ##                                                     t value Pr(>|t|)    
-    ## (Intercept)                                           9.934   <2e-16 ***
-    ## age                                                  -0.176   0.8604    
-    ## Income_Group2                                        -1.600   0.1118    
-    ## Income_Group3                                         0.381   0.7039    
-    ## Racial_GroupOther                                    -0.018   0.9855    
-    ## Racial_GroupNon- Hispanic Black or African American  -1.377   0.1708    
-    ## Gender_Coded1                                        -0.443   0.6584    
-    ## Gender_Coded2                                        -0.253   0.8003    
-    ## Education_GroupHigh School/G.E.D.                     1.254   0.2118    
-    ## Education_GroupPost High School Education             1.820   0.0708 .  
-    ## chronic_disease1                                     -1.367   0.1737    
-    ## moved_in_last_5_years1                                1.072   0.2854    
-    ## supportive_housing1                                  -1.801   0.0739 .  
-    ## hiv1                                                  0.998   0.3198    
+    ##                                             Estimate Std. Error t value
+    ## (Intercept)                                 50.03112    8.43868   5.929
+    ## age                                         -0.01368    0.07764  -0.176
+    ## Income_Group2                               -3.58864    2.24271  -1.600
+    ## Income_Group3                                1.03627    2.72074   0.381
+    ## RaceHispanic or Latinx                       0.05591    3.06446   0.018
+    ## RaceNon- Hispanic Black or African American -2.78988    2.84105  -0.982
+    ## GenderFemale                                 0.79758    6.68034   0.119
+    ## GenderMale                                   1.73805    6.85778   0.253
+    ## Education_GroupHigh School/G.E.D.            3.00540    2.39594   1.254
+    ## Education_GroupPost High School Education    4.94315    2.71559   1.820
+    ## chronic_disease1                            -2.69863    1.97372  -1.367
+    ## moved_in_last_5_years1                       2.20657    2.05778   1.072
+    ## supportive_housing1                         -4.37872    2.43178  -1.801
+    ## hiv1                                         2.73968    2.74410   0.998
+    ##                                             Pr(>|t|)    
+    ## (Intercept)                                 2.21e-08 ***
+    ## age                                           0.8604    
+    ## Income_Group2                                 0.1118    
+    ## Income_Group3                                 0.7039    
+    ## RaceHispanic or Latinx                        0.9855    
+    ## RaceNon- Hispanic Black or African American   0.3278    
+    ## GenderFemale                                  0.9051    
+    ## GenderMale                                    0.8003    
+    ## Education_GroupHigh School/G.E.D.             0.2118    
+    ## Education_GroupPost High School Education     0.0708 .  
+    ## chronic_disease1                              0.1737    
+    ## moved_in_last_5_years1                        0.2854    
+    ## supportive_housing1                           0.0739 .  
+    ## hiv1                                          0.3198    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -23485,7 +23588,7 @@ High\_CI
 
 <td style="text-align:right;">
 
-51.825
+50.031
 
 </td>
 
@@ -23497,13 +23600,13 @@ High\_CI
 
 <td style="text-align:right;">
 
-41.600
+33.491
 
 </td>
 
 <td style="text-align:right;">
 
-62.050
+66.571
 
 </td>
 
@@ -23615,13 +23718,13 @@ Income\_Group3
 
 <td style="text-align:left;">
 
-Racial\_GroupOther
+RaceHispanic or Latinx
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.056
+0.056
 
 </td>
 
@@ -23633,13 +23736,13 @@ Racial\_GroupOther
 
 <td style="text-align:right;">
 
-\-6.062
+\-5.950
 
 </td>
 
 <td style="text-align:right;">
 
-5.950
+6.062
 
 </td>
 
@@ -23649,31 +23752,31 @@ Racial\_GroupOther
 
 <td style="text-align:left;">
 
-Racial\_GroupNon- Hispanic Black or African American
+RaceNon- Hispanic Black or African American
 
 </td>
 
 <td style="text-align:right;">
 
-\-2.846
+\-2.790
 
 </td>
 
 <td style="text-align:right;">
 
-0.171
+0.328
 
 </td>
 
 <td style="text-align:right;">
 
-\-6.897
+\-8.358
 
 </td>
 
 <td style="text-align:right;">
 
-1.206
+2.779
 
 </td>
 
@@ -23683,31 +23786,31 @@ Racial\_GroupNon- Hispanic Black or African American
 
 <td style="text-align:left;">
 
-Gender\_Coded1
+GenderFemale
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.940
+0.798
 
 </td>
 
 <td style="text-align:right;">
 
-0.658
+0.905
 
 </td>
 
 <td style="text-align:right;">
 
-\-5.102
+\-12.296
 
 </td>
 
 <td style="text-align:right;">
 
-3.221
+13.891
 
 </td>
 
@@ -23717,13 +23820,13 @@ Gender\_Coded1
 
 <td style="text-align:left;">
 
-Gender\_Coded2
+GenderMale
 
 </td>
 
 <td style="text-align:right;">
 
-\-1.738
+1.738
 
 </td>
 
@@ -23735,13 +23838,13 @@ Gender\_Coded2
 
 <td style="text-align:right;">
 
-\-15.179
+\-11.703
 
 </td>
 
 <td style="text-align:right;">
 
-11.703
+15.179
 
 </td>
 
@@ -23974,7 +24077,7 @@ library(summarytools)
     ##     view
 
 ``` r
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Age_Category, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$Age_Category, prop = "r"),
       method = "render")
 ```
 
@@ -23990,7 +24093,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Racial\_Group \* Age\_Category
+Race \* Age\_Category
 
 </h4>
 
@@ -24023,7 +24126,7 @@ Age\_Category
 
 <td align="center">
 
-<strong>Racial\_Group</strong>
+<strong>Race</strong>
 
 </td>
 
@@ -24068,6 +24171,160 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -24201,160 +24458,6 @@ Latinx</strong>
 <td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
 
 56
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-1
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-4.2%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-10
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-41.7%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-10
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-41.7%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-3
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-12.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-24
 
 </td>
 
@@ -24859,7 +24962,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Age_Category, prop = "r"),
+print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$Age_Group, prop = "r"),
       method = "render")
 ```
 
@@ -24875,7 +24978,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Race \* Age\_Category
+Race \* Age\_Group
 
 </h4>
 
@@ -24894,7 +24997,7 @@ Race \* Age\_Category
 
 <th colspan="20" align="center" class="st-protect-top-border">
 
-Age\_Category
+Age\_Group
 
 </th>
 
@@ -24953,6 +25056,160 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+9.1%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -25268,160 +25525,6 @@ American</strong>
 
 <td>
 
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-4
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-36.4%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-6
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-54.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-1
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-9.1%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-11
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
 <strong align="center">Total</strong>
 
 </td>
@@ -25590,7 +25693,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Income_Group, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$Income_Group, prop = "r"),
       method = "render")
 ```
 
@@ -25606,7 +25709,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Racial\_Group \* Income\_Group
+Race \* Income\_Group
 
 </h4>
 
@@ -25639,7 +25742,7 @@ Income\_Group
 
 <td align="center">
 
-<strong>Racial\_Group</strong>
+<strong>Race</strong>
 
 </td>
 
@@ -25678,6 +25781,136 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+8
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+33.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+10
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+41.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -25787,136 +26020,6 @@ Latinx</strong>
 <td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
 
 56
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-8
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-33.3%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-10
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-41.7%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-3
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-12.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-3
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-12.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-24
 
 </td>
 
@@ -26442,6 +26545,136 @@ Total
 
 <td>
 
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+5
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
 <strong align="center">Hispanic or
 Latinx</strong>
 
@@ -26704,136 +26937,6 @@ American</strong>
 
 <td>
 
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-6
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-54.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-5
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-45.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-11
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
 <strong align="center">Total</strong>
 
 </td>
@@ -26978,7 +27081,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$Education_Group, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$Education_Group, prop = "r"),
       method = "render")
 ```
 
@@ -26994,7 +27097,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Racial\_Group \* Education\_Group
+Race \* Education\_Group
 
 </h4>
 
@@ -27027,7 +27130,7 @@ Education\_Group
 
 <td align="center">
 
-<strong>Racial\_Group</strong>
+<strong>Race</strong>
 
 </td>
 
@@ -27045,7 +27148,8 @@ High School/\<br/\>G.E.D.
 
 <th colspan="4" align="center">
 
-Post High \<br/\>School <br/>Education
+Post High \<br/\>School
+<br/>Education
 
 </th>
 
@@ -27066,6 +27170,136 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+12.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+9
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+37.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+45.8%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+4.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -27175,136 +27409,6 @@ Latinx</strong>
 <td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
 
 56
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-3
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-12.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-9
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-37.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-11
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-45.8%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-1
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-4.2%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-24
 
 </td>
 
@@ -27804,7 +27908,8 @@ High School/\<br/\>G.E.D.
 
 <th colspan="4" align="center">
 
-Post High \<br/\>School <br/>Education
+Post High \<br/\>School
+<br/>Education
 
 </th>
 
@@ -27825,6 +27930,136 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+27.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+2
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+18.2%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+54.5%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -28092,136 +28327,6 @@ American</strong>
 
 <td>
 
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-3
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-27.3%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-2
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-18.2%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-6
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-54.5%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-11
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
 <strong align="center">Total</strong>
 
 </td>
@@ -28366,7 +28471,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = SoBROData$gender, y = SoBROData$Age_Category, prop = "r"),
+print(ctable(x = SoBROData$Gender, y = SoBROData$Age_Category, prop = "r"),
       method = "render")
 ```
 
@@ -28382,7 +28487,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-gender \* Age\_Category
+Gender \* Age\_Category
 
 </h4>
 
@@ -28415,7 +28520,7 @@ Age\_Category
 
 <td align="center">
 
-<strong>gender</strong>
+<strong>Gender</strong>
 
 </td>
 
@@ -28460,6 +28565,160 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+3
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+75.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+25.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -28773,161 +29032,6 @@ Total
 
 <td>
 
-<strong align="center">Other, please
-specify:</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-3
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-75.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-1
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-25.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-4
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
 <strong align="center">Total</strong>
 
 </td>
@@ -29096,7 +29200,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = FinalBetancesData$Gender, y = FinalBetancesData$Age_Category, prop = "r"),
+print(ctable(x = FinalBetancesData$Gender, y = FinalBetancesData$Age_Group, prop = "r"),
       method = "render")
 ```
 
@@ -29112,7 +29216,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Gender \* Age\_Category
+Gender \* Age\_Group
 
 </h4>
 
@@ -29131,7 +29235,7 @@ Gender \* Age\_Category
 
 <th colspan="20" align="center" class="st-protect-top-border">
 
-Age\_Category
+Age\_Group
 
 </th>
 
@@ -29190,6 +29294,160 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+1
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -29476,161 +29734,6 @@ Total
 <td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
 
 26
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<strong align="center">Other, please
-specify:</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-1
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-1
 
 </td>
 
@@ -30563,7 +30666,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Smoke, prop = "r"),
+print(ctable(x = FinalBetancesData$Age_Group, y = FinalBetancesData$Smoking_Status, prop = "r"),
       method = "render")
 ```
 
@@ -30579,7 +30682,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Age\_Category \* Smoke
+Age\_Group \* Smoking\_Status
 
 </h4>
 
@@ -30598,7 +30701,7 @@ Age\_Category \* Smoke
 
 <th colspan="8" align="center" class="st-protect-top-border">
 
-Smoke
+Smoking\_Status
 
 </th>
 
@@ -30612,7 +30715,7 @@ Smoke
 
 <td align="center">
 
-<strong>Age\_Category</strong>
+<strong>Age\_Group</strong>
 
 </td>
 
@@ -31737,7 +31840,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = FinalBetancesData$Age_Category, y = FinalBetancesData$Chronic_Disease, prop = "r"),
+print(ctable(x = FinalBetancesData$Age_Group, y = FinalBetancesData$Chronic_Disease, prop = "r"),
       method = "render")
 ```
 
@@ -31753,7 +31856,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Age\_Category \* Chronic\_Disease
+Age\_Group \* Chronic\_Disease
 
 </h4>
 
@@ -31786,7 +31889,7 @@ Chronic\_Disease
 
 <td align="center">
 
-<strong>Age\_Category</strong>
+<strong>Age\_Group</strong>
 
 </td>
 
@@ -32324,7 +32427,7 @@ Generated by
 <!--/html_preserve-->
 
 ``` r
-print(ctable(x = SoBROData$Racial_Group, y = SoBROData$delayed_rent, prop = "r"),
+print(ctable(x = SoBROData$Race, y = SoBROData$delayed_rent, prop = "r"),
       method = "render")
 ```
 
@@ -32340,7 +32443,7 @@ Cross-Tabulation, Row Proportions
 
 <h4>
 
-Racial\_Group \* delayed\_rent
+Race \* delayed\_rent
 
 </h4>
 
@@ -32373,7 +32476,7 @@ delayed\_rent
 
 <td align="center">
 
-<strong>Racial\_Group</strong>
+<strong>Race</strong>
 
 </td>
 
@@ -32406,6 +32509,112 @@ Total
 </thead>
 
 <tbody>
+
+<tr>
+
+<td>
+
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+14
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+58.3%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+6
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+25.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+16.7%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+24
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
 
 <tr>
 
@@ -32491,112 +32700,6 @@ Latinx</strong>
 <td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
 
 56
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-14
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-58.3%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-6
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-25.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-4
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-16.7%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-24
 
 </td>
 
@@ -33044,6 +33147,112 @@ Total
 
 <td>
 
+<strong align="center">Other</strong>
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+7
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+63.6%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+4
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+36.4%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+0
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+0.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
+
+11
+
+</td>
+
+<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
+
+(
+
+</td>
+
+<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
+
+100.0%
+
+</td>
+
+<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
+
+)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
 <strong align="center">Hispanic or
 Latinx</strong>
 
@@ -33258,112 +33467,6 @@ American</strong>
 
 <td>
 
-<strong align="center">Other</strong>
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-7
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-63.6%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-4
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-36.4%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-0
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-0.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-<td align="right" style="padding:0 0 0 15px;border-right:0;text-align:right">
-
-11
-
-</td>
-
-<td align="left" style="padding:0 1px 0 4px;border-left:0;border-right:0;text-align:left">
-
-(
-
-</td>
-
-<td align="left" style="padding:0;border-left:0;border-right:0;text-align:right">
-
-100.0%
-
-</td>
-
-<td align="left" style="padding:0 15px 0 1px;border-left:0;text-align:right">
-
-)
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
 <strong align="center">Total</strong>
 
 </td>
@@ -33486,7 +33589,7 @@ Generated by
 ``` r
 FinalSobroData = 
   SoBROData %>% 
-  select(age, Age_Category, gender, Gender_Coded, Education_Group, Income_Group, Racial_Group, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
+  select(age, Age_Category, Gender, Education_Group, Income_Group, Race, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
 ```
 
 ``` r
