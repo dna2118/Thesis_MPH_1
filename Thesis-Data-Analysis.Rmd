@@ -1264,10 +1264,9 @@ linearregression1 %>%
 
 ```
 
-##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
-
+Housing Conditions and Quality
 ```{r}
-linearregression2 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+linearregression2 = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
 summary(linearregression2)
 
 linearregression2 %>% 
@@ -1277,10 +1276,98 @@ linearregression2 %>%
          Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
+
 ```
 
-##### Housing satisfaction was signficantly associated with self-reported mental health score at the 5% level of significance. For every one unit increase in Housing Satisfaction, mental health score increased by .99  at the 5% level of significance. In addition, those with a chronic disease's mental health score was 8.91 lower compared to those without a chronic disease at a 5% level of significance. 
+Housing Affordability
+```{r}
+linearregression3 = lm(PCS12 ~  total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+summary(linearregression3)
 
+linearregression3 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+
+Residential Stability
+```{r}
+linearregression4 = lm(PCS12 ~ total_PSS_score + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
+summary(linearregression4)
+
+linearregression4 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
+
+```{r}
+linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data = FinalBetancesData)
+summary(linearregression5)
+
+linearregression5 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+Housing Conditions and Quality
+```{r}
+linearregression6 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + repairs_needed, data = FinalBetancesData)
+summary(linearregression2)
+
+linearregression6 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+
+Housing Affordability
+```{r}
+linearregression7 = lm(MCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + DelayedRent, data = FinalBetancesData)
+summary(linearregression3)
+
+linearregression7 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+
+Residential Stability
+```{r}
+linearregression8 = lm(MCS12 ~ Age + Income_Group + Race + Gender_Coded + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
+summary(linearregression4)
+
+linearregression8 %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+##### Housing satisfaction was signficantly associated with self-reported mental health score at the 5% level of significance. For every one unit increase in Housing Satisfaction, mental health score increased by .99  at the 5% level of significance. In addition, those with a chronic disease's mental health score was 8.91 lower compared to those without a chronic disease at a 5% level of significance. 
 ```{r}
 estimates_full = tibble(
   outcome = c("Physical Health Score", "Mental Health Score"),
@@ -1673,7 +1760,6 @@ SoBROData =
 ```
 
 ##### Below, I changed variables into factors and numeric values.
-
 ```{r}
 SoBROData = 
   SoBROData %>% 
@@ -1701,6 +1787,7 @@ SoBROData =
 * Less than high school (included those who never attended school, or did not complete a high school degree/G.E.D)
 * High school/G.E.D
 * Post High School Education (included those who attended vocational school, some college, 2-year/4-year college degree, and post graduate education)
+
 ```{r}
 SoBROData = 
 SoBROData %>% 
@@ -2489,7 +2576,6 @@ corrplot(CM1, type = "upper", order = "hclust",
 ```
 
 ### Final Analysis (Regression Models)
-
 ```{r}
 linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression1SOBRO)
@@ -2501,13 +2587,11 @@ linearregression1SOBRO %>%
          Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
-
 ```
 
-##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
-
+Housing Conditions and Quality
 ```{r}
-linearregression2SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression2SOBRO = lm(PCS12 ~ HousingSatisfactionScore + total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
 summary(linearregression2SOBRO)
 
 linearregression2SOBRO %>% 
@@ -2517,8 +2601,94 @@ linearregression2SOBRO %>%
          Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
+
 ```
 
+Housing Affordability
+```{r}
+linearregression3SOBRO = lm(PCS12 ~ total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + delayed_rent + hiv, data = SoBROData)
+summary(linearregression2SOBRO)
+
+linearregression3SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+Residential Stability
+```{r}
+linearregression4SOBRO = lm(PCS12 ~ total_PSS_score + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + moved_in_last_5_years + hiv, data = SoBROData)
+summary(linearregression4SOBRO)
+
+linearregression4SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
+
+```{r}
+linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+summary(linearregression5SOBRO)
+
+linearregression5SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+Housing Conditions and Quality
+```{r}
+linearregression6SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  +  repairs_needed + hiv, data = SoBROData)
+summary(linearregression6SOBRO)
+
+linearregression6SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+
+```
+
+Housing Affordability
+```{r}
+linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease  + delayed_rent + hiv, data = SoBROData)
+summary(linearregression7SOBRO)
+
+linearregression7SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
+
+Residential Stability
+```{r}
+linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Racial_Group + Gender_Coded + Education_Group + chronic_disease + moved_in_last_5_years + supportive_housing + hiv, data = SoBROData)
+summary(linearregression4SOBRO)
+
+linearregression8SOBRO %>% 
+  broom::tidy() %>% 
+  mutate(
+         High_CI = estimate + 1.96*std.error,
+         Low_CI = estimate - 1.96*std.error) %>% 
+  select(term, estimate, p.value, Low_CI, High_CI) %>% 
+  knitr::kable(digits = 3)
+```
 ##### Housing satisfaction was not signficantly associated with self-reported mental health scores. Those who had completed less than high school for their education, had decreased mental health scores by 7.077 compared to those who graduated high school or received their G.E.D at a 5% level of signficance. 
 
 ```{r}
