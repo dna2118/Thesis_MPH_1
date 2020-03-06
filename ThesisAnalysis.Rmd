@@ -1255,7 +1255,7 @@ FinalBetancesData =
 ### Final Analysis (Regression Models)
 
 ```{r}
-linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Gender + Race + Income_Group + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + Smoking_Status + repairs_needed, data= FinalBetancesData)
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Gender + Race + Income_Group + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data= FinalBetancesData)
 summary(linearregression1)
 
 linearregression1 %>% 
@@ -1315,7 +1315,7 @@ linearregression4 %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
 
 ```{r}
-linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent +  moved_in_last_5_years + Smoking_Status +  repairs_needed, data = FinalBetancesData)
+linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent +  moved_in_last_5_years +  repairs_needed, data = FinalBetancesData)
 summary(linearregression5)
 
 linearregression5 %>% 
@@ -1360,7 +1360,7 @@ linearregression7 %>%
 Residential Stability
 ```{r}
 linearregression8 = lm(MCS12 ~ Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + moved_in_last_5_years, data = FinalBetancesData)
-summary(linearregression4)
+summary(linearregression8)
 
 linearregression8 %>% 
   broom::tidy() %>% 
@@ -2596,7 +2596,7 @@ corrplot(CM1, type = "upper", order = "hclust",
 
 ### Final Analysis (Regression Models)
 ```{r}
-linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + smoking_status + repairs_needed + hiv, data = SoBROData)
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 
 summary(linearregression1SOBRO)
 linearregression1SOBRO %>% 
@@ -2654,7 +2654,7 @@ linearregression4SOBRO %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
 
 ```{r}
-linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + smoking_status + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
 summary(linearregression5SOBRO)
 
 linearregression5SOBRO %>% 
