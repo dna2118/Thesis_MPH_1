@@ -571,7 +571,8 @@ CodedData_VariablesofInterest %>%
   group_by(PCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = PCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ Gender)
+  geom_jitter() +  facet_grid(. ~ Gender)+ 
+  labs(title = "Distribution of PCS-12 by Gender and Age (Betances)")
 ```
 
 ##### Overall Mentall Health Status (Outcome 2)
@@ -588,7 +589,8 @@ CodedData_VariablesofInterest %>%
   group_by(MCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = MCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ Gender)
+  geom_jitter() +  facet_grid(. ~ Gender) + 
+  labs(title = "Distribution of MCS-12 by Gender and Age (Betances)")
 ```
 
 #### Independent Variables
@@ -643,7 +645,7 @@ CodedData_VariablesofInterest %>%
   ggplot(aes(x=Gender, y=Age)) + geom_violin() +
   labs(x = "Gender",
       y = "Age",
-      title = "Figure 1. Distribution of Age by Gender")
+      title = "Distribution of Age by Gender (Betances)")
 ```
 
 ```{r}
@@ -791,7 +793,7 @@ ggplot(aes(x=Smoke, y=Age)) +
   geom_jitter(position=position_jitter(width=.1, height=0)) + 
   labs(x = "Smoking Status",
       y = "Age",
-      title = "Figure 4. Distribution of Age by Smoking Status")
+      title = "Distribution of Age by Smoking Status (Betances)")
 ```
 
 ```{r}
@@ -802,7 +804,7 @@ CodedData_VariablesofInterest %>%
   labs(x = "Age Group",
       y = "Count",
       color = "Education",
-      title = "Figure 5. Education by Age Group") +
+      title = "Education by Age Group (Betances)") +
 theme(legend.position = "bottom")
 ```
 
@@ -816,9 +818,9 @@ CodedData_VariablesofInterest %>%
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Perceived Stress Score",
-      y = "Overall Health Score",
+      y = "Overall PCS-12 Score",
       color = "Age",
-      title = "Figure 6. Relationship between Perceived Stress and Physical Health Status") +
+      title = "Relationship between Perceived Stress and PCS-12 (Betances") +
       theme(legend.position = "right") 
 ```
 
@@ -833,7 +835,7 @@ CodedData_VariablesofInterest %>%
       x = "Housing Satisfaction Score",
       y = "Overall Health Score",
       color = "Age",
-      title = "Figure 7. Relationship between Housing Satisfaction and Physical Health Status") +
+      title = "Relationship between Housing Satisfaction and PCS-12 (Betances)") +
       theme(legend.position = "right")
 ```
 
@@ -846,9 +848,9 @@ CodedData_VariablesofInterest %>%
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Perceived Stress Score",
-      y = "Overall Mental Health Score",
+      y = "Overall MCS-12 Score",
       color = "Age",
-      title = "Figure 8. Relationship between Perceived Stress and Mental Health Status") +
+      title = "Relationship between Perceived Stress and MCS-12") +
       theme(legend.position = "right") 
 ```
 
@@ -861,9 +863,9 @@ CodedData_VariablesofInterest %>%
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Housing Satisfaction Score",
-      y = "Overall Mental Health Score",
+      y = "Overall MCS-12 Score",
       color = "Age",
-      title = "Figure 9. Relationship between Housing Satisfaction and Mental Health Status") +
+      title = "Relationship between Residential Satisfaction and MCS-12") +
       theme(legend.position = "right")
 ```
 
@@ -878,7 +880,7 @@ CodedData_VariablesofInterest %>%
       x = "Housing Satisfaction Score",
       y = "Perceived Stress Score",
       color = "Age",
-      title = "Figure 10. Relationship between Housing Satisfaction and Perceived Stress") +
+      title = "Relationship between Housing Satisfaction and Perceived Stress") +
       theme(legend.position = "right")
 ```
 
@@ -934,7 +936,7 @@ summary(bivariate4)
 bivariate4 %>% 
   broom::tidy() %>% 
   mutate(
-         High_CI = estimate + 1.96*std.error,
+         High_CI = estimate + 1.96 *std.error,
          Low_CI = estimate - 1.96*std.error) %>% 
   select(term, estimate, p.value, Low_CI, High_CI) %>% 
   knitr::kable(digits = 3)
@@ -1223,7 +1225,7 @@ bivariate23 %>%
 ```{r}
 Correlation_Matrix = 
 CodedData_VariablesofInterest %>% 
-  select(HousingSatisfactionScore, total_PSS_score, Age, MCS12, PCS12) 
+  select(total_PSS_score, MCS12, PCS12) 
 ```
 
 ```{r}
@@ -1255,7 +1257,7 @@ FinalBetancesData =
 ### Final Analysis (Regression Models)
 
 ```{r}
-linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Gender + Race + Income_Group + Education_Group + Chronic_Disease + DelayedRent + moved_in_last_5_years + repairs_needed, data= FinalBetancesData)
+linearregression1 = lm(PCS12 ~ HousingSatisfactionScore + Age + Gender + Race + Income_Group + Education_Group + DelayedRent + moved_in_last_5_years + repairs_needed, data= FinalBetancesData)
 summary(linearregression1)
 
 linearregression1 %>% 
@@ -1315,7 +1317,7 @@ linearregression4 %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.307 at the 5% level of signficance. Those who were in income group 2, had 4.621 higher physical health score, compared to those in income group 1, at a 5% level of signficance. 
 
 ```{r}
-linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + Chronic_Disease + DelayedRent +  moved_in_last_5_years +  repairs_needed, data = FinalBetancesData)
+linearregression5 = lm(MCS12 ~ HousingSatisfactionScore + Age + Income_Group + Race + Gender + Education_Group + DelayedRent +  moved_in_last_5_years +  repairs_needed, data = FinalBetancesData)
 summary(linearregression5)
 
 linearregression5 %>% 
@@ -1766,6 +1768,7 @@ SoBROData =
 ```{r}
 SoBROData = 
   SoBROData %>% 
+  rename(housing_type = supportive_housing) %>% 
   mutate(
     education = as.factor(education),
     gender = as.factor(gender),
@@ -1780,7 +1783,10 @@ SoBROData =
     cockroach = factor(cockroach,levels = c("0","1")),
     chronic_disease = factor(chronic_disease,levels = c("0","1")),
     hiv = factor(hiv,levels = c("0","1")),
-    supportive_housing = factor(supportive_housing ,levels = c("0","1")),
+    housing_type = as.factor(housing_type),
+    housing_type = recode(housing_type,
+                          "0" = "LIHTC",
+                          "1" = "Supportive"),
     repairs_needed = factor(repairs_needed,levels = c("0","1")),
     moved_in_last_5_years = factor(moved_in_last_5_years,levels = c("0","1")),
     education = factor(education, levels = c("Less than High School", "High School/Secondary School Diploma", "G.E.D.", "Vocational School", "Some College", "2 Year Community College Degree", "4 Year College Degree", "Post-Graduate Degree")))
@@ -1887,10 +1893,12 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
+  mutate(Gender = factor(Gender, levels = c("Female", "Male", "Other"))) %>% 
   group_by(PCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = PCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ Gender)
+  geom_jitter() +  facet_grid(. ~ Gender) +
+  labs(title = "Distribution of PCS-12 by Gender and Age (SoBRO)")
 ```
 
 ##### Overall Mentall Health Status (Outcome 2)
@@ -1903,10 +1911,12 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
+  mutate(Gender = factor(Gender, levels = c("Female", "Male", "Other"))) %>% 
   group_by(MCS12, Age_Category, Gender) %>% 
   summarize(n = n()) %>% 
     ggplot(aes(x= Age_Category, y = MCS12)) + geom_boxplot() +
-  geom_jitter() +  facet_grid(. ~ Gender)
+  geom_jitter() +  facet_grid(. ~ Gender) + 
+labs(title = "Distribution of MCS-12 by Gender and Age (SoBRO)")
 ```
 
 #### Independent Variables
@@ -1956,7 +1966,7 @@ SoBROData %>%
   ggplot(aes(x=Gender, y=age)) + geom_violin() +
   labs(x = "Gender",
       y = "Age",
-      title = "Figure 1. Distribution of Age by Gender")
+      title = "Distribution of Age by Gender (SoBRO)")
 ```
 
 ```{r}
@@ -2026,14 +2036,14 @@ SoBROData %>%
 
 ```{r}
 SoBROData %>% 
-  group_by(supportive_housing) %>% 
+  group_by(housing_type) %>% 
   summarize(n=n()) %>%
   mutate(
   percent = n/180*100) %>% 
   mutate(
-    supportive_housing = recode(supportive_housing, 
-                         "0" = "No",
-                         "1" = "Yes")) %>% 
+    housing_type = recode(housing_type, 
+                         "LIHTC" = "No",
+                         "Supportive" = "Yes")) %>% 
   knitr::kable(col.names=c("Living in Supportive Housing", "n", "Percent(%)"), digits = 2)
 ```
 
@@ -2063,6 +2073,18 @@ SoBROData %>%
   knitr::kable(col.names=c("HIV", "n", "Percent(%)"), digits = 2)
 ```
 
+```{r}
+SoBROData %>% 
+  group_by(chronic_disease) %>% 
+  summarize(n=n()) %>%
+  mutate(
+  percent = n/180*100) %>% 
+  mutate(
+    chronic_disease = recode(chronic_disease, 
+                         "0" = "No",
+                         "1" = "Yes")) %>% 
+  knitr::kable(col.names=c("Chronic Disease", "n", "Percent(%)"), digits = 2) 
+```
 ### 2x2 Tables and Visualizations
 ```{r}
 SoBROData %>% 
@@ -2125,7 +2147,7 @@ ggplot(aes(x=smoking_status, y=age)) +
   geom_jitter(position=position_jitter(width=.1, height=0)) + 
   labs(x = "Smoking Status",
       y = "Age",
-      title = "Figure 4. Distribution of Age by Smoking Status")
+      title = "Distribution of Age by Smoking Status (SoBRO)")
 ```
 
 ```{r}
@@ -2135,7 +2157,7 @@ SoBROData %>%
   labs(x = "Age Group",
       y = "Count",
       color = "Education",
-      title = "Figure 5. Education by Age Group") +
+      title = "Education by Age Group (SoBRO)") +
 theme(legend.position = "bottom")
 ```
 
@@ -2151,7 +2173,7 @@ SoBROData%>%
       x = "Perceived Stress Score",
       y = "Overall Health Score",
       color = "Age",
-      title = "Figure 6. Relationship between Perceived Stress and Physical Health Status") +
+      title = "Relationship between Perceived Stress and PCS-12 (SoBRO)") +
       theme(legend.position = "right") 
 ```
 
@@ -2166,7 +2188,7 @@ SoBROData %>%
       x = "Housing Satisfaction Score",
       y = "Overall Health Score",
       color = "Age",
-      title = "Figure 7. Relationship between Housing Satisfaction and Physical Health Status") +
+      title = "Relationship between Housing Satisfaction and PCS-12 (SoBRO)") +
       theme(legend.position = "right")
 ```
 
@@ -2179,9 +2201,9 @@ SoBROData %>%
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Perceived Stress Score",
-      y = "Overall Mental Health Score",
+      y = "Overall MCS-12 Score",
       color = "Age",
-      title = "Figure 8. Relationship between Perceived Stress and Mental Health Status") +
+      title = "Relationship between Perceived Stress and MCS-12 (SoBRO)") +
       theme(legend.position = "right") 
 ```
 
@@ -2194,9 +2216,9 @@ SoBROData %>%
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
       x = "Housing Satisfaction Score",
-      y = "Overall Mental Health Score",
+      y = "Overall MCS-12 Score",
       color = "Age",
-      title = "Figure 9. Relationship between Housing Satisfaction and Mental Health Status") +
+      title = "Relationship between Housing Satisfaction and MCS-12 (SoBRO)") +
       theme(legend.position = "right")
 ```
 
@@ -2211,7 +2233,7 @@ SoBROData %>%
       x = "Housing Satisfaction Score",
       y = "Perceived Stress Score",
       color = "Age",
-      title = "Figure 10. Relationship between Housing Satisfaction and Perceived Stress") +
+      title = "Relationship between Housing Satisfaction and Perceived Stress (SoBRO)") +
       theme(legend.position = "right")
 ```
 
@@ -2496,9 +2518,9 @@ bivariateSOBRO19 %>%
   knitr::kable(digits = 3)
 ```
 
-##### Bivariate model 20 : PCS12 ~ b_0 + b_1 supportive_housing_i 
+##### Bivariate model 20 : PCS12 ~ b_0 + b_1 housing_type_i 
 ```{r}
-bivariateSOBRO20 = lm(PCS12 ~ supportive_housing, data = SoBROData)
+bivariateSOBRO20 = lm(PCS12 ~ housing_type, data = SoBROData)
 summary(bivariateSOBRO20)
 
 bivariateSOBRO20 %>% 
@@ -2510,9 +2532,9 @@ bivariateSOBRO20 %>%
   knitr::kable(digits = 3)
 ```
 
-##### Bivariate model 21 : MCS12 ~ b_0 + b_1 supportive_housing_i 
+##### Bivariate model 21 : MCS12 ~ b_0 + b_1 housing_type_i 
 ```{r}
-bivariateSOBRO21 = lm(MCS12 ~ supportive_housing, data = SoBROData)
+bivariateSOBRO21 = lm(MCS12 ~ housing_type, data = SoBROData)
 summary(bivariateSOBRO21)
 
 bivariateSOBRO21 %>% 
@@ -2582,21 +2604,41 @@ bivariateSOBRO25 %>%
 
 ### Checking for multicollinearity
 ```{r}
-Correlation_Matrix = 
+Correlation_Matrix2 = 
 SoBROData %>% 
-  select(HousingSatisfactionScore, total_PSS_score, age, MCS12, PCS12) 
+  select(total_PSS_score, MCS12, PCS12) 
 ```
 
 ```{r}
-CM1 = cor(Correlation_Matrix, use = "complete.obs")
-round(CM1,2)
-corrplot(CM1, type = "upper", order = "hclust", 
+CM2 = cor(Correlation_Matrix2, use = "complete.obs")
+round(CM2,2)
+corrplot(CM2, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
+```
+
+```{r}
+Correlation_Matrix = 
+CodedData_VariablesofInterest %>% 
+  select(total_PSS_score, MCS12, PCS12) 
+```
+
+```{r}
+mytab <- cbind(table(SoBROData$chronic_disease),table(FinalBetancesData$Chronic_Disease))
+chisq.test(mytab) %>% 
+broom::tidy()
+```
+
+```{r}
+test1 =
+lm(PCS12 ~ chronic_disease + age +Income_Group + Race + gender + Education_Group, data = SoBROData) 
+summary(test1) %>% 
+  broom::tidy() %>% 
+  knitr::kable()
 ```
 
 ### Final Analysis (Regression Models)
 ```{r}
-linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + supportive_housing + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression1SOBRO = lm(PCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + delayed_rent + housing_type + moved_in_last_5_years + repairs_needed, data = SoBROData)
 
 summary(linearregression1SOBRO)
 linearregression1SOBRO %>% 
@@ -2654,7 +2696,7 @@ linearregression4SOBRO %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
 
 ```{r}
-linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + chronic_disease + delayed_rent + moved_in_last_5_years + repairs_needed + hiv, data = SoBROData)
+linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + housing_type + delayed_rent + moved_in_last_5_years + repairs_needed + HousingSatisfactionScore*repairs_needed, data = SoBROData)
 summary(linearregression5SOBRO)
 
 linearregression5SOBRO %>% 
@@ -2683,7 +2725,7 @@ linearregression6SOBRO %>%
 
 Housing Affordability
 ```{r}
-linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + delayed_rent + supportive_housing + hiv, data = SoBROData)
+linearregression7SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease  + delayed_rent + housing_type + hiv, data = SoBROData)
 summary(linearregression7SOBRO)
 
 linearregression7SOBRO %>% 
@@ -2697,7 +2739,7 @@ linearregression7SOBRO %>%
 
 Residential Stability
 ```{r}
-linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease + moved_in_last_5_years + supportive_housing + hiv, data = SoBROData)
+linearregression8SOBRO = lm(MCS12 ~ age + Income_Group + Race + Gender + Education_Group + chronic_disease + moved_in_last_5_years + housing_type + hiv, data = SoBROData)
 summary(linearregression8SOBRO)
 
 linearregression8SOBRO %>% 
@@ -2759,7 +2801,7 @@ print(ctable(x = FinalBetancesData$Race, y = FinalBetancesData$DelayedRent, prop
 ```{r}
 FinalSobroData = 
   SoBROData %>% 
-  select(age, Age_Category, Gender, Education_Group, Income_Group, Race, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score) 
+  select(age, Age_Category, Gender, Education_Group, Income_Group, Race, smoking_status, chronic_disease, HousingSatisfactionScore, MCS12, PCS12, total_PSS_score, repairs_needed, moved_in_last_5_years, housing_type, delayed_rent) 
 ```
 
 ```{r}
@@ -2784,6 +2826,33 @@ knitr::kable(col.names = c("Betances Mean PCS12 Score", "SoBRO Mean PCS12 Score"
 ```
 
 ```{r}
+baselinePSS = t.test(FinalBetancesData$total_PSS_score,SoBROData$total_PSS_score, var.equal = TRUE)
+summary(baselinePSS) %>% 
+knitr::kable()
+
+baselinePSS %>% 
+broom::tidy() %>% 
+  knitr::kable(digits = 5)
+```
+
+```{r}
+CodedData_VariablesofInterest = 
+  CodedData_VariablesofInterest %>% 
+  mutate(
+    PSS_Category = factor(PSS_Category, levels = c("Low Stress", "Moderate Stress", "High Stress"))
+  ) 
+
+  ggplot(SoBROData, aes(x= PSS_Category)) + geom_bar() + geom_text(label='stat(prop)*100', stat='count',
+     nudge_y=0.125,
+     va='bottom',
+     format_string='{:.1f}% ') + 
+  ggplot(CodedData_VariablesofInterest, aes(x=PSS_Category)) + geom_bar() + geom_text(label='stat(prop)*100', stat='count',
+     nudge_y=0.125,
+     va='bottom',
+     format_string='{:.1f}% ')
+```
+
+```{r}
 SoBROData %>% 
   select(Income_Group) %>% 
   group_by(Income_Group) %>% 
@@ -2801,10 +2870,169 @@ SoBROData %>%
   geom_point(size = 1.5, alpha = 0.8) +
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
-      x = "Perceived Stress Score",
-      y = "Overall Mental Health Score",
-      title = "Figure 8. Relationship between Housing Affordability and Mental Health Status") +
+      x = "Residential Satisfaction Score",
+      y = "Overall MCS-12 Score",
+      title = "Relationship between Residential Satisfaction and MCS-12 (SoBRO)") +
       theme(legend.position = "right")
 ```
+
+```{r}
+FinalBetancesData %>%  
+  group_by(HousingSatisfactionScore, MCS12) %>%
+  summarize(n=n()) %>% 
+  ggplot(aes(x = HousingSatisfactionScore, y = MCS12)) +
+  geom_point(size = 1.5, alpha = 0.8) +
+  geom_smooth(method =lm, color = "black", linetype = 1) +
+  labs(
+      x = "Residential Satisfaction Score",
+      y = "Overall MCS-12 Score",
+      title = "Relationship between Residential Satisfaction and MCS-12 (Betances)") +
+      theme(legend.position = "right")
+```
+Alternative hypothesis is that they are correlated in some way.
+
+```{r}
+testing = lm(SoBROData$HousingSatisfactionScore ~ SoBROData$repairs_needed)
+summary(testing)
+broom::tidy()
+```
+
+```{r}
+variable.names(FinalBetancesData)
+FinalBetancesData = 
+ FinalBetancesData %>%  
+  janitor::clean_names() 
+```
+```{r}
+variable.names(FinalSobroData)
+FinalSobroData = 
+  FinalSobroData %>% 
+  janitor::clean_names() %>% 
+  rename(age_group = age_category)
+```
+
+```{r}
+FinalBetancesData = 
+  FinalBetancesData %>% 
+  mutate(
+    housing_type = "Betances"
+  )
+```
+
+```{r}
+Joined_data = 
+full_join(FinalBetancesData, FinalSobroData)
+```
+
+```{r}
+summary(Joined_data)
+### housing satisfaction score, minimum is 6, max is 24, with the higher the score, the higher the satisfaction. 
+Joined_data = 
+  Joined_data %>% 
+mutate(
+    delayed_rent = replace_na(delayed_rent, "0"),
+    moved_in_last_5_years = replace_na(moved_in_last_5_years, "0"),
+    satisfaction_cat = housing_satisfaction_score, 
+    satisfaction_cat = 
+          case_when(satisfaction_cat >= 15 ~ 'Satisfied',
+                    satisfaction_cat >= 6  ~ 'Not Satisfied'),
+    satisfaction_cat = recode(satisfaction_cat, 
+                      "Not Satisfied" = "1",
+                      "Satisfied" = "0"), 
+    delayed_rent = recode(delayed_rent, 
+                          "1" = "Yes",
+                          "0" = "No"),
+    moved_in_last_5_years = recode(moved_in_last_5_years, 
+                          "1" = "Yes",
+                          "0" = "No"), 
+    repairs_needed = recode(repairs_needed, 
+                           "1" = "Yes",
+                           "0" = "No"),
+    repairs_needed = as.character(repairs_needed),
+    moved_in_last_5_years = as.character(moved_in_last_5_years),
+    delayed_rent = as.character(delayed_rent))
+```
+
+```{r}
+Joined_data = 
+  Joined_data %>% 
+  mutate(
+    delayed_rent = recode(delayed_rent, 
+                           "Yes" = "1",
+                           "No" = "0"),
+    moved_in_last_5_years = recode(moved_in_last_5_years, 
+                            "Yes" = "1",
+                           "No" = "0"),
+    repairs_needed = recode(repairs_needed, 
+                             "Yes" = "1",
+                             "No" = "0"))
+```
+
+```{r}
+Joined_data = 
+  Joined_data %>% 
+  mutate(
+    satisfaction_cat = as.numeric(satisfaction_cat),
+    repairs_needed = as.numeric(repairs_needed), 
+    moved_in_last_5_years = as.numeric(moved_in_last_5_years),
+    delayed_rent = as.numeric(delayed_rent),
+  housing_risk = satisfaction_cat + repairs_needed + moved_in_last_5_years + delayed_rent)
+```
+
+```{r}
+Joined_data = 
+Joined_data %>% 
+  mutate(
+  housing_risk = factor(housing_risk, levels = c("0", "1", "2", "3", "4")))
+summary(Joined_data$housing_risk)
+```
+
+```{r}
+housing_risk_split = split(Joined_data, Joined_data$housing_risk) 
+
+hr0 = housing_risk_split$`0`
+hr1 = housing_risk_split$`1` 
+hr2 = housing_risk_split$`2`
+hr3 = housing_risk_split$`3`
+hr4 = housing_risk_split$`4`
+
+aov1 = aov(mcs12 ~ housing_risk, data = Joined_data)
+summary(aov1)
+
+aov2 = aov(pcs12 ~ housing_risk, data = Joined_data)
+summary(aov2)
+
+lmaov = lm(mcs12 ~ housing_risk, data = Joined_data)
+summary(lmaov)
+
+lmaov2 = lm(pcs12 ~ housing_risk, data = Joined_data)
+summary(lmaov2)
+
+summary(hr0$mcs12)
+summary(hr1$mcs12)
+summary(hr2$mcs12)
+summary(hr3$mcs12)
+summary(hr4$mcs12)
+
+summary(hr0$pcs12)
+summary(hr1$pcs12)
+summary(hr2$pcs12)
+summary(hr3$pcs12)
+summary(hr4$pcs12)
+
+summary(hr0$total_pss_score)
+summary(hr1$total_pss_score)
+summary(hr2$total_pss_score)
+summary(hr3$total_pss_score)
+summary(hr4$total_pss_score)
+```
+
+```{r}
+testx = 
+lm(total_pss_score ~ housing_risk, data = Joined_data)
+summary(testx)
+```
+
+
 
 
