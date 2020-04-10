@@ -20351,3 +20351,96 @@ Joined_data %>%
 ```
 
 <img src="ThesisAnalysis_files/figure-gfm/unnamed-chunk-172-1.png" width="90%" />
+
+#### Here, I’ve decided to measure the Cronbach’s alpha for the housing satisfaction scale, since it was not a validated scale. Here, we find that the Cronbach’s alpha for the Housing Satisfaction scale is 80.36%
+
+``` r
+library("psych")
+```
+
+    ## 
+    ## Attaching package: 'psych'
+
+    ## The following object is masked from 'package:lavaan':
+    ## 
+    ##     cor2cov
+
+    ## The following objects are masked from 'package:ggplot2':
+    ## 
+    ##     %+%, alpha
+
+``` r
+Betances_Satisfaction_Scale  = 
+  CodedData_VariablesofInterest %>% 
+  select(AptSat_Coded, BuildingSat_Coded, NeighborhoodSat_Coded, PropertyManSat_Coded,  WinTempSat_Coded, SumTempSat_Coded)
+
+SoBRO_Satisfaction_Scale = 
+SoBROData %>% 
+  select(AptSat_Coded, BuildingSat_Coded, NeighborhoodSat_Coded, PropertyManSat_Coded,  WinTempSat_Coded, SumTempSat_Coded)
+
+Satisfaction_Scale = full_join(Betances_Satisfaction_Scale, SoBRO_Satisfaction_Scale)
+```
+
+    ## Joining, by = c("AptSat_Coded", "BuildingSat_Coded", "NeighborhoodSat_Coded", "PropertyManSat_Coded", "WinTempSat_Coded", "SumTempSat_Coded")
+
+``` r
+alpha(Satisfaction_Scale) 
+```
+
+    ## 
+    ## Reliability analysis   
+    ## Call: alpha(x = Satisfaction_Scale)
+    ## 
+    ##   raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+    ##        0.8       0.8    0.79      0.41 4.1 0.015  2.9 0.56     0.42
+    ## 
+    ##  lower alpha upper     95% confidence boundaries
+    ## 0.77 0.8 0.83 
+    ## 
+    ##  Reliability if an item is dropped:
+    ##                       raw_alpha std.alpha G6(smc) average_r S/N alpha se
+    ## AptSat_Coded               0.77      0.77    0.74      0.40 3.3    0.018
+    ## BuildingSat_Coded          0.75      0.75    0.71      0.37 3.0    0.020
+    ## NeighborhoodSat_Coded      0.78      0.78    0.75      0.41 3.5    0.018
+    ## PropertyManSat_Coded       0.77      0.77    0.74      0.40 3.4    0.018
+    ## WinTempSat_Coded           0.77      0.77    0.74      0.41 3.4    0.018
+    ## SumTempSat_Coded           0.80      0.80    0.77      0.44 4.0    0.016
+    ##                        var.r med.r
+    ## AptSat_Coded          0.0080  0.40
+    ## BuildingSat_Coded     0.0029  0.39
+    ## NeighborhoodSat_Coded 0.0071  0.42
+    ## PropertyManSat_Coded  0.0076  0.41
+    ## WinTempSat_Coded      0.0100  0.40
+    ## SumTempSat_Coded      0.0052  0.42
+    ## 
+    ##  Item statistics 
+    ##                         n raw.r std.r r.cor r.drop mean   sd
+    ## AptSat_Coded          391  0.72  0.73  0.65   0.58  3.1 0.74
+    ## BuildingSat_Coded     391  0.79  0.78  0.75   0.66  2.8 0.82
+    ## NeighborhoodSat_Coded 389  0.70  0.70  0.62   0.55  2.9 0.79
+    ## PropertyManSat_Coded  391  0.72  0.72  0.64   0.57  2.9 0.76
+    ## WinTempSat_Coded      391  0.72  0.71  0.62   0.56  2.8 0.85
+    ## SumTempSat_Coded      391  0.62  0.62  0.50   0.45  2.9 0.78
+    ## 
+    ## Non missing response frequency for each item
+    ##                          1    2 2.46341463414634 2.7683615819209
+    ## AptSat_Coded          0.05 0.10                0            0.00
+    ## BuildingSat_Coded     0.10 0.14                0            0.00
+    ## NeighborhoodSat_Coded 0.08 0.13                0            0.00
+    ## PropertyManSat_Coded  0.07 0.14                0            0.01
+    ## WinTempSat_Coded      0.09 0.19                0            0.00
+    ## SumTempSat_Coded      0.07 0.13                0            0.00
+    ##                       2.78260869565217 2.81142857142857 2.83050847457627
+    ## AptSat_Coded                      0.00             0.00             0.00
+    ## BuildingSat_Coded                 0.00             0.00             0.00
+    ## NeighborhoodSat_Coded             0.00             0.00             0.00
+    ## PropertyManSat_Coded              0.02             0.00             0.00
+    ## WinTempSat_Coded                  0.00             0.01             0.00
+    ## SumTempSat_Coded                  0.00             0.00             0.01
+    ##                          3    4 miss
+    ## AptSat_Coded          0.59 0.26 0.00
+    ## BuildingSat_Coded     0.60 0.15 0.00
+    ## NeighborhoodSat_Coded 0.61 0.18 0.01
+    ## PropertyManSat_Coded  0.59 0.16 0.00
+    ## WinTempSat_Coded      0.51 0.18 0.00
+    ## SumTempSat_Coded      0.59 0.21 0.00

@@ -2843,6 +2843,24 @@ Joined_data %>%
       theme(legend.position = "right")
 ```
 
+#### Here, I've decided to measure the Cronbach's alpha for the housing satisfaction scale, since it was not a validated scale. Here, we find that the Cronbach's alpha for the Housing Satisfaction scale is 80.36%, demonstrating good internal consistency and reliability.
+```{r}
+library("psych")
+
+Betances_Satisfaction_Scale  = 
+  CodedData_VariablesofInterest %>% 
+  select(AptSat_Coded, BuildingSat_Coded, NeighborhoodSat_Coded, PropertyManSat_Coded,  WinTempSat_Coded, SumTempSat_Coded)
+
+SoBRO_Satisfaction_Scale = 
+SoBROData %>% 
+  select(AptSat_Coded, BuildingSat_Coded, NeighborhoodSat_Coded, PropertyManSat_Coded,  WinTempSat_Coded, SumTempSat_Coded)
+
+Satisfaction_Scale = full_join(Betances_Satisfaction_Scale, SoBRO_Satisfaction_Scale)
+
+alpha(Satisfaction_Scale) 
+```
+
+
 
 
 
