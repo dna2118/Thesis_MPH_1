@@ -2563,7 +2563,7 @@ linearregression1SOBRO %>%
 ##### Housing satisfaction was not signficantly associated with self-reported physical health score. For every year increase in age, physical health score decreased by 0.254 at the 5% level of signficance. Those who had completed less than high school for their education, had lower physical health scores than those who graduated high school or received their G.E.D by 0.416 at a 5% level of signficance. Women had lower physical health scores by 4.857 when compared to men at a 5% level of signficance.
 
 ```{r}
-linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + housing_type + delayed_rent + moved_in_last_5_years + smoking_status + repairs_needed + HousingSatisfactionScore*repairs_needed, data = SoBROData)
+linearregression5SOBRO = lm(MCS12 ~ HousingSatisfactionScore + age + Income_Group + Race + Gender + Education_Group + housing_type + delayed_rent + moved_in_last_5_years + repairs_needed, data = SoBROData)
 summary(linearregression5SOBRO)
 
 linearregression5SOBRO %>% 
@@ -2801,7 +2801,18 @@ summary(testx)
 ##### Below, I conducted linear regression models with the joined dataset to see if there were any different conclusions.
 
 ```{r}
-joinedPCS12 = lm(pcs12 ~ housing_satisfaction_score + age + gender + race + income_group + education_group + delayed_rent + moved_in_last_5_years + repairs_needed + smoking_status + housing_type, data= Joined_data)
+Joined_data = 
+  Joined_data %>% 
+  mutate(
+    moved_in_last_5_years = factor(moved_in_last_5_years, levels = c("0","1")), 
+    repairs_needed = factor(repairs_needed, levels = c("0","1")),
+    delayed_rent = factor(delayed_rent, levels = c("0", "1")),
+    housing_type = as.factor(housing_type)
+  )
+```
+
+```{r}
+joinedPCS12 = lm(pcs12 ~ housing_satisfaction_score + age + gender + race + income_group + education_group + delayed_rent + moved_in_last_5_years + repairs_needed + housing_type, data= Joined_data)
 summary(joinedPCS12)
 
 joinedPCS12 %>% 
@@ -2816,7 +2827,7 @@ joinedPCS12 %>%
 
 
 ```{r}
-joinedMCS12 = lm(mcs12 ~ housing_satisfaction_score + age + gender + race + income_group + education_group + delayed_rent + moved_in_last_5_years + repairs_needed + smoking_status + housing_type, data= Joined_data)
+joinedMCS12 = lm(mcs12 ~ housing_satisfaction_score + age + gender + race + income_group + education_group + delayed_rent + moved_in_last_5_years + repairs_needed + housing_type, data= Joined_data)
 summary(joinedMCS12)
 
 joinedMCS12 %>% 
@@ -2833,7 +2844,7 @@ joinedMCS12 %>%
 Joined_data %>%  
   group_by(housing_satisfaction_score, mcs12, housing_type) %>%
   summarize(n=n()) %>% 
-  ggplot(aes(x = housing_satisfaction_score, y = mcs12)) +
+  ggplot(aes(x = housing_satisfaction_score, y = mcs12, color = housing_type)) +
   geom_point(size = 1.5, alpha = 0.8) +
   geom_smooth(method =lm, color = "black", linetype = 1) +
   labs(
@@ -2859,8 +2870,43 @@ Satisfaction_Scale = full_join(Betances_Satisfaction_Scale, SoBRO_Satisfaction_S
 
 alpha(Satisfaction_Scale) 
 ```
+```{r}
+SmokingChi <- cbind(table(FinalSobroData$smoking_status),table(FinalBetancesData$smoking_status))
+chisq.test(SmokingChi) %>% 
+broom::tidy() %>% 
+  knitr::kable(digits = 3)
+```
+
+```{r}
+HousingSat.t.test = t.test(FinalBetancesData$housing_satisfaction_score, FinalSobroData$housing_satisfaction_score, var.equal = TRUE)
 
 
+summary(HousingSat.t.test) 
 
+HousingSat.t.test %>% 
+  broom::tidy() %>%  
+  select(estimate1, estimate2, statistic, p.value, conf.low, conf.high) %>% 
+knitr::kable(col.names = c("Betances Mean RS Score", "SoBRO Mean RS Score", "t-statistic", "p-value", "Low CI", "High CI"), digits = 6)
+```
 
+```{r}
+RentBurden <- cbind(table(FinalSobroData$delayed_rent),table(FinalBetancesData$delayed_rent))
+chisq.test(RentBurden) %>% 
+broom::tidy() %>% 
+  knitr::kable(digits = 3)
+```
+
+```{r}
+RepairsNeeded <- cbind(table(FinalSobroData$repairs_needed),table(FinalBetancesData$repairs_needed))
+chisq.test(RepairsNeeded) %>% 
+broom::tidy() %>% 
+  knitr::kable(digits = 3)
+```
+
+```{r}
+HousingInstability <- cbind(table(FinalSobroData$moved_in_last_5_years),table(FinalBetancesData$moved_in_last_5_years))
+chisq.test(HousingInstability) %>% 
+broom::tidy() %>% 
+  knitr::kable(digits = 3)
+```
 
